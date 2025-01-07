@@ -1,0 +1,12 @@
+[
+    {
+        "category": "Consistency and Alignment of Title with Paper’s Content",
+        "prompt": "Evaluate the degree to which the paper’s title accurately captures its principal topics, arguments, or findings. Does the title reflect the scope and focus of the paper, and is it consistent with the main concepts and keywords presented in the abstract and introduction? Identify any discrepancies or misalignment between the title and the content.",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Conciseness and Clarity of Title",
+        "prompt": "Evaluate the paper’s title for redundancy. Are there repeated words or concepts that could be removed without changing the core meaning? Does the final title remain succinct, clear, and accurately convey the paper’s main focus or contribution?",
+        "score_weightage": "100"
+    }
+]

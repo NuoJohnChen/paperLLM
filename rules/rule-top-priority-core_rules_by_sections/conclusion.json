@@ -1,0 +1,12 @@
+[
+    {
+        "category": "Broader Impact and Future Directions",
+        "prompt": "Assess the thoroughness of the paper's conclusion or discussion sections in addressing the broader impact of the research, including societal, technological, regulatory, or academic implications. Does the paper provide specific and clear avenues for future work that build upon the current findings? Are these points presented cohesively and with enough detail to demonstrate the study’s relevance beyond its immediate scope?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Clarity and Impact of Key Innovations and Findings",
+        "prompt": "Evaluate whether the conclusion effectively highlights and summarizes the paper’s key innovations and major findings. Does it clearly restate the novel aspects of the work (e.g., methodologies, frameworks, or algorithms) and present concrete results or evidence of improvements over existing approaches? Does the conclusion provide sufficient detail on how these innovations contribute to the field, including any quantitative or qualitative outcomes, and compare them to previous work to demonstrate significance?",
+        "score_weightage": "100"
+    }
+]

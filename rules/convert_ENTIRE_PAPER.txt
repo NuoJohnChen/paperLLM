@@ -1,0 +1,136 @@
+**Mistake Name**: Inadequate Problem Definition
+**Target Section**: INTRODUCTION
+**Description**: The problem definition might be too generalized, unclear, or poorly stated, obscuring the precise research focus. A good problem definition should incorporate the current state of affairs, the ideal situation, the gap between them, and how the research aims to bridge this distance.
+**How to Check**: Verify that the problem definition includes four key elements: current situation, ideal situation, the gap (unmet needs or challenges), and how the research intends to address it. If any of these components are unclear or missing, or if it's challenging to discern the problem being tackled, the definition may be too ambiguous.
+**How to Solve**: Request the student to hone the problem definition by pinpointing to distinct, quantifiable issues that tie directly to the research objectives. Encourage them to describe the current and ideal situations and specify the challenges and their proposed solutions. Consider providing them with template structures for problem definitions to guide their thinking and writing.
+
+**Mistake Name**: Lack of Emphasis on Methodological Rigor
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper does not sufficiently highlight the rigorous nature of the methodology. This flaw can lead to concerns about the validity and reproducibility of the proposed research.
+**How to Check**: The AI should parse the methodology section for completeness, detail-orientedness, and comprehensiveness. The section should explicitly detail how the data will be collected, analyzed, and validated. The absence of this information indicates an area for improvement.
+**How to Solve**: Instruct the AI to suggest additional details for the methodology section, such as specifying the methods for data collection, the statistical techniques for analyzing data, validation mechanisms, and justifications for chosen methods. The AI should also advise on explaining how each step contributes to the overall rigor and reliability of the research.
+
+**Mistake Name**: Lack of Originality
+**Target Section**: RELATED_WORK
+**Description**: The document does not adequately show how the research offers novel solutions or contributes new information to its field.
+**How to Check**: The ChatGPT can be set to examine if there are segments in the paper that directly mention the novelty or originality of the proposed research compared to the citations provided in the same text. It should also look for keywords such as 'innovation', 'novel', 'unique', 'first-time', 'unprecedented', etc.
+**How to Solve**: The tool should recommend that the author(s) provide a separate section to emphasize the innovative aspects of their work, its potential impact and how it specifically contributes to the existing literature in a way not yet achieved by previous research.
+
+
+**Mistake Name**: Absence of High-Level Paper Outline
+**Target Section**: INTRODUCTION
+**Description**: Ensure the introduction includes a high-level paper outline, framing the structure and main points to be discussed in the rest of the paper.
+**How to Check**: Look for a paragraph in the introduction that summarizes the structure of the rest of the paper. It should include phrases like, "The remainder of this paper", "The following sections", "This paper will further discuss", etc. This paragraph often comes near the end of the introduction.
+**How to Solve**: If missing, draft a succinct paragraph describing the structure and main points of the remaining sections of the paper. For instance, "The remainder of the paper is organized as follows: Section 2 will discuss X, followed by a deeper analysis of Y in Section 3. Section 4 explores possible implications of Z, and the conclusion summarizes the main findings and suggests areas for further research."
+
+**Mistake Name**: Inadequate Summary of Observations
+**Target Section**: Motivation
+**Description**: The motivation section fails to effectively summarize the key observations or lacks a clear link between the identified problems and the proposed solution. This weakens the argument for the necessity of proposed research.
+**How to Check**: Verify if the observations are merely listed without detailed explanation. Check for the presence of a summarizing statement that encompasses the main points and links the issues to the motivation for new research. Finally, look for explicit statements highlighting the importance of the proposed solution in context of the identified issues.
+**How to Solve**: After enumerating the observations, they should be neatly wrapped up with a summary that is attached to a broader narrative or research question. Make sure to clearly associate the identified problems with the requirement for a new approach, thereby setting a robust ground for your proposed solution.
+
+**Mistake Name**: Missing Key Papers Discussion
+**Target Section**: Related Work
+**Description**: Ensure that the paper includes references and discussions of key publications that are relevant and have significantly contributed to the field.
+**How to Check**: Has the paper referenced and analysed the most relevant and influential publications within the specific field?
+**How to Solve**: If missing, recommend conducting a more comprehensive literature review to find relevant key papers. The author should then revise their discussion to include an analysis of these papers, discussing their importance, findings, and how they relate to the present research.
+
+**Mistake Name**: Ignoring Alternative Approaches
+**Target Section**: Related Work
+**Description**: A comprehensive review of alternative approaches or previous methods is not present or insufficient and the paper does not effectively place the study within the broader academic context. The rationale for choosing the adopted approach over alternatives may not be clearly explained or justified.
+**How to Check**: Use the AI to identify any mentions of alternative or previously employed methods within the paper. Check whether these are discussed critically, comparing their merits and drawbacks to those of the chosen approach. Evaluate if the paper properly situates the presented research method within the broader context of the field. The focus should be on the Background or Literature Review sections primarily.
+**How to Solve**: Guide the student to integrate an evaluation of different methods that have been used in the field, along with a clear justification for why the selected approach was chosen. Encourage critical comparison of the different approaches, even possibly suggesting some common alternatives if they're missing. Also prompt the student to better contextualize their research and method within the broader academic discussion.
+
+
+**Mistake Name**: Lack of Detailed Comparative Analysis
+**Target Section**: EVALUATION
+**Description**: The paper does not adequately compare the proposed method to existing methods. It focuses solely on raw performance metrics without considering other important factors such as efficiency, resource utilization, scalability, robustness, etc.
+**How to Check**: Verify whether the paper includes a thorough comparative analysis that not only compares the raw performance metrics but also provides a discussion on how the proposed method performs in aspects like efficiency, resource utilization, scalability, and robustness against existing methods.
+**How to Solve**: Introduce a comprehensive comparative analysis section. Include quantitative metrics that showcase the performance comparison and a qualitative exposition discussing how the proposed method stacks up against existing methods in other crucial areas like efficiency, resource utilization, scalability, etc.
+
+**Mistake Name**: Failure to Justify Experiment Design
+**Target Section**: EVALUATION
+**Description**: The design of experiments is either lacking in clear reasoning or is not justified in terms of the choice of datasets, parameters, or baselines. This makes the evaluation appear arbitrary and can reduce the overall quality and credibility of the paper.
+**How to Check**: Ensure the paper includes details about why specific datasets, parameters, or baselines were adopted in the experiment design. Check for clear explanations on how these aspects align with the research goals and the logic behind these choices.
+**How to Solve**: Improve sections where the justifications for the experiment design are weak. Questions to consider include: Why were specific datasets or parameters selected? How do these choices align with the research goals? How were baselines chosen? By addressing these queries, the researcher can offer a systematic account of their experiment design and its correlation with their research objectives.
+
+
+**Mistake Name**: Overly Ambitious Claims
+**Target Section**: INTRODUCTION
+**Description**: The introduction, or any part of the document, contains claims about the research findings that overstep its boundaries. These claims could be about its impact, practicality, or novelty, which further extends the implications of the research.
+**How to Check**: Look for statements that make bold proclamations about the research's importance and potential broad applicability. Keep an eye out for phrases such as "groundbreaking," "revolutionising," "unprecedented," without providing enough evidence through experimental data or exact findings to back up these terminologies.
+**How to Solve**: Remove or modify any excessive, overly optimistic language and replace it with more neutral, balanced statements that accurately reflect the paper's contributions. For instance, instead of claiming that the paper will 'revolutionise' a field, indicate how the results provide a novel approach or perspective on a particular problem within the field. The impact statements should always align with the data presented in the paper.
+
+**Mistake Name**: Inconsistent Terminology
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper uses inconsistent or undefined terminology, which can confuse the reader. This not only applies to the introduction but throughout the paper.
+**How to Check**: Use Named Entity Recognition (NER) to identify key terms within the paper. Then, use Coreference Resolution to spot any inconsistencies in their usage. Also, cross-verify if all the key terms are defined at their first usage.
+**How to Solve**: Establish a consistent terminology within the paper. Make sure that all key entities introduced are explicitly defined at first usage and ensure the same naming convention is used throughout the paper. If different terminology is required to be used for the same concept, make a clear explanation to avoid confusion.
+
+**Mistake Name**: Inconsistent or Undefined Terminology  
+**Target Section**: Background  
+**Description**: The background section uses inconsistent or undefined terminology, which can confuse the reader and undermine the clarity of the foundational concepts. It is important that terms, concepts, and methodologies referenced in the background are consistently defined and aligned with their usage in the rest of the paper.  
+**How to Check**:  - Identify all key terms, concepts, and methods introduced in the background section and ensure they are consistently used throughout the paper.  - Cross-reference the terminology in the background with later sections (such as technical methods, experiments, or discussions) to ensure that the same terms are used consistently and are not redefined or altered without explanation.  - Use Named Entity Recognition (NER) to identify key terms in the background and throughout the paper. Then, employ Coreference Resolution to verify that the terminology is applied consistently from the background section onward.  - Check if all key terms are defined clearly at their first occurrence in the background and, where necessary, further explained or elaborated upon to ensure the reader’s understanding.
+**How to Solve**:  - Ensure that all terms and concepts introduced in the background are defined clearly, using standard and consistent terminology that aligns with the broader field.  - Establish a glossary of key terms in the background section if needed, and ensure these terms are used consistently throughout the paper.  - If multiple terminologies are commonly used in the literature, provide clear explanations or justifications for any deviations or alternate names.  - Advise the author to use footnotes or parenthetical explanations if alternative terms must be introduced, ensuring the reader is not confused by shifting terminology.  - Recommend conducting a final cross-check of the paper to ensure that all key terms introduced in the background are used consistently in the main sections, without any undefined shifts in terminology.
+
+**Mistake Name**: Lack of Contextual Background
+**Target Section**: RELATED_WORK
+**Description**: The introduction or literature review doesn't include enough references to existing work, or it doesn't clearly explain why the problem the paper addresses is significant in the context of the broader field.
+**How to Check**: The model can check for the presence of sentences that explicitly discuss relevance or significance of the problem, and the number of references to the existing works in the related field. It can also check if there is a clear transition from discussing the existing work to stating the problem that the paper addresses.
+**How to Solve**: Encourage the writer to explicitly mention the importance of the problem in the context of the wider field, discuss existing work and methods in more depth, and clearly connect them to the problem the paper addresses.
+
+**Mistake Name**: Inconsistent or Contradictory Statements
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper contains inconsistent or contradictory statements that could be within sections (e.g., Introduction, Methodology, Result, Discussion, Conclusion) or across these sections, affecting the clarity and validity of the work. This includes contradiction in the problem statement, hypotheses, methodological approach, results, and conclusions drawn.
+**How to Check**: Scrutinize each section for inconsistent statements or figures. Assess the link between the problem statement, research methodology, results, and conclusions. The research goals stated in the introduction should align with the methodology and findings. Additionally, the results should support the conclusions drawn.
+**How to Solve**: Ensure every segment of the paper aligns with others. The problem statement or research question dictates the methodology, which in turn affects the results and the conclusion. Any change in one domain must reflect accurately across others. Redraft any contradictory or inconsistent statements for clarity and coherence. Consult relevant literature if necessary, to ensure the academic integrity of the revised content.
+
+**Mistake Name**: Assumptions Without Justification
+**Target Section**: TECHNICAL_SECTION
+**Description**: Any part of the paper, not just the motivation section, may include assumptions about the problem, proposed solution, hypotheses, or the field which are not clearly justified or supported by evidence. These unjustified assumptions could appear as implicit or explicit claims.
+**How to Check**: Check for any statements serving as the basis for arguments, hypotheses or conclusions that aren't justified. These can be identified as claims not followed or prefaced by supportive data, logical argumentation, or citation of relevant literature.
+**How to Solve**: Ensure that all assumptions, hypotheses or foundational claims are supported by logical explanations, experimental data, or referenced research findings from credible sources. If an assumption arises from common knowledge in the field, briefly acknowledge this consensus for clarity. Refer to authoritative and credible sources wherever possible to solidify these justifications.
+
+
+**Mistake Name**: Missing Theoretical Justification
+**Target Section**: ENTIRE_PAPER
+**Description**: The paper primarily emphasizes empirical results without providing clear theoretical foundation, justification or explanation for the approaches and methods chosen.
+**How to Check**: The tool should scan for theoretical arguments that support the proposed approach. These might include representations of lemmas, theorems, or propositions that explain why the chosen method is expected to succeed.
+**How to Solve**: Encourage the author to present a theoretical groundwork for their proposed methodology. This could include propounding and proving relevant theorems or providing a theoretical analysis that complements and gives credence to their empirical findings. Additionally, precise references from existing literature can substantiate the theoretical framework further.
+
+**Mistake Name**: Justification of Methodology/System Design
+**Target Section**: TECHNICAL_SECTION
+**Description**: Check if the methodology/system design is justified. This includes justifying the use of certain algorithm, the choice of an architecture, etc.
+**How to Check**: Look for clear and supported statements about why the selected methodology or system design is suitable for the specific problem. Patterns to identify include assertions about the methodology or design without clear explanations or support.
+**How to Solve**: Highlight the general area where justification is needed. Suggest that the author provide a paragraph justifying the methodology, explain why a certain algorithm was chosen (efficiency, accuracy, etc), or clarify why the chosen architecture is ideal or sufficient for the problem at hand. Keep in mind that due to lack of domain knowledge, ChatGPT 4o-mini might not reliably generate the justifying paragraph itself.
+
+**Mistake Name**: Motivation Explanation
+**Target Section**: Motivation
+**Description**: Check if the paper adequately outlines the motivation for solving the problem in the introduction.
+**How to Check**: Make the tool evaluate if the introduction provides a clear explanation for the motivation behind the paper's research. The motivation should underline the importance and relevance of the problem being tackled.
+**How to Solve**: If motivation is missing or inadequate, the tool can suggest the paper author to provide more depth, stressing the implications if the problem remains unsolved. However, providing specific real-world examples and conducting a quantitative analysis, tailored to the paper's topic, will still require human intervention. As a workaround, the tool can frame open ended questions prompting the authors to think in these lines. For example: "What are potential real-world implications of your research?" or "What are the numerical measures that underscore the urgency of your problem?".
+
+
+**Mistake Name**: Weak Rationale and Problem-Solving Approach
+**Target Section**: TECHNICAL_SECTION
+**Description**: The rationale behind the proposed solution isn't fully outlined, or leaves ambiguity regarding how it addresses the stated problems. The linkage between the proposed solution and the problem it aims to solve is not clearly presented.
+**How to Check**: Ensure the paper includes a comprehensive motivation section in which the problems are stated clearly, with sufficient context and specifics. Check if the paper discusses the thought process behind the proposed solution, in a way that logically and clearly connects it to the problem statements. Determine whether the techniques developed and their anticipated outcomes are solidly grounded in the problems identified.
+**How to Solve**: Include a dedicated section that redefines the stated problems with specificity, giving readers a clear roadmap of what the paper is addressing. Follow this with an explanation of the proposed solution and the driving forces behind its development. Clearly draw ties between the problems and solution, illustrating how the latter addresses the former. Consider using examples or case scenarios to demonstrate your arguments, as well as concise yet powerful language for clarity. The solution's relevance to the problems should be clear at first glance.
+
+**Mistake Name**: Overview of Entire System Missing
+**Target Section**: TECHNICAL_SECTION
+**Description**: Check if the paper includes a comprehensive overview of the entire system. The overview should describe the problem the system addresses, the purpose of the system, its key components, and how these components interact.
+**How to Check**: Look for a section or paragraph in the paper that provides a summary of the system. This summary should clearly define what the system does, its key features, and how these features work together to fulfill the system's intended purpose.
+**How to Solve**: If such section is missing, suggest the author to include an introductory paragraph describing the system as a whole. The paragraph should start with defining the problem and end with clearly introducing the proposed system’s components and their interaction for problem-solving.
+
+**Mistake Name**: Lack of Integration of State-of-the-Art (SOTA) Review
+**Target Section**: RELATED_WORK
+**Description**: The SOTA review is included without demonstrating a clear relationship with the problem definition or the suggested research proposal. This can lead to disjointedness between different sections of the paper, creating confusion and diluting the impact of the research.
+**How to Check**: Verify whether the SOTA review explicitly draws upon prevalent methodologies, theories, or findings to formulate the problem statement and the proposed research objective. This can be done by looking for explicit references or logical links between the SOTA review and these sections.
+**How to Solve**: Instruct the student to provide explicit references or coerent links demonstrating how the SOTA review contributes to the problem definition and proposed research. This can involve reworking the writing to provide detailed justifications for methodological or theoretical choices, or articulating how the chosen research question is a natural progression from the SOTA review.
+
+**Mistake Name**: Lack of Integration of State-of-the-Art (SOTA) Review in Problem Framing  
+**Target Section**: Introduction  
+**Description**: The introduction does not adequately integrate the State-of-the-Art (SOTA) review to frame the problem or motivate the proposed research. This leads to a weak connection between the current research landscape and the problem being addressed, making it difficult for the reader to understand the significance and context of the work.  
+**How to Check**:  - Check if the introduction provides a clear link between the SOTA review and the problem statement. Look for explicit references to key works, methodologies, or findings from the SOTA that directly highlight the gaps or limitations the research aims to address. - Verify that the SOTA is not just mentioned in passing but is used to build a logical argument that justifies the need for the proposed research.  - Ensure that the research objectives or questions naturally flow from the SOTA review, showing how the paper builds upon or extends existing work.  - Cross-reference the introduction with the later sections (such as Related Work and Methodology) to ensure that the SOTA review introduced in the introduction is consistently connected to the research proposal.
+**How to Solve**:  - Advise the author to revise the introduction to explicitly state how the SOTA review informs the problem definition. Encourage them to include clear references to key works that highlight gaps, unresolved challenges, or limitations in the field.  - Recommend linking specific methodologies or findings from the SOTA to the research objectives, explaining how the proposed work builds upon or differs from these previous efforts.  - Suggest reworking the introduction to provide a clear justification for the proposed research, using the SOTA as a foundation for the argument. This may involve restructuring the introduction to first outline the current state of research, then identify gaps or limitations, and finally introduce the proposed solution as a logical next step.  - Ensure that the SOTA review is integrated into the overall narrative of the introduction to create a cohesive and compelling argument.

@@ -1,0 +1,71 @@
+{
+  "LixGd92Wri": {
+    "decision": "Reject",
+    "metareview": {
+      "content": "This work presents a benchmark for comparing geometric deep learning models in out-of-distribution (OOD) data domains. The authors take care to include a number of domains both in terms of datasets used as well as classes of OOD problems. They test a number of algorithms from the literature on these models to demonstrate the benchmarking. \n\nThe reviewers for this work were of mixed opinion. On one hand one reviewer considered the work highly relevant and well described and executed. A second reviewer appreciated the work but had concerns on the dataset descriptions and details that lead to a more lukewarm assessment. A third reviewer noted a number of weaknesses and concerns, in particular in clarity when explaining the classes of OOD problems, the lack of SOTA methods benchmarked, and potential fairness issues on running the multiple models. The authors took great effort to respond to these concerns. Some, such as the inclusion of more recent methods, seem to be improved in the revision, however I think that the manuscript can be greatly helped by a more careful rewriting to clearly convey their approach. Specifically in the area of clearly detailing how their running of different data maintains of fair comparison, as well as a careful rewriting of the presentation of different OOD settings. Therefore I do not recommend this work be accepted.",
+      "sentiment": {
+        "neutral": 0.8504,
+        "positive": 0.0995,
+        "negative": 0.0501
+      }
+    },
+    "justification_for_why_not_higher_score": "There were a number of concerns about clarity and fairness of the benchmarking that could and should be better clarified.",
+    "justification_for_why_not_lower_score": "N/A",
+    "reviews": [
+      {
+        "summary": {
+          "content": "The paper effectively addresses the challenge of evaluation of deep learning models generalization abilities under distribution shift in geometric deep learning (point cloud data). It categorizes various sources of distribution shift between training and testing domains and introduces a new benchmark dataset spanning three distinct domains: particle collision physics, chemistry, and material science. The paper further evaluates multiple models, drawing conclusions and recommendations regarding which methods generalize better in specific scenarios",
+          "sentiment": {
+            "neutral": 0.805,
+            "positive": 0.1773,
+            "negative": 0.0176
+          }
+        },
+        "soundness": "2 fair",
+        "presentation": "3 good",
+        "contribution": "2 fair",
+        "strengths": "The introduction of a new benchmark dataset that spans different domains and types of distribution shifts is a noteworthy contribution. This dataset allows for a more nuanced comparison of deep learning methods based on the specific type of shift, making it practically significant and important for the research community.\n\nThe paper's coverage of various scientific fields, including particle collision physics, chemistry, and material science, broadens its applicability and relevance, potentially opening up opportunities for interdisciplinary research.\n\nThe paper is clearly written and technically sound.",
+        "weaknesses": "It's crucial to include detailed information about the characteristics of the new benchmark datasets and of the already existing datasets. Providing information on data size and other characteristics would enhance the reader's understanding of the datasets' properties and its applicability.",
+        "questions": "n/a",
+        "rating": "6: marginally above the acceptance threshold",
+        "confidence": "2: You are willing to defend your assessment, but it is quite likely that you did not understand the central parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked."
+      },
+      {
+        "summary": {
+          "content": "The paper presents a OOD benchmark for geometric deep learning in science. The authors curate datasets from 3 scientific domains, identify several shifts in each dataset, and conduct 3 OOD splits for each shift. Then each setting is used to evaluate 3 GDL backbones and several OOD methods.",
+          "sentiment": {
+            "neutral": 0.8667,
+            "positive": 0.1206,
+            "negative": 0.0127
+          }
+        },
+        "soundness": "2 fair",
+        "presentation": "2 fair",
+        "contribution": "2 fair",
+        "strengths": "1. The paper focuses a a very compelling topic. OOD datasets and benchmarks for geometric deep learning in science are innovative and meaningful research.\n\n2. The paper presentation includes rich contents, with tables and figures well organized.\n\n3. The selected data presents practical tasks. The conducted experiments look correct and sufficient experimental analyses are given.",
+        "weaknesses": "1. The use of critical terms should be better considered. Concept drift is a well-established term in the study of causality and distribution shift. As defined in [1], which the authors also cited, the only constraint for concept drift is \"changes in $p(y|X)$\". To avoid any confusions to readers, this conventional definition should be followed without modifications like $P(Y|X_c)$. Similarly for the definition of covariate shift. If the authors attempt to define a more specific kind of shift, another term should be used.\n\n2. The causal statements are problematic.\n    - The statement that $X$ consists of two disjoint parts and $X_i \u22a5Y |X_c$ does not hold. A easy violation would be $X_c \u2192Y \u2192X_i$. Intrinsically, $Y$ is often a property of the input and therefore $X$ cannot be divided into two disjoint parts that are causal/independent, but there would exist a part of $X$ that is statistically associated with $Y$ while non-causal to $Y$. A classic example is the PIIF and FIIF causal modeling, such as the analysis in [2].\n    - Following the above point, even for $X \u2192 Y$, $P(Y|X)P(X) = P(Y|X_c)P(X)$ does not hold. For $X \u2192 Y$, there can be a case where $P_S(Y |X_i)\\neq P_T (Y |X_i)$, which will also result in a \"conditional shift\". It is also included by the definition of concept shift. Constraining $Y \u2192 X$ does not seem like a necessity for conditional shift.\n    - Overall, as the foundation of the whole paper, 3.1 appears to be logically unclear and farraginous and needs major corrections.\n\n3. Contribution overclaimed and related works not well addressed. In the comparison with existing benchmarks, the authors claim no existing OOD benchmarks consider conditional shift, which is not true. OoD-Bench, GDS, and GOOD all include the Cmnist dataset, which is clearly conditional shift. GOOD also constructed conditional shift for each dataset. Also, though benchmarks like WILDS do not use test labeled/unlabeled data for algorithm learning, these OOD info are available. Therefore, Table 1 gas multiple overclaiming issues, and the authors should treat existing works properly.\n\n4. Experimental setting not fair. Some methods are trained solely on the Train-ID dataset, while DA algorithms are trained on both Train-ID and OOD input data, and TLs also learn labeled Train-OOD data. This does not seem like a fair setting since different methods are trained on even different numbers of data samples. Given that the analyses are conducted based on comparing all these methods together, a fair evaluation setting is certainly needed.\n\n5. Baselines out-of-date. These years many new OOD methods including new sota have been proposed. The benchmark should include more recent methods as baselines. For learning algorithms the sota methods on the Wilds leaderboard should be considered. For graph OOD methods, many recent methods can easily outperform DIR. Also, geometric methods specifically developed for scientific tasks should be considered.\n\n6. The benchmark includes only 3 datasets. Though more than one shift is identified for each dataset, this number seems a bit few for a benchmark. Given that the datasets are not newly collected, possibly more discussions on contributions like curating 3D coordinate can make up for the overall contribution.\n\n\n[1] A survey on concept drift adaptation\n\n[2] Invariant risk minimization",
+        "questions": "See Weaknesses",
+        "rating": "3: reject, not good enough",
+        "confidence": "5: You are absolutely certain about your assessment. You are very familiar with the related work and checked the math/other details carefully."
+      },
+      {
+        "summary": {
+          "content": "The paper addresses the challenge of distribution shifts in Geometric Deep Learning (GDL), a topic that has seen limited research focus despite GDL's prominence in various scientific applications. The authors introduce GDL-DS, a comprehensive benchmark designed to evaluate the performance of GDL models across scenarios that encounter distribution shifts. They provide a comprehensive evolution on several datasets from different fields; particle physics, materials science, and biochemistry, and categorize distribution shifts into three types: conditional, covariate, and concept shifts. Furthermore, they explore three levels of out-of-distribution (OOD) information access and evaluate multiple GDL backbones and learning algorithms. The benchmark consists of 30 experiment settings, and the findings provide valuable insights for researchers and practitioners in the GDL domain.",
+          "sentiment": {
+            "neutral": 0.7888,
+            "positive": 0.1843,
+            "negative": 0.0269
+          }
+        },
+        "soundness": "4 excellent",
+        "presentation": "4 excellent",
+        "contribution": "4 excellent",
+        "strengths": "- The paper presents a comprehensive benchmark for GDL models, covering a spectrum of scientific domains and distribution shifts. Such a benchmark fills an existing gap in the literature.\n\n- The authors leverage the causality inherent in scientific applications to classify distribution shifts into conditional, covariate, and concept shifts, providing a clearer understanding of the challenges faced.\n\n- By exploring three distinct levels of OOD information, the paper offers a nuanced understanding of the impact of OOD data on model performance, addressing disparities in previous works.\n\n- The paper conducts a myriad of experiments, with 30 different settings, evaluating various GDL backbones and learning algorithms, ensuring a robust and holistic evaluation.\n\n- The results yield key takeaways that can guide the selection of practical solutions based on the availability of OOD data, serving as a valuable resource for researchers and practitioners.",
+        "weaknesses": "Given the disparities in previous benchmarking studies across various domains,, there's a compelling case to expand this benchmark study to encompass both CV and NLP tasks to provide a holistic and unified perspective on performances across diverse tasks.",
+        "questions": "- How do the findings of this study compare with earlier research on CV and NLP tasks concerning distribution shifts?\n\n- What is the rationale behind the choice of the considered GL backbones? Would incorporating more diverse GDL backbones or learning algorithms significantly alter the conclusions drawn from this study?",
+        "rating": "8: accept, good paper",
+        "confidence": "4: You are confident in your assessment, but not absolutely certain. It is unlikely, but not impossible, that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work."
+      }
+    ]
+  }
+}

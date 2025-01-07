@@ -1,0 +1,12 @@
+**Mistake Name**: Lack of Detailed Comparative Analysis
+**Target Section**: EVALUATION
+**Description**: The paper does not adequately compare the proposed method to existing methods. It focuses solely on raw performance metrics without considering other important factors such as efficiency, resource utilization, scalability, robustness, etc.
+**How to Check**: Verify whether the paper includes a thorough comparative analysis that not only compares the raw performance metrics but also provides a discussion on how the proposed method performs in aspects like efficiency, resource utilization, scalability, and robustness against existing methods.
+**How to Solve**: Introduce a comprehensive comparative analysis section. Include quantitative metrics that showcase the performance comparison and a qualitative exposition discussing how the proposed method stacks up against existing methods in other crucial areas like efficiency, resource utilization, scalability, etc.
+
+**Mistake Name**: Failure to Justify Experiment Design
+**Target Section**: EVALUATION
+**Description**: The design of experiments is either lacking in clear reasoning or is not justified in terms of the choice of datasets, parameters, or baselines. This makes the evaluation appear arbitrary and can reduce the overall quality and credibility of the paper.
+**How to Check**: Ensure the paper includes details about why specific datasets, parameters, or baselines were adopted in the experiment design. Check for clear explanations on how these aspects align with the research goals and the logic behind these choices.
+**How to Solve**: Improve sections where the justifications for the experiment design are weak. Questions to consider include: Why were specific datasets or parameters selected? How do these choices align with the research goals? How were baselines chosen? By addressing these queries, the researcher can offer a systematic account of their experiment design and its correlation with their research objectives.
+

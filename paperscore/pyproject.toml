@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "pd-core-latex"
+version = "0.1.0"
+description = ""
+authors = ["Boon Chong Peh <pehboonchong@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^1.0.1"
+openai = "^1.51.2"
+chardet = "^5.2.0"
+pypdf2 = "^3.0.1"
+fuzzywuzzy = "^0.18.0"
+pandas = "^2.2.3"
+python-levenshtein = "^0.26.0"
+commonmark = "^0.9.1"
+loguru = "^0.7.2"
+pytest = "^8.3.3"
+pymupdf = "^1.24.13"
+psycopg2-binary = "^2.9.10"
+langfuse = "^2.53.9"
+
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

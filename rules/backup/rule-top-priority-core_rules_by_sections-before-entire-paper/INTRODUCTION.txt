@@ -1,0 +1,43 @@
+**Mistake Name**: Unclear Research Objectives
+**Target Section**: INTRODUCTION
+**Description**: The lack of clear, precise and measurable research objectives making it difficult for the reader to comprehend the aim of the study.
+**How to Check**: Check if the objectives stated are specific, measurable, achievable, relevant, and time-bound (SMART). The objectives should also correlate accurately with the research questions and the methodology proposed. If there's ambiguity in the interpretation of the objectives or if they seem overly generalized, they need fine-tuning.
+**How to Solve**: Instruct the student to refine the objectives by employing unambiguous, precise language. The objectives should address what the study aims to resolve or discover, when and where the study will take place, and the implications of the study's findings. Finally, ensure that each objective correlates with the proposed research question and method.
+
+**Mistake Name**: Weak or Vague Motivation
+**Target Section**: INTRODUCTION
+**Description**: The motivation for solving the problem should not be too general or vague. It should clearly identify the issue and why it's significant.
+**How to Check**: The AI can identify if generic, non-specific terms or phrases are used within the problem statement or if there's a lack of explanation as to why the problem matters in its context. Too many generalities without specifics are a sign of vague motivation.
+**How to Solve**: The AI can suggest replacing non-specific terms with more concrete terms. It can also suggest adding explanations regarding the importance of the problem, drawing from the information in the paper itself. If concrete examples or statistics are mentioned in other areas of the paper, the AI could suggest incorporating them into the motivation to provide a clearer picture.
+
+**Mistake Name**: Review of Existing Approaches
+**Target Section**: INTRODUCTION
+**Description**: Verify if the introduction includes a review of current literature and research in the topic area of the paper.
+**How to Check**: Evaluate if the introduction contains references to previous works, a brief explanation of their concepts and methodologies, and a critique of their limitations.
+**How to Solve**: If such analysis is missing or incomplete, recommend the author to conduct a comprehensive literature review and incorporate the discussions into the introduction. Provide examples of how to comment on the methodologies and limitations of previous works. Encourage the inclusion of a quantitative comparison where applicable.
+
+
+**Mistake Name**: Misalignment Between the Introduction and Conclusion
+**Target Section**: INTRODUCTION
+**Description**: The introduction sets up specific expectations or statements that are not addressed or completed in the conclusion, leading to a gap between the beginning and ending narratives.
+**How to Check**: Systematically identify key promises or statements in the introduction. Proceed to systematically analyze the conclusion for these statements, confirming their presence or identifying their absence.
+**How to Solve**: Suggest multiple solutions for each identified issue. For instance, revising certain lines in the introduction to be more reflective of the paper's actual content, or adding lines to the conclusion to satisfy the initial promises of the introduction. Additionally, for each solution, provide a sentence or section level rewrite with the proposed changes.
+
+**Mistake Name**: Ignoring the Target Audience
+**Target Section**: INTRODUCTION
+**Description**: The introduction is not tailored to the paper’s target audience, resulting in a mismatch in content complexity, depth and relevance.
+**How to Check**: Utilize the AI to compare the introduction with a corpus of introductions aimed at similar target audience to ascertain the level of complexity and depth. Analyze for presence of too many complex terms, oversimplification or lack of contextual explanations.
+**How to Solve**: If the AI finds a mismatch between the paper and the reference corpus, adjust the introduction by either simplifying complex terms or adding depth as required. Use AI to suggest synonyms, add explanations or to rewrite sentences altogether for better understanding.
+
+**Mistake Name**: Misalignment Between Problem Definition and Proposed Research
+**Target Section**: INTRODUCTION
+**Description**: There is a disconnect between the proposed research and the problem defined in the introduction. This discrepancy may mislead or confuse the reader about the goals of the research.
+**How to Check**: Evaluate whether the proposed research methods directly address the problem identified in the introduction. Check if the steps proposed will help in solving the problem or answering the research question.
+**How to Solve**: Guide the student to refine the problem definition or the research methods so they are in-line with each other. Encourage the student to rephrase research questions or modify their approach to problem solving. If needed, introduce more suitable methods that directly address the problem. Provide examples of research where the methods clearly align with the problem for better understanding.
+
+**Mistake Name**: Unclear or Hidden Contribution Statement
+**Target Section**: INTRODUCTION
+**Description**: The contributions of the paper are not clearly stated, buried deep in the introduction, or obscured in overly technical language making it difficult for readers to understand the core contributions.
+**How to Check**: Look for a clear, succinct list or paragraph that outlines the main contributions of the paper. It should follow the problem statement and background information and be written in language that is easy to understand for a broad scientific audience.
+**How to Solve**: Clearly articulate the contributions of the paper in a dedicated paragraph, preferably towards the end of the introduction. Avoid jargon when explaining the contributions. If possible, use bullet points or subheadings to delineate each contribution, making them easily distinguishable and readily comprehendible.
+

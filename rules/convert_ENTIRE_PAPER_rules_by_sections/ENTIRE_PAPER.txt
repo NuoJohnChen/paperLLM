@@ -1,0 +1,6 @@
+**Mistake Name**: Missing Theoretical Justification
+**Target Section**: ENTIRE_PAPER
+**Description**: The paper primarily emphasizes empirical results without providing clear theoretical foundation, justification or explanation for the approaches and methods chosen.
+**How to Check**: The tool should scan for theoretical arguments that support the proposed approach. These might include representations of lemmas, theorems, or propositions that explain why the chosen method is expected to succeed.
+**How to Solve**: Encourage the author to present a theoretical groundwork for their proposed methodology. This could include propounding and proving relevant theorems or providing a theoretical analysis that complements and gives credence to their empirical findings. Additionally, precise references from existing literature can substantiate the theoretical framework further.
+

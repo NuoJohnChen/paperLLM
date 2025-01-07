@@ -1,0 +1,711 @@
+# ResTran: A GNN Alternative to Learn A Graph with Features
+
+Anonymous authors
+
+Paper under double-blind review
+
+###### Abstract
+
+This paper considers a vertex classification task where we are given a graph and associated vector features. The modern approach to this task is graph neural networks (GNNs). However, due to the nature of GNN architectures, GNNs are known to be biased to primarily learn homophilous information. To overcome this bias in GNN architectures, we take a simple alternative approach to GNNs. Our approach is to obtain a vector representation capturing both features and the graph topology. We then apply standard vector-based learning methods to this vector representation. For this approach, we propose a simple transformation of features, which we call _Resistance Transformation_ (abbreviated as _ResTran_). We provide theoretical justifications for ResTran from the effective resistance, \(k\)-means, and spectral clustering points of view. We empirically demonstrate that ResTran is more robust to the homophilous bias than established GNN methods.
+
+## 1 Introduction
+
+This paper considers a vertex classification task in the "graph-with-features" setting. A dataset for this setting consists of a graph and a feature associated with each vertex. The task is to classify vertices using the features and the graph. The modern approach to this task is graph neural networks (GNNs) (Gori et al., 2005; Kipf and Welling, 2016; Velickovic et al., 2018). GNNs propagate features over the graph to build expressive latent embeddings; the embeddings are then consumed in downstream classification models. However, due to the nature of these GNN architectures, GNNs are typically known to have a bias towards homophilous information and to not be effective in learning heterophilous information (Hoang and Maehara, 2019; Luan et al., 2022). This bias worsens if we stack GNN layers (known as "over-smoothing" (Li et al., 2018; Oono and Suzuki, 2019)). Some recent GNN models mitigate this bias, such as (Azabou et al., 2023; Pei et al., 2020; Luan et al., 2021). However, such models, including these examples, often involve complicated GNN architectures.
+
+In this paper, to overcome this homophilous bias in a simpler way, we propose an alternative approach to GNNs since this bias seems to be inherent in GNN architectures. Instead of mitigating biases by complicating the GNNs, our approach is to obtain a vector representation for the features and graph. Then, we apply standard vector-based learning methods to this vector representation, such as established neural network (NN) based models like variational autoencoder or even support vector machines (SVMs). For this approach, we propose a _Resistance Transformation_ (abbreviated as _ResTran_), a simple transformation of feature vectors to incorporate graph structural information.
+
+We theoretically justify ResTran from a connection between the \(k\)-means and spectral clustering. Our justification is inspired by (Dhillon et al., 2004), which justifies using feature maps for spectral clustering applied to vector data. For this purpose, Dhillon et al. (2004) takes the following steps as i) setting up \(k\)-means objective for transformed vectors by a feature map and ii) showing the equivalence from this \(k\)-means objective to spectral clustering. For ResTran, we follow a similar strategy: i) modifying the \(k\)-means to incorporate the vector representation by ResTran and ii) showing the equivalence from this \(k\)-means to spectral clustering. We show that this modified \(k\)-means for the featureless setting (i.e., looking only at a graph by taking features as an identity matrix) is equivalent to spectral clustering. Moreover, for the graph-with-features setting, we show that this \(k\)-means can be seen as a natural extension of spectral clustering from the featureless to the graph-with-features setting. We also discuss why ResTran may preserve the homophilous and heterophilous information better than the established GNNs. Our experiments show that ResTran outperforms graph-only and feature-only representation in unsupervised tasks. We also numerically show that ResTran is more robust to the homophilous bias than established GNNs in the semi-supervised learning (SSL) tasks.
+
+**Contribution.** In summary, our contributions are as follows. i) We propose a simple _ResTran_ for a graph-with-features problem. ii) We theoretically justify ResTran from an effective resistance, \(k\)-means, and spectral clustering perspective. iii) We numerically confirm that ResTran is more robust to homophilous bias than established GNNs for common datasets. _All proofs are in the Appendix._
+
+## 2 Preliminaries
+
+This section sets up the definition and reviews some foundations of graph learning.
+
+### Graph Notations and Vertex Classification Problems
+
+**Graph Notations.** A graph \(G=(V,E)\) is a pair of sets consisting of the _vertices_\(V\) and the _edges_\(E\). Throughout this paper, we use \(n:=|V|\) and \(m:=|E|\). An edge connects two distinct vertices. We assume that our graph is _undirected_. We represent a graph by an _adjacency matrix_\(A{\in}\mathbb{R}^{n\times n}\); the \(ij\)-th element and \(ji\)-th element of \(A\) are the weight of the edge between \(i\) and \(j\), and \(a_{ij}{=}a_{ji}{:=}0\) if there is no edge between \(i\) and \(j\). A _degree_\(d_{i}\) for a vertex \(i\) is defined as \(d_{i}{:=}{\sum_{j}a_{ij}}\). We define the _degree matrix_\(D\), a diagonal matrix whose diagonal elements are \(D_{ii}{:=}d_{i}\). We define the _graph Laplacian_ as \(L{:=}D-A\) and a _normalized graph Laplacian_ as \(L_{N}{:=}D^{+1/2}LD^{+1/2}\), where \({}^{+}\) is the pseudoinverse. Note that these Laplacians are positive semi-definite (PSD) matrices. We use \({\mathbf{1}}{\in}\mathbb{R}^{n}\) for the all one vector and \({\mathbf{e}}_{i}{\in}\mathbb{R}^{n}\) for the \(i\)-th coordinate vector. See (Bapat, 2010) for details.
+
+**Graph-with-features Problem vs. Featureless Problem.** This paper considers a vertex classification task. This task is classifying vertices of the graph into \(k\) classes. For this task, we consider two settings. _i) Graph-With-Features Problem._ This problem assumes that the \(i\)-th vertex is associated with \(f\) dimensional _features_\({\mathbf{x}}_{i}{\in}\mathbb{R}^{f}\). We define a feature matrix as \(X{:=}({\mathbf{x}}_{1},\ldots,{\mathbf{x}}_{n})\). A popular technique for this is a GNN. _ii) Featureless Problem._ This problem only considers the topology of the graph. There are various methods specifically for this, such as spectral clustering. We can also apply the graph-with-features methods to this featureless setting. A common technique to do so is by setting \(X{=}I\), where \(I\) is an identity matrix (Kipf & Welling, 2016a).
+
+### Coordinate, Laplacian Coordinate, and Effective Resistance
+
+**Coordinate.** We define a _coordinate spanning set_ induced from a symmetric PSD matrix \(M\) as \(\mathcal{V}_{M}{:=}\left\{v_{i}{:=}M^{+1/2}{\mathbf{e}}_{i}:\,i{=}1,\ldots,n\right\}\). This coordinate spanning set is a coordinate in the discrete Hilbert space naturally defined for \(M\). See Appendix C for details.
+
+**Effective Resistance.** The effective resistance is an example where the coordinate spanning set by Laplacian (_Laplacian Coordinate_) plays a role. We consider an analog between a _connected_ graph and an electric circuit; a vertex is a point at a circuit, and an edge is a resistor with resistance \(1/a_{ij}\). A flow over a graph is mapped to a current, and \({\mathbf{x}}{\in}\mathbb{R}^{n}\) is seen as a potential at each vertex. We define an energy \(S_{G}({\mathbf{x}})\) for a potential \({\mathbf{x}}\) and effective resistance \(r_{G}(i,j)\) between vertices \(i\) and \(j\) as
+
+\[S_{G}({\mathbf{x}}):={\mathbf{x}}^{\top}L{\mathbf{x}},\quad r_{G}(i,j):=(\min_ {{\mathbf{x}}}\left\{S_{G}({\mathbf{x}}):x_{i}-x_{j}=1\right\})^{-1}, \tag{1}\]
+
+where \({}^{\top}\) is transpose. Using the Laplacian coordinate \({\mathbf{v}}_{i},{\mathbf{v}}_{j}\in\mathcal{V}_{L}\), the \(r_{G}(i,j)\) can be rewritten as
+
+\[r_{G}(i,j)=\|{\mathbf{v}}_{i}-{\mathbf{v}}_{j}\|_{2}^{2},\quad\text{where }{\mathbf{v}}_{i},{\mathbf{v}}_{j}\in\mathcal{V}_{L}, \tag{2}\]
+
+where \(\|\cdot\|_{2}\) is the 2-norm. Recall that \({\mathbf{v}}_{i}{=}L^{+1/2}{\mathbf{e}}_{i}\) and \({\mathbf{v}}_{j}{=}L^{+1/2}{\mathbf{e}}_{j}\) by the definition above. In the following, we abbreviate effective resistance as _resistance_. Note that \(r_{G}(i,j)\) can be seen as a distance between \({\mathbf{v}}_{i},{\mathbf{v}}_{j}{\in}\mathcal{V}_{L}\). For more details, see (Doyle & Snell, 1984; Klein & Randic, 1993).
+
+### The Standard \(k\)-means and Weighted Kernel \(k\)-means
+
+Since this paper is built on the \(k\)-means formulation, we briefly review this topic. Consider to partition the data points into \(\{C_{j}\}_{j=1}^{k}\). The standard \(k\)_-means_ is to minimize the following objective function.
+
+\[\mathcal{J}(\{C_{j}\}_{j=1}^{k}):=\sum_{j\in[k]}\sum_{i\in C_{j}}\|{\mathbf{x} }_{i}-{\mathbf{m}}_{j}\|_{2}^{2},\quad{\mathbf{m}}_{j}:=\sum_{i\in C_{j}}{ \mathbf{x}}_{i}/|C_{j}| \tag{3}\]
+
+Minimizing \(\mathcal{J}(\{C_{j}\}_{j=1}^{k})\) is NP-hard (Mahajan et al., 2012). The approximated discrete solution is obtained by EM-type algorithms (Bishop, 2007). This \(k\)-means is generalized to the weighted and kernel setting. Let \(\phi\) be a feature map. We define the _weighted kernel \(k\)-means_ objective as
+
+\[\mathcal{J}_{\phi}(\{C_{j}\}_{j=1}^{k}):=\sum_{j\in[k]}\sum_{i\in C_{j}}w({ \mathbf{x}}_{i})\|\phi({\mathbf{x}}_{i})-{\mathbf{m}}_{\phi,j}\|_{2}^{2},{ \mathbf{m}}_{\phi,j}:=\sum_{\ell\in C_{j}}w({\mathbf{x}}_{\ell})\phi({ \mathbf{x}}_{\ell})/\sum_{\ell\in C_{j}}w({\mathbf{x}}_{\ell}). \tag{4}\]
+
+where \(w({\mathbf{x}}_{i})\) is a weight at \({\mathbf{x}}_{i}\) and \({\mathbf{m}}_{\phi,j}\) serves as a weighted mean of the cluster \(C_{j}\).
+
+### Graph Cut And Spectral Clustering
+
+Consider partitioning a graph \(G\) into two vertices sets \(V_{1}\cup V_{2}=V\), \(V_{1}\cap V_{2}=\varnothing\). For this partitioning, we define two objective functions to minimize, _normalized cut_ and _ratio cut_, as
+
+\[\mathrm{NCut}(V_{1},V_{2}):=\sum_{i\in V_{1},j\in V_{2}}a_{ij}\left(\frac{1}{ \mathrm{vol}(V_{1})}+\frac{1}{\mathrm{vol}(V_{2})}\right),\mathrm{RCut}(V_{1}, V_{2}):=\sum_{i\in V_{1},j\in V_{2}}a_{ij}\left(\frac{1}{|V_{1}|}+\frac{1}{|V_{2}|} \right),\]
+
+where \(\mathrm{vol}(V):=\sum_{i\in V}d_{i}\). We extend these to partition \(V\) into \(k\) subsets \(V_{i}(i=1,\dots,k)\) where \(V_{i}\)\(\cap V_{j}=\varnothing\) if \(i\neq j\) and \(\cup_{i=1}^{k}V_{i}=V\). For this \(k\)-way partitioning, we extend the cut objective functions as
+
+\[\mathrm{kNCut}(\{V_{i}\}_{i=1}^{k}):=\sum_{i\in[k]}\mathrm{NCut}(V_{i},V\backslash V _{i}),\mathrm{kRCut}(\{V_{i}\}_{i=1}^{k}):=\sum_{i\in[k]}\mathrm{RCut}(V_{i},V \backslash V_{i}),\]
+
+where \([k]:=\{1,\dots,k\}\). Minimizing these cut objectives is a discrete optimization and known as NP-hard (von Luxburg, 2007). Thus, we consider to relax these problems as follows. We introduce an indicator matrix \(Z\in\{0,1\}^{N\times k}\) and its variants for normalized cut \(Z_{N}\) and for ratio cut \(Z_{R}\) as
+
+\[z_{ij}:=\begin{cases}1&(i\in V_{j})\\ 0&(\mathrm{otherwise}),\end{cases}\quad Z_{N}:=D^{1/2}Z(Z^{\top}DZ)^{-1/2},\quad Z _{R}:=Z(Z^{\top}Z)^{-1/2}. \tag{5}\]
+
+Note that \(Z_{N}^{\top}Z_{N}=I\) and \(Z_{R}^{\top}Z_{R}=I\). Note also that \((z_{N})_{ij}=\sqrt{d_{i}/\mathrm{vol}(V_{j})}\) and \((z_{R})_{ij}=\sqrt{1/|V_{j}|}\) if \(i\in V_{j}\) otherwise 0. Using these indicator matrices, we can see the following.
+
+**Proposition 1** (classical, e.g., Yu & Shi (2003)).: _Ratio and normalized cuts are rewritten as follows._
+
+\[\min\mathrm{kNCut}(\{V_{i}\}_{i=1}^{k})=\min_{Z_{N}}\{\mathrm{ trace}(Z_{N}^{\top}L_{N}Z_{N})\,\mathrm{s.t.}\,Z_{N}^{\top}Z_{N}=I\} \tag{6}\] \[\min\mathrm{kRCut}(\{V_{i}\}_{i=1}^{k})=\min_{Z_{R}}\{\mathrm{ trace}(Z_{R}^{\top}LZ_{R})\,\mathrm{s.t.}\,Z_{R}^{\top}Z_{R}=I\}, \tag{7}\]
+
+_Moreover, let \(\lambda_{i}\) and \(\lambda_{N,i}\) be the \(i\)-th eigenvalues \(L\) and \(L_{N}\) respectively. Relaxing \(Z_{R}\) and \(Z_{N}\) into real values, we have \(\min\mathrm{kNCut}(\{V_{i}\}_{i=1}^{k})=\sum_{i=1}^{k}\lambda_{N,i}\) and \(\min\mathrm{kRCut}(\{V_{i}\}_{i=1}^{k})=\sum_{i=1}^{k}\lambda_{i}\)_
+
+From Prop. 1, relaxing \(Z_{N}\) and \(Z_{R}\) into real values, minimizing cut objectives become eigenproblems of \(L_{N}\) and \(L\), which is not NP-hard. Solving these eigenproblems is called _spectral clustering_.
+
+### Spectral Connection: Weighted Kernel \(k\)-means to Spectral Clustering
+
+The spectral clustering discussed above is applied to a given graph. By using feature maps, we may apply spectral clustering to given vector data. (Dhillon et al., 2004) provides one justification for the use of feature maps are through the connection between \(k\)-means and spectral clustering viewpoint. Since our work is inspired by this justification, we review this topic.
+
+We assume vector data \(X=(\mathbf{x}_{1},\dots,\mathbf{x}_{n})\). A common practice to apply spectral clustering to \(X\) is to use a feature map. Namely, we apply spectral clustering on a graph obtained as \(a_{ij}:=\langle\phi(\mathbf{x}_{i}),\phi(\mathbf{x}_{j})\rangle\). Note that we choose \(\phi\) so that \(a_{ij}\geq 0\), for all \(i,j\in[n]\). The question is, _how may the use of feature maps be justified?_ Justification can be done by many ways. We review an established justification by (Dhillon et al., 2004), which develops the following strategy.
+
+1. Using vectors transformed by a feature map \(\phi(\mathbf{x}_{i})\) to the weighted kernel \(k\)-means.
+2. Showing a connection from this weighted kernel \(k\)-means to the spectral clustering.
+
+By this, we can ground the use of a feature map to spectral clustering through \(k\)-means lens. (Dhillon et al., 2004) shows the following claim.
+
+**Proposition 2** ((Dhillon et al., 2004)).: _Informal. Consider a graph \(a_{ij}=\langle\phi(\mathbf{x}_{i}),\phi(\mathbf{x}_{j})\rangle\) and its degree \(d_{i}\). We apply spectral clustering to this graph \(A\). We substitute a weight \(w(\mathbf{x}_{i})=1/d_{i}\) to the weighted kernel \(k\)-means \(\mathcal{J}_{\phi}(\{V_{j}\}_{j=1}^{k})\) Eq. (4). Then, in a "relaxed sense," we obtain_
+
+\[\min\mathcal{J}_{\phi}(\{V_{j}\}_{j=1}^{k})=\min\mathrm{kNCut}(\{V_{i}\}_{i=1} ^{k}) \tag{8}\]
+
+By this connection, we may say that the spectral clustering for vector data via kernel is justified from a weighted kernel \(k\)-means view. Note that we observe this connection only for the normalized cut. For more details including the formal statement of Prop. 2, see (Dhillon et al., 2004) and Appendix G.
+
+### Homophily, Heterophily, and Eigenspace of Laplacian
+
+A graph dataset may be classified into two notions. The _homophily_ assumption is that adjacent vertices are more likely to be in the same group. The _heterophily_ assumption is that vertices are collected in
+
+**Input:** Graph \(G=(V,E)\), Features \(X\), Training and Test Indices \(Tr\), \(Te\), Krylov Subspace Dim \(r\)
+
+Obtain the approximated ResTran \(\tilde{X}_{G}\) (Eq. (10)) by applying Krylov subspace method, i.e.,
+
+\(\tilde{X}_{G}=\textsc{KrylovSubspaceMethod}(L,X,r)\)
+
+Obtain the model by applying any vector ML method to the training data whose indices are \(Tr\) as
+
+\(\textsc{Model}=\textsc{AnyVectorMLMethod}(\{(\tilde{X}_{G})_{i},y_{i}\}_{i\in Tr })\)
+
+Obtain the predicted label \(\hat{\mathbf{y}}\) by applying Model to the test data whose indices are \(Te\) as
+
+\(\hat{\mathbf{y}}=\textsc{Model}(\{(\tilde{X}_{G})_{i}\}_{i\in Te})\)
+
+**Output:** The predicted label \(\hat{\mathbf{y}}\)
+
+diverse groups, i.e., the contrary to homophily assumption. From the cut definition, spectral clustering assumes homophily. Recall that the spectral clustering looks at the eigenspace associated with smaller eigenvalues (i.e., low-frequencies) of \(L\). Thus, we may see that this eigenspace contains homophilous information. Also, we may say that the eigenspace for larger eigenvalues (i.e., high-frequencies) of \(L\) captures heterophilous information. In the following, we say "low-frequency" for homophily or "high-frequency" for heterophily. See (Hoang & Maehara, 2019; Luan et al., 2022) for details.
+
+## 3 Proposed Method: ResTran
+
+This section presents our learning framework for the graph-with-features setting. A common method for this setting is a GNN, where we develop NNs incorporating a graph. Instead, we propose a vector representation of the graph-with-features, which we call _ResTran_. We then apply vector-based ML methods to this vector, e.g., SVM and the standard NN methods. In Sec. 4, we will justify ResTran from the spectral connection and resistance view and also explore characteristics of ResTran.
+
+For our framework, we use the _shifted graph Laplacian_, as done in (Herbster & Pontil, 2006), as
+
+\[L_{b}^{-1}:=L^{+}+bJ_{G},\quad\mathrm{where}\quad b>0,(J_{G})_{ij}:=\begin{cases} 1&(i\text{ and }j\text{ are in the same component})\\ 0&(\mathrm{otherwise}),\end{cases}. \tag{9}\]
+
+Note that from the definition \(J_{G}=\mathbf{1}\mathbf{1}^{\top}\) if the graph is connected, i.e., contains only one component. Note also that \(L_{b}\) is invertible since \(L_{b}\) is symmetric positive definite (PD) as we see later in Prop. 3.
+
+**Proposed Framework via _ResTran_. Below we propose our framework. The overall strategy is to i) have a vector representation of graph-with-features ii) apply a vector based ML method. For i), using the coordinate \(\mathcal{V}_{L_{b}}\), we propose our _Resistance Transformation_ (_ResTran_ for abbreviation) \(X_{G}\) as
+
+\[X_{G}:=(\mathbf{x}_{G,1},\dots,\mathbf{x}_{G,n}),\quad\text{where }\mathbf{x}_{G,i}:=X\mathbf{v}_{i}^{\prime},\ \mathbf{v}_{i}^{\prime}\in\mathcal{V}_{L_{b}}. \tag{10}\]
+
+Recall that \(\mathbf{v}_{i}^{\prime}\)=\(L_{b}^{-1/2}\mathbf{e}_{i}\) by definition of \(\mathcal{V}_{L_{b}}\) in Sec. 2.2. Note that \(\mathbf{x}_{i}\), \(\mathbf{x}_{G,i}\)\(\in\)\(\mathbb{R}^{f}\) and \(X\), \(X_{G}\)\(\in\)\(\mathbb{R}^{n\times f}\). For ii), we then use any vector based ML methods for \(X_{G}\), such as SVM and NN-based methods.
+
+**Practical Implementation via Krylov Subspace Method.** If we naively compute \(L_{b}^{-1/2}\) and then multiply \(X\) to obtain ResTran Eq. (10), it costs prohibitive \(O(n^{3})\) complexity due to the computation of \(L_{b}^{-1/2}\). Instead of this naive computing, we consider to approximate \(X_{G}\). For this purpose, we apply the Krylov subspace method, by which we can approximate a solution of linear algebraic problems. The Krylov subspace method reduces the computational complexity from \(O(n^{3})\) to \(O(rfm)\), where \(r\) is the dimension of the Krylov subspace. The dimension \(r\) is typically small, say \(r\)\(<\)\(100\). The Krylov subspace method approximates \(X_{G}\) by considering \(L\) and \(X\)_at the same time_. Thus, we expect a better approximation for Krylov than approximating \(L_{b}^{-1/2}\) without using \(X\); such methods include the polynomial approximation. Note that this polynomial approximation is common in the established convolutional GNNs, such as (Defferrard et al., 2016; Kipf & Welling, 2016). Refer to Appendix A or (Higham, 2008) for details. The overall proposed framework is summarized in Alg. 1. Note that Alg. 1 can be interpreted as SSL even though we apply supervised methods such as SVM because we first observe \(X\) and \(G\) to obtain \(X_{G}\). This is same as GNNs, where we observe \(X\) and \(G\) before we learn. Alg. 1 naturally generalizes to the unsupervised setting.
+
+**Coordinate Interpretation of ResTran.** We first remark that \(L_{b}^{-1/2}\)\(=(\mathbf{v}_{1}^{\prime},\dots,\mathbf{v}_{n}^{\prime})\), \(L_{b}^{-1/2}\) is symmetric, and \(X_{G}\)\(=\)\(XL_{b}^{-1/2}\). The \(X_{G}^{\top}\) can be seen as retaking basis of \(X^{\top}\) by \(\mathcal{V}_{L_{b}}\) if we see \(L_{b}^{-1/2}\) in row-wise. Moreover, by comparing the original \(X\)\(=\)\((X\mathbf{e}_{1},\dots,X\mathbf{e}_{n})\), the \(X_{G}\) can be seen as retaking \(\mathbf{e}_{i}\) to \(\mathbf{v}_{i}^{\prime}\) to indicate \(i\)-th vertex if we see \(L_{b}^{-1/2}\) in column-wise.
+
+**Comparison with GNNs.** This approach is simpler than existing GNN approaches. The recent GNNs often involve complicated graph designs in layers of NN or pre/post-processing. However, our framework is simple since we transform \(X\) to \(X_{G}\) and then apply any vector-based methods.
+
+## 4 Characteristics and Justification of ResTran
+
+This section discusses the characteristics and justification of ResTran. We first discuss the characteristics of ResTran, by exploring theoretical properties of Laplacian coordinate \(\mathcal{V}_{L_{b}}\) from a resistance view. Next, we justify using ResTran of \(X_{G}\) from a \(k\)-means perspective.
+
+### Characteristics of ResTran: An Effective Resistance View
+
+This section discusses the characteristics of ResTran. We first explore theoretical properties of the Laplacian coordinate \(\mathcal{V}_{L_{b}}\). We then interpret these results to explain characteristics of ResTran.
+
+**Theoretical Properties of \(\mathcal{V}_{L_{b}}\).** In the following, we assume that we have \(K\) connected components. We write \(G_{i}\):=\((V_{i},E_{i})\) for \(i\)=\(1,\ldots,K\), and \(G\)=\(G_{1}\cup\ldots\cup G_{K}\). We write as \(n_{i}\):=\(|V_{i}|\). Whiteout loss of generality, we can assume that \(n_{1}\)\(\leq\)\(\ldots\)\(\leq\)\(n_{K}\). Denote \(\mathbf{1}_{G_{j}}\) by all one vector for \(G_{j}\), i.e., \((\mathbf{1}_{G_{j}})_{i}\)=\(1\) if \(j\)\(\in\)\(V_{G_{j}}\) otherwise \(0\). Note that \(\sum_{j\in[K]}\mathbf{1}_{G_{j}}\)=\(1\) and \((J_{G})_{i}\):=\(\mathbf{1}_{G_{j}}\) if \(i\)\(\in\)\(V_{s}\). Note also that \(\mathbf{1}_{G_{j}}\) are eigenvectors of \(L\). Using this notation, we have properties of \(\mathcal{V}_{L_{b}}\) as follows.
+
+**Proposition 3**.: _Suppose that a graph \(G\) has \(K\) connected components. Let (\(\lambda_{i}\), \(\mathbf{\Psi}_{i}\)) be the \(i\)-th eigenpair of \(L\). If \(n_{1}\)\(b\)\(>\)\(\lambda_{K+1}^{-1}\), the \(i\)-th eigenpair (\(\lambda_{i}^{\prime}\), \(\mathbf{\Psi}_{i}^{\prime}\)) of \(L_{b}^{-1/2}\) is_
+
+\[(\lambda_{i}^{\prime},\mathbf{\Psi}_{i}^{\prime})=\begin{cases}\left(\lambda_ {n+1-i}^{-1/2},\mathbf{\Psi}_{n+1-i}\right)&\mathrm{for}\ i=1,\ldots,n-K,\\ \left((n_{i-(n-K)})b^{1/2},\mathbf{1}_{G_{n_{i-(n-K)}}}\right)&\mathrm{for}\ i=n-K+1, \ldots,n.\end{cases}\]
+
+**Corollary 4**.: \(L_{b}^{-1/2}\mathbf{e}_{i}=(L^{+1/2}+\sqrt{b}J_{G}^{1/2})\mathbf{e}_{i},\) _where \(J_{G}^{1/2}=\sum_{i}^{K}(n_{i}^{-1/2}\mathbf{1}_{G_{i}}\mathbf{1}_{G_{i}}^{ \top})\)_
+
+This proposition shows that \(L\) and \(L_{b}^{-1/2}\) share eigenvectors and that \(L_{b}^{-1/2}\) is PD since \(\lambda_{i}^{\prime}>0\) for all \(i\). Next, we explore the characteristics of the coordinates \(\mathcal{V}_{L_{b}}\). We define an _extended resistance_ as
+
+\[r^{\prime}_{G,b}(i,j):=\|\mathbf{v}_{i}^{\prime}-\mathbf{v}_{j}^{\prime}\|_{2 }^{2},\quad\mathbf{v}_{i}^{\prime},\mathbf{v}_{j}^{\prime}\in\mathcal{V}_{L_{b}} \tag{11}\]
+
+Recall that \(\mathbf{v}_{i}^{\prime}=L_{b}^{-1/2}\mathbf{e}_{i}\). The following can be claimed.
+
+**Proposition 5**.: _If two vertices \(i,j\) in the same component \(G_{s}\), \(r^{\prime}_{G,b}(i,j)=r_{G_{s}}(i,j)\)._
+
+Prop. 5 means that even if we use \(\mathcal{V}_{L_{b}}\) instead of \(\mathcal{V}_{L}\), the resistance, the distance between coordinates (Eq. (2)), is preserved within the connected component. For inter-component, the parameter \(b\) controls the connectivity among the components. If two vertices are in different components, it is natural to think that they are apart. However, in the graph-with-features setting, even if two vertices are in different components, the two vertices often belong to the same cluster; therefore, these are not apart so much. We parameterize this intuition by \(b\); by taking larger \(b\), we weigh more on the disconnected observation. Taking \(b\) large enough for two vertices \(i,\ell\) in the different components, we can make \(r^{\prime}_{G,b}(i,\ell)\) greater than _any_ resistances within the component as follows.
+
+**Proposition 6**.: _If \(b>\sqrt{2}n_{1}/\lambda_{K+1}\), \(r^{\prime}_{G,b}(i,\ell)>r^{\prime}_{G,b}(i,j)\) for \(i,j\in V_{s}\) and \(\ell\in V_{t}\) where \(s\neq t\)._
+
+Using these theoretical properties, we observe the following characteristics of the ResTran.
+
+**ResTran from a Resistance View.** From Prop. 5 and Prop. 6, we observe that \(\mathcal{V}_{L_{b}}\) serves as a coordinate offering an extended resistance. Our ResTran may be viewed as the basis transformation from \(\mathbf{e}_{i}\) to \(\mathbf{v}_{i}^{\prime}\). This is why we call our transformation Eq. (10) as a "resistance" transformation.
+
+**ResTran Capturing a Mix of Homophilous and Heterophilous Information.** Our ResTran can be seen as favoring the homophilous assumption but, at the same time, not ignoring the heterophilous assumption, while GNNs are biased toward homophily. Recall that the homophilous information is contained in the space spanned by \(\psi_{i}\) for the smaller eigenvalues \(\lambda_{i}\) while the heterophilous information is in the space spanned by \(\psi_{j}\) for larger eigenvalues \(\lambda_{j}\), as seen in Sec. 2.6. GNNs are effective at homophilous data but not at heterophilous data (Luan et al., 2022). Loosely speaking, this happens because each layer of GNNs multiplies the adjacency matrix \(A\) to the next layer, often several times (see Appendix B for details). Stacking the layers enlarges the low-frequency components,which leads to a bias towards homophily. On the other hand, ResTran "balances" homophily and heterophily. Observe that we can see that \(L_{b}^{-1/2}\) is "spectral reordering" of the graph Laplacian \(L\) (see Prop. 3); the largest eigenvalues of \(L_{b}^{-1/2}\) are the smallest eigenvalues of \(L\), and the order is reversed. Also, from Prop.3, the eigenvalues of \(L_{b}^{-1/2}\) associated with eigenvectors \(\psi_{i}\) is either \(\sqrt{n_{i}b}\) or \(\lambda_{i}^{-1/2}\), which is large since \(\lambda_{i}\) is small. Recall that ResTran multiplies \(L_{b}^{-1/2}\) to \(X\) once. Thus, the space containing the homophilous information is amplified by large \(\lambda_{i}^{-1/2}\). At the same time, we do not ignore the heterophilous space, but this is amplified by small \(\lambda_{j}^{-1/2}\) since \(\lambda_{j}\) is large.
+
+### Justification of ResTran \(X_{g}\) from a \(k\)-means Perspective
+
+This section justifies our ResTran \(X_{G}\). Our justification is inspired by (Dhillon et al., 2004). As reviewed in Sec. 2.5, Dhillon et al. (2004) justifies using a feature map for spectral clustering applied to vector data. For this purpose, Dhillon et al. (2004) use the following steps: i) modify the \(k\)-mean objectives to incorporate a vector transformed by a feature map and ii) show a connection from this modified \(k\)-means objective to spectral clustering. Here, we aim to establish a similar connection for ResTran. For this purpose, following i), we use \(X_{G}\) in the \(k\)-means objective Eq. (3) as
+
+\[\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k}):=\sum_{j\in[k]}\sum_{i\in V_{j}}\|{\bf x} _{G,i}-{\bf m}_{G,j}\|_{2}^{2},\quad{\bf m}_{G,j}:=\sum_{\ell\in V_{j}}{\bf x }_{G,\ell}/|V_{j}|. \tag{12}\]
+
+This objective is a replacement of the standard \(k\)-means Eq. (3) from \({\bf x}_{i}\) to \({\bf x}_{G,i}\). Following ii), we establish connections from this \(k\)-means objective to spectral clustering as follows.
+
+* Sec. 4.2.1 shows that in the featureless setting where \(X=I\), conducting \(k\)-means on \({\bf v}_{i}^{\prime}=L_{b}^{-1/2}{\bf e}_{i}\) is equivalent to spectral clustering.
+* Sec. 4.2.2 shows that conducting \(k\)-means on \({\bf x}_{G,i}\) can be seen as a natural generalization of the spectral clustering through the \(k\)-means discussion.
+
+With these connections, we say that ResTran is justified in the same sense as the feature map for spectral clustering as done by (Dhillon et al., 2004) discussed in Sec. 2.5.
+
+#### 4.2.1 Justification for Featureless Setting: Revisiting the Spectral Connection
+
+This section justifies Eq. (12) for the featureless setting, where we use \(X\)=\(I\). Therefore, for featureless setting, \(X_{G}\)=\(({\bf v}_{1}^{\prime},\ldots,{\bf v}_{n}^{\prime})\) from the definition of \(X_{G}\) Eq. (10). Using this \(X_{G}\), we can rewrite Eq. (12) and further expand using Frobenius norm \(\|\cdot\|_{\rm Fro}\) and indicator matrix \(Z_{R}\) (Eq. (5)) as
+
+\[\mathcal{J}_{R}(\{V_{j}\}_{j=1}^{k}) :=\sum\nolimits_{j\in[k]}\sum_{i\in V_{j}}\|{\bf v}_{i}^{\prime}- {\bf m}_{j}\|_{2}^{2},\quad{\bf m}_{j}:=\sum_{i\in V_{j}}{\bf v}_{i}^{\prime} /|V_{j}|,{\bf v}_{i}^{\prime}\in\mathcal{V}_{L_{b}} \tag{13}\] \[=\|L_{b}^{-1/2}-Z_{R}Z_{R}^{\top}L_{b}^{-1/2}\|_{\rm Fro}^{2}.\quad (\because\,{\bf m}_{j}=(L_{b}^{-1/2}Z_{R}Z_{R}^{\top})_{i}\;\mbox{if}\;i\in C_{ j}). \tag{14}\]
+
+With Eq. (14), we may obtain the _relaxed_ solution of \(k\)-means by relaxing \(Z_{R}\) into real values. We first claim that the objective Eq. (13) grounds on the extended resistance (Eq. (11)) as follows.
+
+**Proposition 7**.: \[\mathcal{J}_{R}(\{V_{j}\}_{j=1}^{k})=\sum\nolimits_{j\in[k]}\sum\nolimits_{ i,\ell\in V_{j}}r_{G,b}^{\prime}(i,\ell)/|V_{j}|\] (15)
+
+This proposition means that the \(k\)-means objective using \({\bf v}_{i}^{\prime}\) (Eq. (13)) can be seen as the sum of the extended resistances. Since Eq. (15) itself seems a natural objective for graph clustering, our \(k\)-means Eq. (13) also may be seen as a natural objective. We also show that minimizing \(\mathcal{J}_{R}(\{V_{j}\}_{j=1}^{k})\) (Eq. (13) and its equivalence Eq. (15)) has a theoretical connection to spectral clustering as follows:
+
+**Theorem 8**.: _If we relax \(Z_{R}\) into real values and \(n_{1}b\)>\(\lambda_{K+1}^{-1}\), we have_
+
+\[\arg\min\nolimits_{Z_{R}}\{{\rm RCut}(\{{\rm V}_{j}\}_{j=1}^{k})\;{\rm s.t.}\;Z _{R}^{\top}Z_{R}=I\}=\arg\min\nolimits_{Z_{R}}\{\mathcal{J}_{R}(\{V_{j}\}_{j=1 }^{k})\;{\rm s.t.}\;Z_{R}^{\top}Z_{R}=I\} \tag{16}\]
+
+This theorem means that that ratio cut and \(k\)-means using \({\bf v}_{i}^{\prime}\) are theoretically equivalent if we relax \(Z_{R}\). By this theorem, Eq. (13), featureless version of Eq. (12) using the common featureless technique \(X=I\), are theoretically justified in a sense of \(k\)-means.
+
+Remark that Thm. 8 revisits the spectral connection between \(k\)-means and spectral clustering as seen in Sec. 2.5. However, the previous connections only hold for the vector data and a feature map, not for the discrete graph data like Thm. 8. Moreover, from Prop. 7 and Thm. 8, the clustering using resistance and spectral clustering are equivalent in a relaxed sense, which the previous connections have not shown. Finally, while the previous connections only hold for the normalized cut, Thm. 8 is the first to show the spectral connection for the ratio cut. Note that Thm. 8 naturally generalizes to normalized cut. For more details on how the previous connection and Thm. 8 differ, see Appendix G.
+
+#### 4.2.2 Justification for the Graph-With-Features Setting: A \(k\)-means View
+
+This section justifies the \(k\)-means objective for the graph-with-features setting Eq. (12). In Sec. 4.2.1, we saw that Eq. (13), which is a featureless setting of Eq.(12), is equivalent to the spectral clustering. This section shows that Eq. (12) is a "natural extension" of spectral clustering through Eq.(13).
+
+We first recall that the common technique (see, e.g., Kipf & Welling (2016a;b)) to apply a graph-with-features method to featureless setting is substituting \(X=I\). Thus, it is natural to think in a "reverse way"; in order to generalize the featureless methods to graph with the features method, we replace \(I\) to the feature vector \(X\). Since Eq. (14) is for a featureless setting, we now explicitly write \(I\) as
+
+\[\mathcal{J}_{R}(\{V_{i}\}_{i=1}^{k})=\|L_{b}^{-1/2}I-Z_{R}Z_{R}^{\top}L_{b}^{ -1/2}I\|_{\mathrm{Fro}}^{2}. \tag{17}\]
+
+Looking at Eq. (17), this can be thought as a featureless setting of the following objective function;
+
+\[\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k}):=\|L_{b}^{-1/2}X^{\top}-Z_{R}Z_ {R}^{\top}L_{b}^{-1/2}X^{\top}\|_{\mathrm{Fro}}^{2}. \tag{18}\]
+
+Using \(\mathbf{m}_{G,j}\) in Eq. (12), we further rewrite Eq. (18) as
+
+\[\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})=\sum_{j\in[k]}\sum_{i\in V_{j}} \|\mathbf{x}_{G,i}-\mathbf{m}_{G,j}\|_{2}^{2}=\mathcal{J}_{G}(\{V_{i}\}_{i=1} ^{k}), \tag{19}\]
+
+by which we show that \(\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k})\) Eq. (12) and \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})\) Eq.(18) are equal.
+
+What does the equivalence between \(\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k})\) and \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})\) mean? We begin with \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})\). The objective \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})\) can be seen as a generalization of \(\mathcal{J}_{R}(\{V_{i}\}_{i=1}^{k})\) (Eq.(13)) from featureless to graph-with-features setting. Recall that from Thm. 8, the featureless \(\mathcal{J}_{R}(\{V_{i}\}_{i=1}^{k})\) is equivalent to the standard spectral clustering. Thus, by stretching this idea from the featureless to the graph-with-features, \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})\) can be seen as a natural extension of spectral clustering to graph-with-features setting through a \(k\)-means perspective. Hence, since \(\mathcal{J}^{\prime}_{G}(\{V_{i}\}_{i=1}^{k})=\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{ k})\), we may say that the \(k\)-means \(\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k})\) we initially discuss in Eq. (12) can be seen as a natural "extended" spectral clustering for graph-with-features, seen through a \(k\)-means lens. Thus, we now establish a connection from \(k\)-means to the "extended" spectral connection using the common technique from the featureless to graph-with-features. In this sense, we may justify using \(X_{G}\), similarly to (Dhillon et al., 2004). See Appendix I for more formulation.
+
+Finally, Thm. 8 also offers insights into the graph-with-features setting. From Thm. 8, we see that the basis \(\mathbf{v}^{\prime}_{i}\) has a graph structural information through spectral clustering. Thus, we can say that the ResTran \(x_{G,i}\) captures more graph structure than \(\mathbf{x}_{i}\) since ResTran replaces the basis from \(\mathbf{e}_{i}\) to \(\mathbf{v}^{\prime}_{i}\).
+
+## 5 Related Work
+
+This section provides the review of the related work to our ResTran.
+
+**Spectral Connection.** Our justification relies on the connection between spectral clustering, resistance, and \(k\)-means. The spectral clustering using ratio and normalized cut has been extensively studied (von Luxburg, 2007). The spectral connection for the normalized cut has been developed, such as (Bach & Jordan, 2003; Dhillon et al., 2004; Saito, 2022). However, the connection between ratio cut, resistance, and \(k\)-means are only loosely studied (Saerens et al., 2004; Zha et al., 2001), while Prop. 7 and Thm. 8 offer the exact connection. Also, the previous studies do not offer the interpretation as discussed in Sec. 4.2. We discuss more details in Appendices B and G.
+
+**GNNs and SSL.** Our ResTran considers the graph-with-features setting. One popular approach to this task is GNN. GNNs are firstly proposed as NNs applied to the graph structural data (Gori et al., 2005; Scarselli et al., 2008). The GCN (Kipf & Welling, 2016a) and GAT (Velickovic et al., 2018) are established methods. The recent advancements include (Hamilton et al., 2017; Wu et al., 2019; Alfke & Stoll, 2021) to name a few; see (Wu et al., 2020) for a survey. Moreover, Transformers using the spectral properties are considered (Dwivedi et al., 2023; Wang et al., 2022). While these GNNsneed some specific design incorporating a graph structure into NNs, ours simply can apply existing vector learning methods to ResTran. The most relevant problem to this study is the homophily bias of GNNs, where GNNs have a bias to primarily learn homophilous information (Hoang and Maehara, 2019; Zheng et al., 2022; Luan et al., 2022; Platonov et al., 2023). This phenomenon worsens if we stack GNN layers, known as "over-smoothing" (Li et al., 2018; Oono and Suzuki, 2019). By construction, ResTran is expected to represent not only homophilous but also heterophilous information as discussed in Sec. 4.1. Finally, since most of the GNN studies are evaluated on SSL tasks, we mention a survey of SSL (Van Engelen and Hoos, 2020). For more details, see Appendices B.
+
+## 6 Experiments
+
+This section numerically demonstrates the performance of ResTran. The purpose of our experiments is to evaluate if our ResTran improves i) the graph-only or feature-only representation and ii) the existing GNN methods. Recall that we propose to use ResTran \(X_{G}\) and to apply a vector-based ML method. Thus, various sophistication can be involved for both ResTran and the comparison methods. However, to focus on evaluating our ResTran, we want to exclude the effects of sophistication as much as possible. To do so, our experiments only used simple and established methods for both ResTran and the comparison. We used Alg. 1 for ResTran. We evaluated ResTran and existing methods by accuracy, same as the previous studies such as (Kipf and Welling, 2016). We evaluated ResTran on the standard homophilous and heterophilous datasets for the graph-with-features task. For the homophilous datasets, we used citation network datasets (Cora, Citceer, and Pubmed) and purchase datasets (Amazon Photo and Computer). For heterophilous datasets, we used web datasets (Wisconsin, Cornell, Texas, Chameleon, Squirrel, and Actor). The details of the experiments, such as choices of ML models, hyperparameters, and architectures of the NNs, are described in Appendix H.
+
+### Comparing ResTran with Graph-Only and Feature-Only
+
+This experiment briefly evaluates if our ResTran for representing the graph-with-features datasets improves the feature-only \(X\) and graph-only \(A\). If we observe that the latent space is more separable for ResTran \(X_{G}\) than for graph-only and feature-only settings, we can say that ours improves the representation. For this purpose, we compare these on the simple setting, spectral clustering. For the feature-only and ResTran, we used the Gaussian kernel to form a graph and applied spectral clustering. For graph-only, we used the graph Laplacian for the spectral clustering. We conducted a simple \(k\)-means on the first \(k\) eigenvectors of the graph Laplacian, and we reported the average. We first observe that Fig. 1 shows the plots of the second and third eigenvectors of the graph Laplacians for graph-only, feature-only, and ResTran of Cora. We see that ResTran offers better separation than graph-only and feature-only. The results of the unsupervised task are summarized in Table 1. In
+
+\begin{table}
+\begin{tabular}{c|c c c c c c} \hline  & Cora & Citeseer & Pubmed & Texas & Cornell & Wisconsin \\ \hline Graph-Only & 29.3 \(\pm\) 0.5 & 23.7 \(\pm\) 0.0 & 39.6 \(\pm\) 0.0 & 49.6 \(\pm\) 1.1 & 49.0 \(\pm\) 5.6 & 45.6 \(\pm\) 4.2 \\ Feature-Only & 32.6 \(\pm\) 0.6 & 45.5 \(\pm\) 0.9 & 45.4 \(\pm\) 0.0 & 55.2 \(\pm\) 0.5 & 55.2 \(\pm\) 0.0 & 47.8 \(\pm\) 0.0 \\ \hline Graph + Feature (Ours) & **58.9 \(\pm\) 4.5** & **48.2 \(\pm\) 0.8** & **71.6 \(\pm\) 0.6** & **55.5 \(\pm\) 0.5** & **55.7 \(\pm\) 0.0** & **48.2 \(\pm\) 0.3** \\ \hline \end{tabular}
+\end{table}
+Table 1: Experimental results for unsupervised learning. All measures are accuracy (%). “Graph-Only” uses only graph Laplacian. “Feature-only” uses a Gram matrix constructed only by features. “Graph + Feature” uses a Gram matrix constructed by our proposal \(X_{G}\).
+
+Figure 1: Plots of the eigenvectors of the graph Laplacian \(L\) for three settings of Cora. For graph-only, we directly use a graph. For feature-only and ResTran, we compose a graph by applying a Gaussian kernel. We observe many overlaps of the points at the center, shown as “Many OLs.”
+
+all datasets, we see that ResTran improves both graph-only and feature-only. These results further confirm that ResTran \(X_{G}\) better represents the dataset than the feature only \(X\) or the graph only \(A\).
+
+### Comparing ResTran with GNN Methods.
+
+This section numerically evaluates if ResTran improves the existing GNN methods. We evaluate this on the SSL tasks. For comparison, we used three established simple GNN models, GCN (Kipf and Welling, 2016), GAT (Velickovic et al., 2018), as well as SGC (Wu et al., 2019), which is a simplified GCN. For ResTran, we apply both non-NN vector-based models and NN-based models. For non-NN models, we apply label propagation (LP) (Zhou et al., 2003) and SVM (Cortes and Vapnik, 1995) with the Gaussian kernel for \(X_{G}\). For NN models, we use two early and simple models, VAT (Miyato et al., 2018) and AVAE (Maaloe et al., 2016) to \(X_{G}\). We only use FC layers and ReLU as an activation function for NN models, which are simple and established NN components. We ran our experiments on homophilous and heterophilous datasets. We conducted our experiments with the split where we know 5% labels, we use 25% for validation, and the rest for the test. We conducted our experiments on 10 random splittings and reported the average.
+
+The results are summarized in Table 2 and 3. On homophilous datasets, we observe comparable performances among GNNs and ResTran + NN models. On heterophilous datasets, we observe the performance improvement from GNNs to ResTran, sometimes even with SVM. This means that our ResTran is more robust to homophily bias. This robustness is expected from the construction of ResTran since, unlike GNNs, \(X_{G}\) preserves not only homophilous information but also heterophilous information as seen in Sec. 4.1.
+
+## 7 Conclusion
+
+We considered a vertex classification task on the graph-with-features setting, where we have a graph with associated features. While the modern approach to this task has been GNNs, we took an alternative approach to overcome the homophilous biases in GNNs. Our approach was to transform the feature vectors to incorporate the graph topology and apply standard learning methods to the transformed vectors. For this approach, we proposed a simple transformation of features, which we call _ResTran_. We established theoretical justifications for ResTran from resistance, \(k\)-means, and spectral clustering viewpoints. We also discusses of why ResTran is robust to homophilous biases. We empirically demonstrated that ResTran is more robust on the homophilous bias than existing GNN methods. Limitation and future work are that we are unsure how much ResTran has an expressive power, as done in (Xu et al., 2019). We conjecture that the expressive power of ResTran is less than the 2-WL test. Thus, we speculate that we need a different setup for triangle counting problems.
+
+\begin{table}
+\begin{tabular}{c|c|c c c c c} \hline \hline  & Type & cora & eiteser & pubmed & photo & computer \\ \hline GCN & GNN & **79.9 \(\pm\) 0.9** & 67.4 \(\pm\) 1.1 & 83.8 \(\pm\) 0.4 & 83.1 \(\pm\) 1.2 & 80.4 \(\pm\) 0.4 \\ GAT & GNN & 74.9 \(\pm\) 4.2 & 67.6 \(\pm\) 0.1 & 82.8 \(\pm\) 0.2 & **87.7 \(\pm\) 1.3** & 80.3 \(\pm\) 1.2 \\ SGC & GNN & 79.3 \(\pm\) 1.7 & 70.2 \(\pm\) 0.8 & 67.9 \(\pm\) 1.8 & 80.1 \(\pm\) 2.9 & 81.4 \(\pm\) 2.0 \\ \hline ResTran + LP & Non-NN & 30.6 \(\pm\) 0.6 & 20.6 \(\pm\) 4.6 & 39.5 \(\pm\) 1.4 & 25.3 \(\pm\) 0.2 & 37.5 \(\pm\) 2.2 \\ ResTran + SVM & Non-NN & 49.1 \(\pm\) 5.7 & 45.5 \(\pm\) 6.7 & 76.5 \(\pm\) 2.2 & 24.3 \(\pm\) 2.7 & 43.8 \(\pm\) 3.4 \\ \hline ResTran + VAT & NN & 77.6 \(\pm\) 2.5 & 68.7 \(\pm\) 1.1 & 82.8 \(\pm\) 0.7 & 86.3 \(\pm\) 0.8 & 78.1 \(\pm\) 2.4 \\ ResTran + AVAE & NN & 78.2 \(\pm\) 1.8 & **71.7 \(\pm\) 1.0** & **83.9 \(\pm\) 0.7** & 86.8 \(\pm\) 1.5 & **81.6 \(\pm\) 0.9** \\ \hline \hline \end{tabular}
+\end{table}
+Table 2: Experimental results for homophilous data using semi-supervised learning with some known labels. We use 5% labels. All measures are accuracy (%).
+
+\begin{table}
+\begin{tabular}{c|c|c c c c c} \hline \hline  & Type & Texas & Cornell & Wisconsin & chameleon & squirrel & actor \\ \hline GCN & GNN & 50.9 \(\pm\) 4.2 & 37.4 \(\pm\) 9.3 & 46.3 \(\pm\) 4.9 & 32.7 \(\pm\) 2.0 & 23.5 \(\pm\) 1.1 & 25.9 \(\pm\) 0.9 \\ GAT & GNN & 50.3 \(\pm\) 3.3 & 44.9 \(\pm\) 4.9 & 44.0 \(\pm\) 4.8 & 32.8 \(\pm\) 1.8 & 23.4 \(\pm\) 1.3 & 26.4 \(\pm\) 0.9 \\ SGC & GNN & 44.6 \(\pm\) 5.0 & 42.3 \(\pm\) 5.3 & 44.6 \(\pm\) 5.0 & 31.8 \(\pm\) 1.8 & 23.5 \(\pm\) 0.8 & 26.0 \(\pm\) 0.8 \\ \hline ResTran + LP & Non-NN & 46.3 \(\pm\) 17.3 & 42.2 \(\pm\) 20.6 & 37.3 \(\pm\) 12.6 & 20.3 \(\pm\) 0.8 & 20.0 \(\pm\) 0.3 & 22.3 \(\pm\) 2.8 \\ ResTran + SVM & Non-NN & 48.8 \(\pm\) 14.1 & 45.7 \(\pm\) 16.8 & 47.8 \(\pm\) 9.6 & 33.6 \(\pm\) 5.8 & 31.9 \(\pm\) 0.9 & 29.4 \(\pm\) 0.9 \\ \hline ResTran + VAT & NN & **55.9 \(\pm\) 5.1** & **49.0 \(\pm\) 3.8** & **51.2 \(\pm\) 5.0** & 34.0 \(\pm\) 1.4 & 27.7 \(\pm\) 3.5 & 27.8 \(\pm\) 1.2 \\ ResTran + AVAE & NN & 51.4 \(\pm\) 3.7 & 48.2 \(\pm\) 3.7 & 50.0 \(\pm\) 2.1 & **40.7 \(\pm\) 1.4** & **32.4 \(\pm\) 0.8** & **29.5 \(\pm\) 1.3** \\ \hline \hline \end{tabular}
+\end{table}
+Table 3: Experimental results for heterophilous data using semi-supervised learning with some known labels. We use 5% labels. All measures are accuracy (%).
+
+## References
+
+* Alfke & Stoll (2021) Dominik Alfke and Martin Stoll. Pseudoinverse graph convolutional networks: Fast filters tailored for large eigengaps of dense graphs and hypergraphs. _Data Min. Knowl. Discov._, 35:1318-1341, 2021.
+* Aronszajn (1950) Nachman Aronszajn. Theory of reproducing kernels. _Trans. Am. Math. Soc_, 68(3):337-404, 1950.
+* Azabou et al. (2023) Mehdi Azabou, Venkataramana Ganesh, Shantanu Thakoor, Chi-Heng Lin, Lakshmi Sathidevi, Ran Liu, Michal Valko, Petar Velickovic, and Eva L Dyer. Half-hop: A graph upsampling approach for slowing down message passing. In _Proc. ICML_, pp. 1341-1360, 2023.
+* Bach & Jordan (2003) Francis Bach and Michael Jordan. Learning spectral clustering. In _Proc. NIPS_, 2003.
+* Bapat (2010) Ravindra B Bapat. _Graphs and matrices_, volume 27. Springer, 2010.
+* Berthelot et al. (2019) David Berthelot, Nicholas Carlini, Ian Goodfellow, Nicolas Papernot, Avital Oliver, and Colin A Raffel. Mixmatch: A holistic approach to semi-supervised learning. In _Proc. NeurIPS_, 2019.
+* Bishop (2007) Christopher M. Bishop. _Pattern Recognition and Machine Learning_. Springer, 2007.
+* Black et al. (2023) Mitchell Black, Zhengchao Wan, Amir Nayyeri, and Yusu Wang. Understanding oversquashing in GNNs through the lens of effective resistance. In _Proc. ICML_, pp. 2528-2547, 2023.
+* Blum et al. (2004) Avrim Blum, John Lafferty, Mugizi Robert Rwebangira, and Rajashekar Reddy. Semi-supervised learning using randomized mincuts. In _Proc. ICML_, 2004.
+* Bruna et al. (2014) Joan Bruna, Wojciech Zaremba, Arthur Szlam, and Yann LeCun. Spectral networks and locally connected networks on graphs. In _Proc. ICLR_, 2014.
+* Chandra et al. (1996) Ashok K Chandra, Prabhakar Raghavan, Walter L Ruzzo, Roman Smolensky, and Prasoon Tiwari. The electrical resistance of a graph captures its commute and cover times. _Comput. Complex._, 6:312-340, 1996.
+* Chang et al. (2021) Heng Chang, Yu Rong, Tingyang Xu, Yatao Bian, Shiji Zhou, Xin Wang, Junzhou Huang, and Wenwu Zhu. Not all low-pass filters are robust in graph convolutional networks. In _Proc. NuerIPS_, pp. 25058-25071, 2021.
+* Chen et al. (2020) Ming Chen, Zhewei Wei, Zengfeng Huang, Bolin Ding, and Yaliang Li. Simple and deep graph convolutional networks. In _Proc. ICML_, pp. 1725-1735, 2020.
+* Cortes & Vapnik (1995) Corinna Cortes and Vladimir Vapnik. Support-vector networks. _Mach. learn._, 20:273-297, 1995.
+* Craven et al. (1998) Mark Craven, Andrew McCallum, Dan PiPasquo, Tom Mitchell, and Dayne Freitag. Learning to extract symbolic knowledge from the world wide web. In _Proc. AAAI_, 1998.
+* Defferrard et al. (2016) Michael Defferrard, Xavier Bresson, and Pierre Vandergheynst. Convolutional neural networks on graphs with fast localized spectral filtering. In _Proc. NIPS_, volume 29, 2016.
+* Dhillon et al. (2004) Inderjit S Dhillon, Yuqiang Guan, and Brian Kulis. Kernel \(k\)-means: spectral clustering and normalized cuts. In _Proc. KDD_, pp. 551-556, 2004.
+* Di Giovanni et al. (2023) Francesco Di Giovanni, Lorenzo Giusti, Federico Barbero, Giulia Luise, Pietro Lio, and Michael Bronstein. On over-squashing in message passing neural networks: The impact of width, depth, and topology. In _Proc. ICML_, pp. 7865-7885, 2023.
+* Doyle & Snell (1984) Peter G Doyle and J Laurie Snell. _Random walks and electric networks_, volume 22. American Mathematical Society, 1984.
+* Du et al. (2022) Lun Du, Xiaozhou Shi, Qiang Fu, Xiaojun Ma, Hengyu Liu, Shi Han, and Dongmei Zhang. GBK-GNN: Gated bi-kernel graph neural networks for modeling both homophily and heterophily. In _Proc. WWW_, pp. 1550-1558, 2022.
+* Dwivedi et al. (2023) Vijay Prakash Dwivedi, Chaitanya K Joshi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio, and Xavier Bresson. Benchmarking graph neural networks. _J. Mach. Learn. Res._, 24(43):1-48, 2023.
+
+* Fiedler (1975) Miroslav Fiedler. A property of eigenvectors of nonnegative symmetric matrices and its application to graph theory. _Czech. Math. J._, 25(4):619-633, 1975.
+* Fouss et al. (2007) Francois Fouss, Alain Pirotte, Jean-Michel Renders, and Marco Saerens. Random-walk computation of similarities between nodes of a graph with application to collaborative recommendation. _IEEE Trans. Knowl. Data Eng._, 19(3):355-369, 2007.
+* Gasteiger et al. (2020) Johannes Gasteiger, Aleksandar Bojchevski, and Stephan Gunnemann. Predict then propagate: Graph neural networks meet personalized pagerank. In _Proc. ICLR_, 2020.
+* Gori et al. (2005) Marco Gori, Gabriele Monfardini, and Franco Scarselli. A new model for learning in graph domains. In _Proc. IJCNN_, pp. 729-734, 2005.
+* Hamilton et al. (2017) Will Hamilton, Zhitao Ying, and Jure Leskovec. Inductive representation learning on large graphs. In _Proc. NIPS_, 2017.
+* Henaff et al. (2015) Mikael Henaff, Joan Bruna, and Yann LeCun. Deep convolutional networks on graph-structured data. _arXiv preprint arXiv:1506.05163_, 2015.
+* Herbster & Pontil (2006) Mark Herbster and Massimiliano Pontil. Prediction on a graph with a perceptron. In _Proc. NIPS_, pp. 577-584, 2006.
+* Herbster et al. (2005) Mark Herbster, Massimiliano Pontil, and Lisa Wainer. Online learning over graphs. In _Proc. ICML_, pp. 305-312, 2005.
+* Higham (2008) Nicholas J Higham. _Functions of matrices: theory and computation_. SIAM, 2008.
+* Hoang & Maheara (2019) NT Hoang and Takanori Maheara. Revisiting graph neural networks: All we have is low-pass filters. _arXiv preprint arXiv:1905.09550_, 2019.
+* Hoang et al. (2020) NT Hoang, Takanori Maheara, and Tsuyoshi Murata. Stacked graph filter. _arXiv preprint arXiv:2011.10988_, 2020.
+* Joachims (1999) Thorsten Joachims. Transductive inference for text classification using support vector machines. In _Proc. ICML_, pp. 200-209, 1999.
+* Kingma et al. (2014) Durk P Kingma, Shakir Mohamed, Danilo Jimenez Rezende, and Max Welling. Semi-supervised learning with deep generative models. In _Proc. NIPS_, 2014.
+* Kipf & Welling (2016a) Thomas N. Kipf and Max Welling. Semi-supervised classification with graph convolutional networks. In _Proc. ICLR_, 2016a.
+* Kipf & Welling (2016b) Thomas N Kipf and Max Welling. Variational graph auto-encoders. _arXiv preprint arXiv:1611.07308_, 2016b.
+* Klein & Randic (1993) Douglas J Klein and Milan Randic. Resistance distance. _J. Math. Chem._, 12(1):81-95, 1993.
+* Kurakin et al. (2020) Alex Kurakin, Colin Raffel, David Berthelot, Ekin Dogus Cubuk, Han Zhang, Kihyuk Sohn, and Nicholas Carlini. Remixmatch: Semi-supervised learning with distribution matching and augmentation anchoring. In _Proc. ICLR_, 2020.
+* Laine & Aila (2017) Samuli Laine and Timo Aila. Temporal ensembling for semi-supervised learning. In _Proc. ICLR_, 2017.
+* Li et al. (2018) Qimai Li, Zhichao Han, and Xiao-Ming Wu. Deeper insights into graph convolutional networks for semi-supervised learning. In _Proc. AAAI_, pp. 3538-3545, 2018.
+* Luan et al. (2019) Sitao Luan, Mingde Zhao, Xiao-Wen Chang, and Doina Precup. Break the ceiling: Stronger multiscale deep graph convolutional networks. In _Proc. NeurIPS_, volume 32, 2019.
+* Luan et al. (2021) Sitao Luan, Chenqing Hua, Qincheng Lu, Jiaqi Zhu, Mingde Zhao, Shuyuan Zhang, Xiao-Wen Chang, and Doina Precup. Is heterophily a real nightmare for graph neural networks to do node classification? _arXiv preprint arXiv:2109.05641_, 2021.
+
+* Luan et al. (2022) Sitao Luan, Chenqing Hua, Qincheng Lu, Jiaqi Zhu, Mingde Zhao, Shuyuan Zhang, Xiao-Wen Chang, and Doina Precup. Revisiting heterophily for graph neural networks. In _Proc. NeurIPS_, pp. 1362-1375, 2022.
+* Maaloe et al. (2016) Lars Maaloe, Casper Kaae Sonderby, Soren Kaae Sonderby, and Ole Winther. Auxiliary deep generative models. In _Proc. ICML_, pp. 1445-1453, 2016.
+* Mahajan et al. (2012) Meena Mahajan, Prajakta Nimbhorkar, and Kasturi Varadarajan. The planar \(k\)-means problem is np-hard. _Theor. Comput. Sci._, 442:13-21, 2012.
+* McAuley et al. (2015) Julian McAuley, Christopher Targett, Qinfeng Shi, and Anton Van Den Hengel. Image-based recommendations on styles and substitutes. In _Proc. SIGIR_, pp. 43-52, 2015.
+* McCallum et al. (2000) Andrew Kachites McCallum, Kamal Nigam, Jason Rennie, and Kristie Seymore. Automating the construction of internet portals with machine learning. _Inf. Retr._, 3:127-163, 2000.
+* Miyato et al. (2018) Takeru Miyato, Shin-ichi Maeda, Masanori Koyama, and Shin Ishii. Virtual adversarial training: a regularization method for supervised and semi-supervised learning. _IEEE Trans. Pattern Anal. Mach. Intell_, 41(8):1979-1993, 2018.
+* Namata et al. (2012) Galileo Namata, Ben London, Lise Getoor, Bert Huang, and U Edu. Query-driven active surveying for collective classification. In _Proc. MLG_, 2012.
+* Oono & Suzuki (2019) Kenta Oono and Taiji Suzuki. Graph neural networks exponentially lose expressive power for node classification. In _Proc. ICLR_, 2019.
+* Pei et al. (2020) Hongbin Pei, Bingzhe Wei, Kevin Chen-Chuan Chang, Yu Lei, and Bo Yang. Geom-gcn: Geometric graph convolutional networks. In _Proc. ICLR_, 2020.
+* Platonov et al. (2023) Oleg Platonov, Denis Kuznedelev, Michael Diskin, Artem Babenko, and Liudmila Prokhorenkova. A critical look at the evaluation of GNNs under heterophily: are we really making progress? In _Proc. ICLR_, 2023.
+* Ranzato & Szummer (2008) Marc'Aurelio Ranzato and Martin Szummer. Semi-supervised learning of compact document representations with deep networks. In _Proc. ICML_, pp. 792-799, 2008.
+* Rozemberczki et al. (2021) Benedek Rozemberczki, Carl Allen, and Rik Sarkar. Multi-scale attributed node embedding. _J. Complex Netw._, 9(2):cnab014, 2021.
+* Saerens et al. (2004) Marco Saerens, Francois Fouss, Luh Yen, and Pierre Dupont. The principal components analysis of a graph, and its relationships to spectral clustering. In _Proc. ECML_, pp. 371-383, 2004.
+* Saito (2022) Shota Saito. Hypergraph modeling via spectral embedding connection: Hypergraph cut, weighted kernel \(k\)-means, and heat kernel. In _Proc. AAAI_, pp. 8141-8149, 2022.
+* Saito & Herbster (2023) Shota Saito and Mark Herbster. Multi-class graph clustering via approximated effective \(p\)-resistance. In _Proc. ICML_, pp. 29697-29733, 2023.
+* Salha et al. (2019) Guillaume Salha, Romain Hennequin, and Michalis Vazirgiannis. Keep it simple: Graph autoencoders without graph convolutional networks. _arXiv preprint arXiv:1910.00942_, 2019.
+* Salha et al. (2021) Guillaume Salha, Romain Hennequin, and Michalis Vazirgiannis. Simple and effective graph autoencoders with one-hop linear models. In _Proc. ECML PKDD_, pp. 319-334, 2021.
+* Scarselli et al. (2008) Franco Scarselli, Marco Gori, Ah Chung Tsoi, Markus Hagenbuchner, and Gabriele Monfardini. The graph neural network model. _IEEE Trans. Neural Netw._, 20(1):61-80, 2008.
+* Sen et al. (2008) Prithviraj Sen, Galileo Namata, Mustafa Bilgic, Lise Getoor, Brian Galligher, and Tina Eliassi-Rad. Collective classification in network data. _AI Mag._, 29(3):93-93, 2008.
+* Shchur et al. (2018) Oleksandr Shchur, Maximilian Mumme, Aleksandar Bojchevski, and Stephan Gunnemann. Pitfalls of graph neural network evaluation. _arXiv preprint arXiv:1811.05868_, 2018.
+* Shi & Malik (1997) Jianbo Shi and Jitendra Malik. Normalized cuts and image segmentation. _IEEE Trans. Pattern Anal. Mach. Intell_, 22:888-905, 1997.
+
+* Sohn et al. (2020) Kihyuk Sohn, David Berthelot, Nicholas Carlini, Zizhao Zhang, Han Zhang, Colin A Raffel, Ekin Dogus Cubuk, Alexey Kurakin, and Chun-Liang Li. Fixmatch: Simplifying semi-supervised learning with consistency and confidence. In _Proc. NeurIPS_, pp. 596-608, 2020.
+* Topping et al. (2021) Jake Topping, Francesco Di Giovanni, Benjamin Paul Chamberlain, Xiaowen Dong, and Michael M Bronstein. Understanding over-squashing and bottlenecks on graphs via curvature. In _Proc. ICLR_, 2021.
+* Van Engelen & Hoos (2020) Jesper E Van Engelen and Holger H Hoos. A survey on semi-supervised learning. _Mach. Learn._, 109(2):373-440, 2020.
+* Velickovic et al. (2018) Petar Velickovic, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Lio, and Yoshua Bengio. Graph attention networks. In _Proc. ICLR_, 2018.
+* von Luxburg (2007) Ulrike von Luxburg. A tutorial on spectral clustering. _Stat. Comput._, 17(4):395-416, 2007.
+* Wang et al. (2022) Haorui Wang, Haoteng Yin, Muhan Zhang, and Pan Li. Equivariant and stable positional encoding for more powerful graph neural networks. In _Proc. ICLR_, 2022.
+* Weston et al. (2008) Jason Weston, Frederic Ratle, and Ronan Collobert. Deep learning via semi-supervised embedding. In _Proc. ICML_, pp. 1168-1175, 2008.
+* Wu et al. (2019) Felix Wu, Amauri Souza, Tianyi Zhang, Christopher Fifty, Tao Yu, and Kilian Weinberger. Simplifying graph convolutional networks. In _Proc. ICML_, pp. 6861-6871, 2019.
+* Wu et al. (2020) Zonghan Wu, Shirui Pan, Fengwen Chen, Guodong Long, Chengqi Zhang, and S Yu Philip. A comprehensive survey on graph neural networks. _IEEE Trans. Neural Netw. Learn. Syst._, 32(1):4-24, 2020.
+* Xie et al. (2016) Junyuan Xie, Ross Girshick, and Ali Farhadi. Unsupervised deep embedding for clustering analysis. In _Proc. ICML_, pp. 478-487, 2016.
+* Xu et al. (2019) Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka. How powerful are graph neural networks? In _Proc. ICLR_, 2019.
+* Yang et al. (2022) Xiangli Yang, Zixing Song, Irwin King, and Zenglin Xu. A survey on deep semi-supervised learning. _IEEE Trans. Knowl. Data Eng._, 2022.
+* Yang et al. (2016) Zhilin Yang, William Cohen, and Ruslan Salakhudinov. Revisiting semi-supervised learning with graph embeddings. In _Proc. ICML_, pp. 40-48, 2016.
+* Yen et al. (2005) Luh Yen, Denis Vanyyve, Fabien Wouters, Francois Fouss, Michel Verleysen, Marco Saerens, et al. Clustering using a random walk based distance measure. In _Proc. ESANN_, pp. 317-324, 2005.
+* Yen et al. (2008) Luh Yen, Marco Saerens, Amin Mantrach, and Masashi Shimbo. A family of dissimilarity measures between nodes generalizing both the shortest-path and the commute-time distances. In _Proc. KDD_, pp. 785-793, 2008.
+* Yu & Shi (2003) Stella X. Yu and Jianbo Shi. Multiclass spectral clustering. In _Proc. ICCV_, pp. 11-17, 2003. ISBN 0-7695-1950-4.
+* Zha et al. (2001) Hongyuan Zha, Xiaofeng He, Chris Ding, Ming Gu, and Horst Simon. Spectral relaxation for k-means clustering. In _Proc. NIPS._, 2001.
+* Zhang et al. (2021) Bowen Zhang, Yidong Wang, Wenxin Hou, Hao Wu, Jindong Wang, Manabu Okumura, and Takahiro Shinozaki. Flexmatch: Boosting semi-supervised learning with curriculum pseudo labeling. In _Proc. NeurIPS_, pp. 18408-18419, 2021.
+* Zheng et al. (2022) Xin Zheng, Yixin Liu, Shirui Pan, Miao Zhang, Di Jin, and Philip S Yu. Graph neural networks for graphs with heterophily: A survey. _arXiv preprint arXiv:2202.07082_, 2022.
+* Zhou et al. (2003) Dengyong Zhou, Olivier Bousquet, Thomas Lal, Jason Weston, and Bernhard Scholkopf. Learning with local and global consistency. In _Proc. NIPS_, pp. 321-328, 2003.
+* Zhu & Koniusz (2021) Hao Zhu and Piotr Koniusz. Simple spectral graph convolution. In _Proc. ICLR_, 2021.
+* Zhu et al. (2003) Xiaojin Zhu, Zoubin Ghahramani, and John D Lafferty. Semi-supervised learning using gaussian fields and harmonic functions. In _Proc. ICML_, pp. 912-919, 2003.
+
+## Appendix A Note on Krylov Subspace Method
+
+This section breifly explains the Krylov subspace method and its advantages over some natural ideas.
+
+### Krylov Subspace Method
+
+In this section, the Krylov subspace method is an established way to approximate the solution of the linear algebraic solutions. In this case, we consider to approximate \(f(A)\mathbf{b}\) for the matrix \(A\in\mathbb{R}^{n\times n}\) and for a vector \(\mathbf{b}\in\mathbb{R}^{n}\).
+
+The \(r\)-th Krylov subspace \(\mathcal{K}_{r}\) for the matrix \(A\in\mathbb{R}^{n\times n}\) and for a vector \(\mathbf{b}\in\mathbb{R}^{n}\) is defined as
+
+\[\mathcal{K}_{r}(A,\mathbf{b}):=\mathrm{span}\{\mathbf{b},A\mathbf{b},A^{2} \mathbf{b},\ldots,A^{r-1}\mathbf{b}\}. \tag{20}\]
+
+The Krylov subspace method approximates \(f(A)\mathbf{b}\) into this Krylov subspace \(\mathcal{K}_{r}(A,\mathbf{b})\). To obtain this approximation, the common way is Arnoldi process. The Arnoldi process at \(i\)-th iteration obtains \(Q_{i}\in\mathbb{R}^{n\times i}\) and \(H_{i}\in\mathbb{R}^{i\times i}\) as
+
+\[AQ_{i}=Q_{i}H_{i}+h_{i+1,i}\mathbf{q}_{i+1}\mathbf{e}_{i}^{\top},\mathrm{ where}\ Q_{i}:=[\mathbf{q}_{1}\ldots,\mathbf{q}_{i}],\mathbf{q}_{1}:=\mathbf{b}/\| \mathbf{b}\|_{2}^{2}. \tag{21}\]
+
+Note that \(Q_{i}\) has orthonormal columns and \(H_{i}\) is upper Hessenberg matrix. Then, Krylov subspace based method approximates
+
+\[f(A)\mathbf{b}\approx Q_{r}f(H_{r})Q_{r}^{\top}\mathbf{b}=\|\mathbf{b}\|_{2}Q _{r}f(H_{r})\mathbf{e}_{1}. \tag{22}\]
+
+This process overall takes \(O(rm)\) time complexity. Typically, \(r\) is chosen small, say \(r<100\). See Higham (2008) for more details.
+
+### Advantages of Krylov Subspace Method
+
+This section discusses the advantages of the Krylov subspace method over some natural ideas.
+
+One natural idea to approximate \(L_{b}^{-1/2}X\) is to approximate \(L_{b}^{-1/2}\) using polynomial function. This technique is commonly used, even in the GNN research area, such as Kipf & Welling (2016a). For example, we first expand \(L_{b}^{-1/2}\) as
+
+\[L_{b}^{-1/2}=a_{0}I+a_{1}L_{b}+a_{2}L_{b}^{2}+\ldots, \tag{23}\]
+
+and then approximate in some order, say,
+
+\[L_{b}^{-1/2}\approx a_{0}I+a_{1}L_{b}. \tag{24}\]
+
+While this is straightforwardly understandable, the Krylov subspace method approximates \(L_{b}^{-1/2}X\) better as follows. While this polynomial approximation only uses \(L\) when approximation, the Krylov subspace method approximates \(LX\) using both \(L\) and \(X\) as seen in Appendix A.1. Hence, the Krylov subspace approximates \(L_{b}^{-1/2}\) using more information than a polynomial approximation.
+
+The other natural idea is to reduce the dimension, such as principal component analysis (PCA). We consider to eigendecompose the graph Laplacian as
+
+\[L=\Psi\Lambda\Psi^{\top}, \tag{25}\]
+
+where \(\Psi:=(\boldsymbol{\uppsi}_{1},\ldots,\boldsymbol{\uppsi}_{n})\) and \(\Lambda:=\mathrm{diag}(\lambda_{1},\ldots,\lambda_{n})\), where \(\boldsymbol{\uppsi}_{i}\) is the \(i\)-th eigenvector and \(\lambda_{i}\) is the \(i\)-the eigenvalue. Then, we compose \(\Lambda_{r^{\prime}}:=\mathrm{diag}(\lambda_{1},\ldots,\lambda_{r^{\prime}},0,\ldots,0)\). The value \(r^{\prime}\) is again typically small compared to \(n\). Then, we approximate \(L^{+1/2}\) as
+
+\[L^{+1/2}\approx\Psi\Lambda_{r}^{+1/2}\Psi^{\top}. \tag{26}\]
+
+This approximation can be conducted much faster than obtaining naively \(L^{+1/2}\).
+
+While dimensional reduction is the standard way to make pseudoinverse faster, the Krylov subspace method provides a better approximation in the following sense. Firstly, as the polynomial approximation, the Krylov subspace approximates \(L_{b}^{-1/2}X\) with more information. Secondly, as discussed in 4.1 and as seen in the experimental result as 6, ResTran also works for heterophilous datasets. However, from the construction of the eigendecomposition, the reduction cut down the high-frequency information corresponding to the heterophilous information. Therefore, the dimensional reduction throws away the information that ResTran is good at dealing with.
+
+More Related Work
+
+This section provides more detailed related work to the resistance transformation and its application to learning problems.
+
+Our justification relies on the connection between spectral clustering, effective resistance and \(k\)-means. The spectral clustering using ratio and normalized cut has been extensively studied (Fiedler, 1975; Shi & Malik, 1997). The Laplacian coordinate and effective resistance are used for the various learning problem such as clustering Fousis et al. (2007); Saito & Herbster (2023); Yen et al. (2008, 2005) and online learning Herbster & Pontil (2006); Herbster et al. (2005). The connection between normalized cut and weighted kernel \(k\)-means has been developed, such as Bach & Jordan (2003); Dhillon et al. (2004); Saito (2022). The connection between ratio cut, effective resistance, and \(k\)-means are loosely studied Saerens et al. (2004); Zha et al. (2001). However, these studies do not give the "exact" connection between ratio cut and spectral clustering like Thm. 8. Also, the previous studies do not give the Resistance Transformation interpretation. We discuss more details in Appendix G.
+
+Since our ResTran aims to address the graph with feature problem, one popular approach to this problem is GNN. The GNN is firstly proposed as a neural network applied to the graph structural data (Gori et al., 2005; Scarselli et al., 2008). The GCN (Kipf & Welling, 2016a) and GAT (Velickovic et al., 2018) are established methods. The recent advancements include (Gasteiger et al., 2020; Hamilton et al., 2017; Pei et al., 2020; Xie et al., 2016) to name a few; see (Wu et al., 2020) for more comprehensive survey. The closest approach in the sense of formulation to our ResTran is SGC Wu et al. (2019). The SGC aims to simplify \(\ell\) layers of GCN. The SGC is formulated as
+
+\[\hat{\mathbf{y}}=\mathrm{softmax}(\tilde{A}^{\ell}X^{\top}\Theta),\;\mathrm{ where}\;\tilde{A}:=(D+I)^{-1/2}(A+I)(D+I)^{-1/2},\;\Theta:=\Theta^{(1)}\ldots\Theta^{(\ell)}, \tag{27}\]
+
+where \(\Theta^{(i)}\) is a \(i\)-th layer of a fully-connected (FC) layer. This approach is close to ours for the following reason. If we apply \(\ell\) layers of FC to ours, and then this can be written as \(\hat{\mathbf{y}}{=}\mathrm{softmax}(X_{G}^{\top}\Theta)=\mathrm{softmax}(L _{b}^{-1/2}X^{\top}\Theta)\). The SGC is close since, in this setting, the difference is \(\tilde{A}\) and \(L_{b}^{-1/2}\). However, our approach is not limited to this formulation, but we can apply any building blocks, especially, active functions such as ReLU. There have been some follow-ups on this simple approach (Chen et al., 2020; Salha et al., 2019, 2021; Zhu & Koniusz, 2021). Another relevant approach is PinvGCN Alfke & Stoll (2021). For a dense graph aiming for faster GCN, PinvGCN reconstructs three graphs by heuristic approximation of \(L^{+}\), runs GCN for each graph, and then combines the results. While these studies heuristically simplify the GCN in some similar manner, we provide a theoretical justification on Resistance Transformation in Sec. 4. Also, again our ResTran is not limited to simplified GCN models. In addition to various models of GNNs, transformers using the eigenvectors of Laplacian as positional encoding are considered (Dwivedi et al., 2023; Wang et al., 2022). Also, Convolutional GNNs also exploit spectral properties such as Bruna et al. (2014); Henaff et al. (2015). The polynomial approximation strategy is a standard practice to obtain the spectra of graph Laplacian, such as (Defferrard et al., 2016; Kipf & Welling, 2016a). Moreover, Krylov subspace method is used for the better approximation for the convolutional GNNs Luan et al. (2019). However, these studies are on specific GNNs while ours can be applied to any vector based model.
+
+Some common problems to GNN are reported: limited expressive power Xu et al. (2019) and over-squashing (Di Giovanni et al., 2023; Topping et al., 2021; Black et al., 2023). The most relevant problem to this study is the "low-frequency bias" of GNNs, where GNNs tend to learn only homophilous information (Chang et al., 2021; Du et al., 2022; Hoang & Maehara, 2019; Hoang et al., 2020; Zheng et al., 2022; Zhu et al., 2003; Luan et al., 2022; Platonov et al., 2023). This phenomenon gets worse if we stack the GNN layers, which is known as "over-smoothing" (Li et al., 2018; Oono & Suzuki, 2019). By construction, our Resistance Transformation are expected to represent not only homophilous information but also heterophilous information.
+
+Since this work is related to semi-supervised learning problem, this section reviews the SSI studies in detail. The SSL over graph is extensively studied (Blum et al., 2004; Zhou et al., 2003; Zhu et al., 2003). Unlike GNNs, these only uses the graph topology. The Planetoid (Yang et al., 2016) is an SSL method which incorporates features and the topology at the same time, while the most of the GNN models are known to outperform Planetoid. The SSL models are also discussed for the vector dataset. The early models include SVM-based one (Joachims, 1999), and early NN models (Ranzato & Szummer, 2008; Weston et al., 2008). Also, we apply a kernel function to the vector to form a graph and apply the graph-based SSL models. The one of the early established deep neural network based SSL method is variational autoencoder (VAE) (Kingma et al., 2014), which is simplified by the follow-up study called Auxiliary VAE (AVAE) (Maaloe et al., 2016). Since then, there have been various improvements including (Laine & Aila, 2017; Miyato et al., 2018; Yang et al., 2022). However, none of these aim to incorporate the graph and features. Instead, we can apply these methods to our \(X_{G}\), unless the models are not designed to some specific tasks, e.g., images (Berthelot et al., 2019; Kurakin et al., 2020; Sohn et al., 2020; Zhang et al., 2021).
+
+## Appendix C More Details of the Coordinate and Effective Resistance
+
+This section discuss the details of the Coordinate and effective resistance, introduced in Sec. 2.2.
+
+A symmetric PSD matrix \(M\) induces a semi-inner product as \(\langle\mathbf{x},\mathbf{y}\rangle_{M}:=\mathbf{x}^{\top}M\mathbf{y}\), where \(\top\) denotes transposition. This inner product induces a semi-norm, as
+
+\[\|\mathbf{x}\|_{M}:=\langle\mathbf{x},\mathbf{x}\rangle_{M}=\|M^{1/2}\mathbf{ x}\|_{2}. \tag{28}\]
+
+The reproduced kernel associated with the above semi-inner product is \(M^{+}\), where \(+\) denotes the pseudoinverse. We define the coordinate spanning set
+
+\[\mathcal{V}_{M,\langle\cdot,\cdot\rangle_{M}}:=\{v_{i}:=M^{+}\mathbf{e}_{i}:i =1,\ldots,n\} \tag{29}\]
+
+and let \(\mathcal{H}_{M,\langle\cdot,\cdot\rangle_{M}}:=\mathrm{span}(\mathcal{V}_{M, \langle\cdot,\cdot\rangle_{M}})\). This \(\mathcal{H}_{M,\langle\cdot,\cdot\rangle_{M}}\) is a _Hilbert space_ induced by inner product \(\langle\cdot,\cdot\rangle_{M}\).
+
+The set \(\mathcal{V}\) acts as "coordinates" for \(\mathcal{H}\), that is, if \(\mathbf{w}\in\mathcal{H}\) we have \(w_{i}{=}\mathbf{e}_{i}^{\top}M^{+}M\mathbf{w}{=}\langle\mathbf{e}_{i},M^{+} \mathbf{e}_{i}\rangle_{M}\). Note that the vectors \(\{\mathbf{v}_{1},\ldots,\mathbf{v}_{n}\}\) are not necessarily orthonormal. We also remark that this coordinate property is simply the reproducing kernel property for kernel \(M^{+}\)(Aronszajn, 1950). If we measure this space over the plain dot product \(\langle\cdot,\cdot\rangle_{2}\), the coordinate is instead
+
+\[\mathcal{V}_{M,\langle\cdot,\cdot\rangle_{2}}:=\{v_{i}:=M^{+1/2}\mathbf{e}_{ i}:i=1,\ldots,n\}, \tag{30}\]
+
+since \(\|M^{+}\mathbf{e}_{i}\|_{M}=\|M^{+1/2}\mathbf{e}_{i}\|_{2}\). In the main text, for brevity, we use \(\mathcal{V}_{M}{:=}\mathcal{V}_{M,\langle\cdot,\cdot\rangle_{2}}\) and \(\mathcal{H}_{M}{:=}\mathcal{H}_{M,\langle\cdot,\cdot\rangle_{2}}\). For more details, see Herbster & Pontil (2006).
+
+As discussed in Sec. 2.2, this coordinate spanning set using graph Laplacian (Laplacian Coordinate) plays a role. For the definition of the coordinate, we obtain the Laplacian coordinate by putting \(M=L\). Note that the graph Laplacian is symmetric PSD. Now, we see that using \(\mathbf{v}_{i}^{\prime\prime}\in\mathcal{V}_{L,\langle\cdot,\cdot\rangle_{L}}\) and \(\mathbf{v}_{i}\in\mathcal{V}_{L}\), we have
+
+\[r_{G}(i,j)=\|\mathbf{v}_{i}^{\prime\prime}-\mathbf{v}_{j}^{\prime\prime}\|_{L }^{2}=\|\mathbf{v}_{i}-\mathbf{v}_{j}\|_{2}^{2}. \tag{31}\]
+
+This relationship is how the effective resistance and the Laplacian coordinate are related.
+
+## Appendix D Proofs for Section 4.2
+
+This section provides the proofs for the claims in Sec. 4.2.
+
+### Preliminary Setups
+
+This section set ups some preliminary facts.
+
+[MISSING_PAGE_EMPTY:17]
+
+Eq. (41) yields the Cor. 4.
+
+Finally, by generalizing the fact that the square root of the all one matrix can be written as \((\mathbf{1}\mathbf{1}^{\top})^{1/2}=\mathbf{1}\mathbf{1}^{\top}/\sqrt{n}\), we have
+
+\[J_{G}^{1/2}=\begin{array}{c}\includegraphics[width=142.364pt]{ \begin{array}{c}|G_{1}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}}\begin{array}{c}|G_{1}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}\begin{array}{c}|G_{1}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}\begin{array}{c}|G_{K}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}\begin{array}{c}|G_{1}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}\begin{array}{c}|G_{1}|\\ \vdots\\ 1/\sqrt{n_{1}}\end{array}\begin{array}{c}|G_{K\[\leq(\max_{i,j}r_{G_{s}}(i,j)+\max_{i,j}r_{G_{s}}(i,j))^{1/2} \tag{51}\] \[\leq(2/\lambda_{K+1}+2/\lambda_{K+1})^{1/2}\] (52) \[=2\lambda_{K+1}^{1/2} \tag{53}\]
+
+Therefore, due to the assumption that \(b>(1+\sqrt{2})^{2}/n_{G_{1}}\lambda_{K+1}\), we have
+
+\[(bn_{G_{s}}+bn_{G_{t}})^{1/2}\geq\left\|\left(\begin{array}{c}L_{G_{s}}^{+1 /2}(\mathbf{e}_{G_{s}})_{i}\\ L_{G_{t}}^{+1/2}(\mathbf{e}_{G_{t}})_{j}\end{array}\right)\right\| \tag{54}\]
+
+We also have if \(\min x\geq\max y\geq 0\), then
+
+\[(x-y)^{2}>(\min x-\max y)^{2} \tag{55}\]
+
+since \(x-y>\min x-\max y>0\). By using these relations, we obtain
+
+\[r_{G}(i,j) \geq\left((bn_{G_{s}}+bn_{G_{t}})^{1/2}-\left\|\left(\begin{array} []{c}L_{G_{t}}^{+1/2}(\mathbf{e}_{G_{s}})_{i}\\ L_{G_{t}}^{+1/2}(\mathbf{e}_{G_{t}})_{j}\end{array}\right)\right\|\right)^{2} \tag{56}\] \[\geq\left((2bn_{G_{1}})^{1/2}-\frac{2}{\lambda_{K+1}^{1/2}} \right)^{2}\] (58) \[\geq\frac{2}{\lambda_{K+1}}\geq r_{G}(i,j) \tag{59}\]
+
+## Appendix E Proof for Proposition 7
+
+We now start with the standard \(k\)-means objective function using the general norm \(\|\cdot\|\) is defined as
+
+\[\mathcal{J}(\{C_{j}\}_{j=1}^{k}):=\sum_{j\in[k]}\sum_{i\in C_{j}}\|\mathbf{x}_ {i}-\mathbf{m}_{j}\|^{2},\quad\mathbf{m}_{j}:=\sum_{i\in C_{j}}\mathbf{x}_{i}/ |C_{j}|. \tag{60}\]
+
+For each cluster \(C_{j}\) of Eq. (60), we further rewrite the objective function of \(k\)-means as
+
+\[\sum_{i\in C_{j}}\|\mathbf{x}_{i}-\mathbf{m}_{j}\|^{2},\quad \mathbf{m}_{j}:=\sum_{i\in C_{j}}\mathbf{x}_{i}/|C_{j}| \tag{61}\] \[=\sum_{i\in C_{j}}\left(\|\mathbf{x}_{i}\|^{2}-2\sum_{i\in C_{j} }\langle\mathbf{x}_{i},\mathbf{x}_{\ell}\rangle/|C_{j}|+\sum_{\ell\in C_{j}}\| \mathbf{x}_{\ell}\|^{2}/|C_{j}|\right)\] (62) \[=\sum_{i\in C_{j}}\|\mathbf{x}_{i}\|-2\sum_{i,\ell\in C_{j}} \langle\mathbf{x}_{i},\mathbf{x}_{\ell}\rangle/|C_{j}|+\sum_{i,\ell\in C_{j}} \|\mathbf{x}_{\ell}\|^{2}/|C_{j}|\] (63) \[=\sum_{i,\ell\in C_{j}}\|\mathbf{x}_{i}\|/|C_{j}|-2\sum_{i,\ell \in C_{j}}\langle\mathbf{x}_{i},\mathbf{x}_{\ell}\rangle/|C_{j}|+\sum_{i,\ell \in C_{j}}\|\mathbf{x}_{\ell}\|^{2}/|C_{j}|\] (64) \[=\sum_{i,\ell\in C_{j}}\left(\|\mathbf{x}_{i}\|-2\langle\mathbf{ x}_{i},\mathbf{x}_{\ell}\rangle+\|\mathbf{x}_{\ell}\|^{2}\right)/|C_{j}|\] (65) \[=\sum_{i,\ell\in C_{j}}\|\mathbf{x}_{i}-\mathbf{x}_{\ell}\|^{2}/| C_{j}| \tag{66}\]
+
+Summing up over the all cluster, we can rewrite Eq. (60) as
+
+\[\mathcal{J}(\{C_{j}\}_{j=1}^{k})=\sum_{j\in[k]}\sum_{i,\ell\in C_{j}}\| \mathbf{x}_{i}-\mathbf{x}_{\ell}\|^{2}/|C_{j}|. \tag{68}\]
+
+By replacing \(\mathbf{x}_{i}\) and \(\mathbf{x}_{j}\) to \(\mathbf{v}_{i}^{\prime}\) and \(\mathbf{v}_{j}^{\prime}\), we conclude the proof.
+
+Proof for Theorem 8
+
+We now rewrite Eq. (13) as
+
+\[J(\{V_{j}\}_{j=1}^{k})=\sum_{i\in V_{j},j}(\|\mathbf{v}_{i}^{ \prime}\|_{2}^{2}-2\langle\mathbf{v}_{i}^{\prime},\mathbf{m}_{j}\rangle_{2}+\| \mathbf{m}_{j}\|_{2}^{2})\] \[=\sum_{\mathbf{v}_{i}^{\prime}\in V_{j},j}\left(\langle\mathbf{v} _{i}^{\prime},\mathbf{v}_{i}^{\prime}\rangle_{2}-2\left\langle\mathbf{v}_{i}^ {\prime},\sum_{\mathbf{v}_{i}^{\prime}\in V_{j}}\frac{1}{|V_{j}|}\mathbf{v}_{i }^{\prime}\right\rangle_{2}+\left\langle\sum_{\mathbf{v}_{i}^{\prime}\in V_{j} }\frac{1}{|V_{j}|}\mathbf{v}_{i}^{\prime},\sum_{\mathbf{v}_{i}^{\prime}\in V_{j }}\frac{1}{|V_{j}|}\mathbf{v}_{r}^{\prime}\right\rangle_{2}\right)\] \[=\sum_{i\in V_{j},j}\left((L_{b}^{-1})_{ii}-2\sum_{l\in V_{j}} \frac{1}{|V_{j}|}(L_{b}^{-1})_{il}+\sum_{l,r\in V_{j}}\frac{1}{|V_{j}|^{2}}(L_ {b}^{-1})_{lr}\right) \tag{69}\] \[=\sum_{i\in V_{j},j}(L_{b}^{-1})_{ii}-\sum_{r,l\in V_{j},j}\frac{ 1}{|V_{j}|}(L_{b}^{-1})_{rl}\] (70) \[=\mathrm{trace}L_{b}^{-1}-\mathrm{trace}Z_{R}L_{b}^{-1}Z_{R}, \tag{71}\]
+
+where \(Z_{R}\) is an \(n\times k\) matrix which serves as an indicator matrix, defined in Sec. 2.5. Thus, if we minimize Eq. (71) with respect to \(Z_{R}\), we maximize the second term. Assuming \(Z_{R}\) is discrete, \(Z_{R}^{\top}Z_{R}=I\). If we relax \(Z_{R}\) with this constraint, \(\mathrm{trace}Z_{R}L_{b}^{-1}Z_{R}\) becomes a problem to obtain top \(k\) eigenvectors. From Prop. 3 and Cor. 11, the top \(k\) eigenvectors of \(L_{b}^{-1}\) are equivalent to the smallest \(k\) eigenvectors of \(L\). Similarly to Sec. 2.5 case, using Cor. 3, optimal solutions of \(k\)-means on \(\mathcal{H}_{L_{b}}\) and spectral clustering is given as the same set of vectors, which is the \(k\) smallest eigenvectors of \(L\). This completes the proof.
+
+## Appendix G Comparison with Theorem 8 and Weighted Kernel \(k\)-means
+
+This section expands the explanation in the main body on the comparison between Thm. 8 and the previous weighted kernel \(k\)-means. We recall that Thm. 8 revisits the spectral connection between \(k\)-means and spectral clustering, extensively studied as we saw in Sec. 2.5. However, the previous connections is different than Thm. 8 in a number of sense.
+
+### Formal Statement of Prop. 2
+
+We provide a formal statement of 2 and proof for Prop. 2.
+
+Before we provide a formal statement, we need to define a "relaxed" solution of \(k\)-means. We start with rewriting \(J_{\phi}(\{C_{j}\}_{j=1}^{k})\) as a trace maximization problem as follows.
+
+\[\mathcal{J}_{\phi}(\{C_{j}\}_{j=1}^{k})=\mathrm{trace}WKW-\mathrm{trace}Z_{M}^ {\top}W^{1/2}KW^{1/2}Z_{M}, \tag{72}\]
+
+where \(W\) is a diagonal matrix whose \(i\)-th element is \(w(\mathbf{x}_{i})\), \(K\) is a Gram matrix, and indicator matrix \(Z_{M}:=W^{1/2}Z(Z^{\top}WZ)^{-1/2}\). We note that \(Z_{M}{\in}\mathbb{R}^{n\times k}\) and \(Z_{M}Z_{M}^{\top}{=}I\). See (Dhillon et al., 2004; Saito, 2022) for the detail of this rewriting. Now, relaxing \(Z_{M}\), we can obtain the _relaxed_ solution of the weighted kernel \(k\)-means.
+
+Now, we provide a formal statement of Prop. 2 as follows.
+
+**Proposition 12** ((Dhillon et al., 2004)).: _Consider a graph \(a_{ij}{=}\langle\phi(\mathbf{x}_{i}),\phi(\mathbf{x}_{j})\rangle\) and its degree \(d_{i}\). We apply spectral clustering to this graph \(A\). We substitute a weight \(w(\mathbf{x}_{i}){=}1/d_{i}\) to the weighted kernel \(k\)-means \(\mathcal{J}_{\phi}(\{V_{j}\}_{j=1}^{k})\) Eq. (4). Then, if we relax \(Z_{M}\) and \(Z_{R}\) we obtain_
+
+\[\min_{Z_{M}\in\mathbb{R}^{n\times k}}\mathcal{J}_{\phi}(\{V_{j}\}_{j=1}^{k})= \min_{Z_{R}\in\mathbb{R}^{n\times k}}\mathrm{kNUut}(\{V_{i}\}_{i=1}^{k}) \tag{73}\]
+
+In Prop. 12, we formalize the "relaxed sense" in Prop. 2.
+
+Prop. 12 is proven as follows. Firstly, the normalized cut can be rewritten as
+
+\[\min\mathrm{kNUut}(\{V_{i}\}_{i=1}^{k})=\max_{Z_{N}}\{\mathrm{trace}(Z_{N}^{ \top}D^{-1/2}AD^{-1/2}Z_{N})\;\mathrm{s.t.}\;Z_{N}^{\top}Z_{N}=I\}. \tag{74}\]This follows since \(L_{N}=I-D^{-1/2}AD^{-1/2}\).
+
+To minimize Eq. (72) w.r.t. \(Z_{M}\), we want to maximize the second term of Eq. (72). From the definition in Prop. 12, we taking \(W{=}D^{-1}\) and \(K{=}A\). Then, we see that minimizing objective function Eq. (72) is equivalent to the normalized graph cut objective function Eq. (74). By this we observe the connection between normalized spectral clustering and weighted kernel \(k\)-means. For more details, see (Dhillon et al., 2004; Saito, 2022).
+
+### Comparison Between Thm. 8 and Prop. 12
+
+We now discuss the Thm. 8 and the previous result Prop. 12 from Dhillon et al. (2004).
+
+**Vector vs. Discrete.** The previous spectral connection is applied to vectors but not discrete graph data. Seeing Eq. (4), the weighted kernel \(k\)-means only applies to the vector data \(X=(\mathbf{x}_{1},\ldots,\mathbf{x}_{n})\). We construct a graph \(G\) whose adjacency matrix is a gram matrix, i.e., construct a graph whose weight is
+
+\[a_{ij}=k_{ij}=\phi(\mathbf{x}_{i})^{\top}\phi(\mathbf{x}_{j}), \tag{75}\]
+
+where \(K\) is a gram matrix as defined in Sec. 2.5. The weighted kernel \(k\)-means is equivalent to the normalized cut on this graph. Thus, this previous connection assumes for the vector data. On the other hand, our connection can be for a "given" graph data \(G=(V,E)\), and thus we do not have to assume any vector data.
+
+**Laplacian Coordinate Insights.** Ours offers the Laplacian coordinate insights; seeing the Eq. (13), if we use \(\mathbf{v}_{i}^{\prime}\) to represent \(i\)-th vertex and put this vector into the standard \(k\)-means objective function, this is equivalent to the spectral clustering. On the other hand, the weighted kernel \(k\)-means cannot be applied to this setting; the previous connection does not incorporate our connection Thm. 8. Two potential scenarios to reach Laplacian coordinate insights can be considered. One is a kernel mapping scenario. A naive application of the weighted \(k\)-means to the previous framework is to use \(L^{+}\) as a kernel and \(\langle\cdot,\cdot\rangle_{L}\) as an inner product. However, this Eq. (4) is not equivalent to the discrete spectral clustering. The other scenario is incorporating the weight to the standard setting. Recall that our insights come from the standard \(k\)-means. Thus, if we aim the standard \(k\)-means from the weighted kernel \(k\)-means, we compute
+
+\[\mathcal{J}_{\phi}(\{C_{j}\}_{j=1}^{k}) =\sum_{j=1}^{k}\sum_{i\in C_{j}}w(\mathbf{x}_{i})\|\phi(\mathbf{ x}_{i})-\mathbf{m}_{\phi,j}\|^{2},\ \mathbf{m}_{\phi,j}:=\sum_{\ell\in C_{j}}w(\mathbf{x}_{\ell})\phi(\mathbf{x}_ {\ell})/\sum_{\ell\in C_{j}}w(\mathbf{x}_{\ell}) \tag{76}\] \[=\sum_{j=1}^{k}\sum_{i\in C_{j}}\|w^{1/2}(\mathbf{x}_{i})\phi( \mathbf{x}_{i})-w^{1/2}(\mathbf{x}_{i})\mathbf{m}_{\phi,j}\|^{2}. \tag{77}\]
+
+However, this transformation does not go anywhere close to the standard \(k\)-means. To conclude, the previous connection does not incorporate Thm. 8, and thus does not offer the Laplacian coordinate insights.
+
+**Normalized Cut Only vs. Ratio Cut AND Normalized Cut.** Finally, we would like to point out that the previous connection can only be applied to normalized cut. The previous connection depends on Eq. (74), which only holds for the normalized cut. If we substitute \(W=D^{-1}\) and \(A=K\), Eq. (72) becomes the top \(k\) eigenproblem of \(D^{-1/2}AD^{-1/2}\). This eigenproblem is equivalent to Eq. (6). Therefore, the previous connection can only be applied to normalized cut. On the other hand, our connection does not depend on Eq. (6) but on Eq. (71). By Eq. (70) ours can connect to the ratio cut. Furthermore, Thm. 8 naturally generalizes to normalized cut. Let \(\mathbf{v}_{i}^{\prime\prime}:=\sqrt{d_{i}}\mathbf{v}_{i}^{\prime}\). Then, we define the objective function and expand in a similar manner in Sec. F as
+
+\[\mathcal{J}_{N}(\{V_{j}\}_{j=1}^{k}) :=\sum_{j=1}^{k}\sum_{i\in V_{j}}\|\mathbf{v}_{i}^{\prime\prime}- \mathbf{m}_{j}\|_{2}^{2},\ \mathbf{m}_{j}:=\sum_{i\in V_{j}}\mathbf{v}_{i}^{\prime\prime}/|V_{j}|, \mathbf{v}_{i}^{\prime}\in\mathcal{V}_{L_{b}} \tag{78}\] \[=\mathrm{trace}D^{1/2}L_{b}^{-1}D^{1/2}-\mathrm{trace}Z_{R}D^{1/2} L_{b}^{-1}D^{1/2}Z_{R}. \tag{79}\]
+
+Therefore, minimizing Eq. (78) subject to \(Z_{R}^{\top}Z_{R}=I\) is equivalent to top \(k\) eigenvector problem of \(D^{1/2}L_{b}^{-1}D^{1/2}\). This is equivalent to the smallest \(k\) eigenvectors of \(D^{-1/2}LD^{-1/2}\), by which we show that Thm. 8 naturally generalizes the ratio cut to the normalized cut.
+
+## Appendix H Experimental Details
+
+This section discusses the experimental details of the main body. For ResTran, we used \(b=1/(n\lambda_{K+1})\), that is the condition of Thm. 8. Also, we used the Krylov subspace dimension \(r=20\).
+
+**Datasets.** For the homophilous dataset, we used the standard citation network benchmark; Cora (McCallum et al., 2000), Citeceer (Sen et al., 2008), and Pubmed (Namata et al., 2012). We also used the two Amazon co-purchase graphs, photo and computer (McAuley et al., 2015). The homophilous dataset statistics are summarized in Table 4 For heterophilous dataset, we used used web data, Wisconsin, Cornell, and Texas, all of which are a part of WebKB (Craven et al., 1998). We also used the wikipedia dataset chameleon and squirrel (Rozemberczki et al., 2021), as well as actor (Pei et al., 2020). The heterophilous dataset statistics are summarized in Table 4. Note that the difference between homophilous datasets heterophilous datasets has been discussed in a variety of the literatures, such as (Luan et al., 2022; Platonov et al., 2023).
+
+**Unsupervised Learning Setting.** For the feature only and ours, we computed the edge weight with a Gaussian kernel (\(\kappa(\mathbf{x}_{i},\mathbf{x}_{j}){=}\mathrm{exp}(-\sigma\|\mathbf{x}_{i}- \mathbf{x}_{j}\|^{2})\)) for two vectors \(\mathbf{x}_{i},\mathbf{x}_{j}\). We used free parameter \(\sigma{\in}\{10^{-2},\ldots,10^{3}\}\). To gain the sparsity, we further constructed a 100-NN graph from these gram matrices, which is a common technique. We compute the smallest \(k\) eigenvectors of unnormalized Laplacian for all three graphs. Then, we apply the standard \(k\)-means to the smallest \(k\) eigenvectors in order to obtain the clustering results. Since the \(k\)-means algorithm depends on the initial condition, we repeated it 10 times and reported the average and standard errors. For Fig. 1(a), we plot the second and third eigenvectors obtained by Matlab. Since Cora has many independent components, the second and the third eigenvectors are not necessarily to be like Fig. 1(a). However, observations will not change even if we take the other eigenvectors associated with eigenvalue 0.
+
+**Semi-supervised Learning Setting.** For a fair comparison, we endeavored to use the same settings for ours and comparison as much as possible. We used non-normalized features. For non-NN based models, we again used a Gaussian Kernel and used free parameter \(\sigma{\in}\{10^{-2},\ldots,10^{3}\}\), as done in the unsupervised learning setting. For NN based methods, we used 2 hidden layers for both of ours and our comparisons. For all of the settings, we used a dropout rate of 0.2. We train all models for 100 epochs using the Adam optimizer. For our ResTran, we applied various simple and established machine learning models to \(X_{G}\). The model for non neural network, we used LP and SVM, as well as an established neural network semi-supervised models, AVAE and VAT. For AVAE, the first FC layer contains 256 hidden units, and the second FC layer contains 128 hidden units. For VAT, the first FC layer contains 1028 hidden units, and the second FC layer contains 512 hidden units. Also, each layer was activated by ReLU. Finally, we passed to the output layer. For AVAE, we used the embedding dimension as 30 and the dimension of the auxiliary variable as 30. We used batch size 128. We applied the learning rate of 0.01 to Adam for AVAE. For the comparison, apart from the setting above, we used the implementation and hyperparameters as implemented in the examples of pytorch-geometric1. Finally, remark that for citation network benchmarks, although various studies use the public splittings in Yang et al. (2016), we avoided using these since overfitting to this specific splitting is reported (Shchur et al., 2018).
+
+\begin{table}
+\begin{tabular}{r|c c c c c} \hline \hline  & Cora & Citeseer & Pubmed & Photo & Computer \\ \hline \(|V|\) & 2708 & 3327 & 19717 & 7650 & 13752 \\ \(|E|\) & 5429 & 4732 & 44338 & 119081 & 245861 \\ Classes & 7 & 6 & 3 & 8 & 10 \\ Features & 1433 & 3703 & 500 & 745 & 767 \\ \hline \hline \end{tabular}
+\end{table}
+Table 4: Homophilous Dataset Summary.
+
+\begin{table}
+\begin{tabular}{r|c c c c c c} \hline \hline  & Texas & Cornell & Wisconsin & chameleon & squirrel & actor \\ \hline \(|V|\) & 183 & 183 & 251 & 2277 & 5201 & 7600 \\ \(|E|\) & 295 & 309 & 499 & 31421 & 198493 & 26752 \\ Classes & 5 & 5 & 5 & 5 & 5 & 5 \\ Features & 1703 & 1703 & 1703 & 2325 & 2089 & 932 \\ \hline \hline \end{tabular}
+\end{table}
+Table 5: Heterophilous Dataset Summary.
+
+**Details of the Methods Used in the Semi-supervised Experiments.** We discuss some details of the methods we used for ResTran. Recall that our experiments only used simple and established methods for both our proposal and the comparison since we want to exclude the effects of sophistication as much as possible. For non-NN models, LP (Zhu et al., 2003) is one of the established model in SSL, as we saw in Appendix B. The SVM (Cortes and Vapnik, 1995) is also an established model, while SVM is a supervised learning model in general. However, in this context, we can interpret the SVM as an SSL method, since, even though we only use the indices corresponding the training set, i.e., \(\{(X_{G})_{i}\}_{i\in Tr}\), in ResTran Eq. (10), the transformation uses the whole \(L\) and \(X\) but not \(\{y_{i}\}_{i\in Te}\). Remark that we only use the training set \(\{{\bf x}_{G,i}\}_{i\in Tr}\) to form a gram matrix and therefore the gram matrix is the size \(|Tr|\times|Tr|\) matrix. For NN models, as we discussed in Appendix B, AVAE (Kingma et al., 2014) is a simpler version of the SSL via VAE, which is the one of the earliest NN based SSL models. Also, VAT (Miyato et al., 2018) is the one early established NN based SSL model using generative adversarial network behind the scene.
+
+**Other Details.** We did not report the computational time since it is slightly difficult to have an apple-to-apple comparison of the computational time. The reason is that ours can exploit the pre-computation of Krylov subspace method, while no such pre-computation can be applied to the comparison methods. Also, our computational time depends on learning algorithms and architectures. However, both of the ResTran and GNNs take the same complexity; the ResTran costs \(O(rfm)\), and GNNs takes \(O(fmt)\), where \(r\) and \(t\) are constant. Our experiments were conducted on Google Colab Pro+, Matlab, and Mac Studio with M1 Max Processor and 32GiB RAM. Our implementation can be found in the supplementary material. Due to the size limit of openreview, we only supply a part of the dataset. Regarding the implementation, we plan to publish our code in GitHub, an online codebase repository service, in the final version. For the implementation of the comparison methods, we used the examples of pytorch-geometric codes as discussed above.
+
+## Appendix I Learning in Hilbert Space of Graph
+
+This section discusses the learning over the Hilbert space discussed in Appendix C. The conventional learning frameworks assume that the features reside in the Euclidean space. However, in our setting, the features are associated with the vertices of the graph. Thus, we assume that the feature vectors reside not in the Euclidean space but in the space induced from the graph. This section sets up such a learning framework.
+
+### Energy Over the Hilbert Space of Graph
+
+We consider to learn in the Hilbert space \(\mathcal{H}_{L,\langle\cdot,\cdot\rangle_{L}}\), which we defined in Appendix C. This Hilbert space is the same as the space we can define the effective resistance, as we discussed.
+
+We now consider to embed the feature \(\mathbf{u}\in\mathbb{R}^{n}\) into this space by the mapping \(\mathbb{R}^{n}\to\mathcal{H}_{L,\langle\cdot,\cdot\rangle_{L}}\)
+
+\[\mathbf{u}^{\prime}=L^{+}\mathbf{u}. \tag{80}\]
+
+We then define the energy in this Hilbert space for feature \(S_{G,\mathcal{H}}(\mathbf{u})\) as
+
+\[S_{G,\mathcal{H}}(\mathbf{u}):=\mathbf{u}^{{}^{\prime}\top}L\mathbf{u}^{ \prime}=\mathbf{u}^{\top}L^{+}\mathbf{u}=\|L^{+1/2}\mathbf{u}\|_{2}^{2}. \tag{81}\]
+
+For \(f\) features \(U=(\mathbf{u}_{1},\dots,\mathbf{u}_{f})\in\mathbb{R}n\times f\), we define the _total energy_\(S_{G,\mathcal{H}}(U)\) as
+
+\[S_{G,\mathcal{H}}(U):=\sum_{i=1}^{f}S_{G,\mathcal{H}}(\mathbf{u}_{i})=\|L^{+1/ 2}U\|_{\mathrm{Fro}}^{2}. \tag{82}\]
+
+We finally remark on the shape of the feature matrices. In this section, the feature matrix \(U\) focuses on the features, \(U=(\mathbf{u}_{1},\dots,\mathbf{u}_{f})\) and \(\mathbf{u}_{i}\in\mathbb{R}^{n}\), whereas the feature matrix we consider in the main body focuses on the vertices, i.e., \(X=(\mathbf{x}_{1},\dots,\mathbf{x}_{n})\) and \(\mathbf{x}_{i}\in\mathbb{R}^{f}\). In a rough notation, \(U=X^{\top}\).
+
+### \(k\)-means over the Hilbert Space of Graph
+
+Before we discuss the \(k\)-means over this Hilbert space, we consider an "knockout" of \(L^{+1/2}\), which appears in the total energy Eq. (82). Let \(\bar{L}^{+1/2}\) be a knockout of a matrix \(L^{+1/2}\) using the true labels\(\mathbf{y}\), defined as
+
+\[\bar{L}^{+1/2}:=\begin{cases}(L^{+1/2})_{ij}&\text{if }y_{i}=y_{j}\\ 0&\text{otherwise.}\end{cases} \tag{83}\]
+
+In the Hilbert space, we assume the following property.
+
+**Assumption 1**.: _In the Hilbert space, \(\forall U\in\mathcal{H}_{L,\langle\cdot,\cdot\rangle_{L}}\) we can approximate as \(L^{+1/2}U\approx\bar{L}^{+1/2}U\)._
+
+This approximation assumption becomes exact in the following scenario. We consider a graph \(G\) which is a union of \(k\) graphs, and the labels are associated with each graph. In this scenario, the graph Laplacian for this graph is a block diagonal of the graph Laplacians of each graph, and henceforth the approximation assumption becomes exact. Thus, the assumption makes sense if we assume that two vertices are in different clusters.
+
+We now define a \(k\)-means function over this Hilbert space. We recall that \(X^{\top}-Z_{R}Z_{R}^{\top}X^{\top}\) is a difference between the data points \(X\) and mean centers \(Z_{R}Z_{R}^{\top}X^{\top}\). We define a \(k\)-means energy function by measure this difference by the graph norm, i.e.,
+
+\[\mathcal{J}_{G}^{\prime\prime}(\{V_{i}\}_{i=1}^{k}):=\mathcal{S}_{G}(X^{\top} -Z_{R}Z_{R}^{\top}X^{\top})=\|X^{\top}-Z_{R}Z_{R}^{\top}X^{\top}\|_{L^{+}, \mathrm{Fro}}^{2}. \tag{84}\]
+
+As discussed in Sec. 2.5, if we measure by the standard Frobenius norm \(\|\cdot\|_{\mathrm{Fro}}\), this becomes the standard \(k\)-means function. Under the Assumption 1, we can further approximate \(\mathcal{J}_{G}\) Eq. (84) by \(J_{G}\) Eq. (12).
+
+**Theorem 13**.: _For the clustering result \(\{V_{i}\}_{i=1}^{k}\) induced from the true labels \(\mathbf{y}\), if \(\forall U\in\mathcal{M}_{G}^{n}\), \(\|L^{+1/2}U^{\top}-\bar{L}^{+1/2}U^{\top}\|_{\mathrm{Fro}}<\epsilon\), then \(\|\mathcal{J}_{G}^{\prime}\{V_{i}\}_{i=1}^{k}-\mathcal{J}_{G}(\{V_{i}\}_{i=1}^ {k})\|_{\mathrm{Fro}}<2\epsilon\)._
+
+This theorem shows that for the true clusters \(\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k})\) can be approximated by \(J_{G}(\{V_{i}\}_{i=1}^{k})\) with the twice of the error rate of the approximation of the Assumption 1. The approximated \(k\)-means in Eq. (12) can be seen as a change of the basis. We now observe that the \(J_{G}\) in Eq.(12) is further rewrite with basis \(\mathbf{v}^{\prime}\in\mathcal{V}_{L_{0}}\) as
+
+\[\mathcal{J}_{G}(\{V_{i}\}_{i=1}^{k})=\sum_{j=1}^{k}\sum_{i\in V_{j}}\| \mathbf{v}_{i}^{{}^{\prime}\top}X-\mathbf{m}_{j}^{\prime}\|_{2}^{2},\quad \mathbf{m}_{j}^{\prime}:=\sum_{i\in V_{j}}\mathbf{v}_{i}^{{}^{\prime}\top}X/ |V_{j}| \tag{85}\]
+
+The standard \(k\)-means (Eq. (3)) can be rewritten as
+
+\[\mathcal{J}(\{C_{j}\}_{j=1}^{k})=\sum_{j=1}^{k}\sum_{\mathbf{x}_{i}\in C_{j} }\|\mathbf{e}_{i}^{\top}X-\mathbf{m}_{j}\|_{2}^{2},\quad\mathbf{m}=\sum_{ \ell\in C_{j}}\mathbf{e}_{\ell}^{\top}X/|C_{j}|. \tag{86}\]
+
+Thus, comparing the approximated \(k\)-means over a graph Eq. (85) and the standard \(k\)-means Eq. (86), the approximation can be seen a change of the basis from \(\mathbf{e}_{i}\) to \(\mathbf{v}_{i}^{\prime}\).
+
+We also mention that if we consider the featureless setting \(X=I\), by Thm. 8 the approximated \(k\)-means over a graph corresponds to the spectral clustering. Henceforth, Thm. 8 and Thm. 13 justifies our proposed method in Sec. 3 in the following two ways; i) the natural generalization of the standard \(k\)-means can be approximated by the Laplacian transformation (Thm. 13) ii) In the featureless setting where \(X=I\), this approximation corresponds to the spectral clustering (Thm. 8).
+
+## Appendix J Proof for Theorem 13
+
+This section gives the proof for Thm. 13.
+
+### Preliminary Setup
+
+We now start with the proof for the Lemma 16. This lemma holds not only for \(L^{+1/2}\), but also the general knockout operation.
+
+We consider a "knockout" operation for a general matrix \(B\). Let \(\bar{B}\) be a "knockout" of a matrix \(B\in\mathbb{R}^{n\times n}\) using \(\mathbf{y}\), defined as
+
+\[\bar{B}:=\begin{cases}b_{ij}&\text{if }y_{i}=y_{j}\\ 0&\text{otherwise.}\end{cases} \tag{87}\]
+
+Let \(Y{\in}\mathbb{R}^{n\times k}\) be an one hot representation of \(\mathbf{y}\). Then, we have a following property for this knockout.
+
+**Proposition 14**.: _Let \(B\) and \(\bar{B}\) be matrices constructed as Eq. (87) using the labels of \(\mathbf{y}\). If \(\|B-\bar{B}\|_{\mathrm{Fro}}<\epsilon\), then \(\|BY(Y^{\top}Y)^{-1}Y^{\top}-\bar{B}Y(Y^{\top}Y)^{-1}Y^{\top}\|_{\mathrm{Fro}}<\epsilon\)._
+
+**Corollary 15**.: _Let \(B\) and \(\bar{B}\) be matrices constructed as Eq. (87) using the labels of \(\mathbf{y}\), and \(U\in\mathcal{H}_{L,(\cdot,\cdot)_{L}}^{f}\,\not\!\|BU^{\top}-\bar{B}U^{\top} \|_{\mathrm{Fro}}<\epsilon^{\prime}\), then \(\|BY(Y^{\top}Y)^{-1}Y^{\top}U-\bar{B}Y(Y^{\top}Y)^{-1}Y^{\top}U\|_{\mathrm{Fro }}<\epsilon^{\prime}\)._
+
+Proofs for Prop. 14 and Cor. 15 are discussed in Sec. J.3 and Sec. J.4.
+
+### Proof for Theorem 13
+
+We start with lemma which immediately follows from Prop. 14 and Cor. 15. We first define \(Y_{R}:=Y(Y^{\top}Y)^{-1/2}\) as a counterpart of \(Z_{R}\).
+
+**Lemma 16**.: _If \(\|L^{+1/2}X^{\top}-\bar{L}^{+1/2}X^{\top}\|_{\mathrm{Fro}}<\epsilon\), then \(\|L^{+1/2}Y_{R}Y_{R}^{\top}X^{\top}-Y_{R}Y_{R}^{\top}\bar{L}^{+1/2}X^{\top}\| _{\mathrm{Fro}}<\epsilon\)._
+
+**Lemma 17**.: _If \(\|L^{+1/2}X^{\top}-\bar{L}^{+1/2}X^{\top}\|_{\mathrm{Fro}}<\epsilon\), then \(\|Y_{R}Y_{R}^{\top}L^{+1/2}X^{\top}-Y_{R}Y_{R}^{\top}\bar{L}^{+1/2}X^{\top}\| _{\mathrm{Fro}}<\epsilon\)._
+
+This lemma tells us that that \(L^{+1/2}X^{\top}Y_{R}Y_{R}^{\top}\) can be approximated by \(\bar{L}^{+1/2}Y_{R}Y_{R}^{\top}\) by the same error rate between \(L^{+1/2}\) and \(\bar{L}^{+1/2}\). Using this lemma and assumption, we consider to approximate the \(k\)-means over this Hilbert space as
+
+\[\mathcal{S}_{G}(X^{\top}-Y(Y^{\top}Y)^{-1}YX^{\top}) \tag{88}\] \[=\|X^{\top}-Y(Y^{\top}Y)^{-1}YX^{\top}\|_{L^{+}\mathrm{Fro}}\] (89) \[=\|L^{+1/2}X^{\top}-L^{+1/2}Y(Y^{\top}Y)^{-1}YX^{\top}\|_{\mathrm{ Fro}}\] (90) \[\approx\|\bar{L}^{+1/2}X^{\top}-\bar{L}^{+1/2}Y(Y^{\top}Y)^{-1}YX ^{\top}\|_{\mathrm{Fro}}\] (91) \[=\|\tilde{L}^{+1/2}X^{\top}-Y(Y^{\top}Y)^{-1}Y\tilde{L}^{+1/2}X^{ \top}\|_{\mathrm{Fro}}\] (92) \[=\|\tilde{L}^{+1/2}+\sqrt{b}J_{G}^{1/2}X^{\top}-Y(Y^{\top}Y)^{-1} Y(\tilde{L}^{+1/2}+\sqrt{b}J_{G}^{1/2})X^{\top}\|_{\mathrm{Fro}}\] (93) \[\approx\|L^{+1/2}+\sqrt{b}J_{G}^{+/2}X^{\top}-Y(Y^{\top}Y)^{-1}Y( L^{+1/2}+\sqrt{b}J_{G}^{1/2})X^{\top}\|_{\mathrm{Fro}}\] (94) \[=\|L_{b}^{-1/2}X^{\top}-Y(Y^{\top}Y)^{-1}YL_{b}^{-1/2}X^{\top}\|_ {\mathrm{Fro}}\] (95) \[=\sum_{j=1}^{k}\sum_{i:y_{i}=j}\|\mathbf{v}_{i}^{\gamma\top}X- \mathbf{m}_{j}^{\prime}\|,\quad\mathbf{m}_{j}^{\prime}:=\sum_{i:y_{i}=j}\frac{ \mathbf{v}_{i}^{\gamma\top}X}{|y_{i}=j|} \tag{96}\]
+
+In the approximations above, we use Assumption 1 and Lemmas. 16 and 17. The error factor of 2 occurs since we approximate the term twice, which is the proof of Thm. 13.
+
+### Proof for Proposition 14
+
+We start with the discussion of the condition that \(\|B-\tilde{B}\|_{\mathrm{Fro}}\). From the condition, we can rewrite as
+
+\[\|B-\bar{B}\|_{\mathrm{Fro}}=\left(\sum_{i\neq j}b_{ij}^{2}\right)^{1/2}<\epsilon. \tag{97}\]
+
+We now compute
+
+\[(BY(Y^{\top}Y)^{-1}Y^{\top}-\bar{B}Y(Y^{\top}Y)^{-1}Y^{\top})_{ij}=\left\{ \begin{array}{ll}\frac{1}{|V_{\tau}|}\mathsf{e}_{j}^{\top}\sum_{\ell\in V_{ \tau}}B\mathbf{e}_{\ell}&\text{if }j\notin V_{\tau}\text{ where }i\in V_{\tau}.\\ 0&\text{if }j\in V_{\tau}\text{ where }i\in V_{\tau}\text{ }\end{array}\right. \tag{98}\]Note that the element does not change even if we change \(i\) within the same cluster. We then have
+
+\[\left(\frac{1}{|V_{\tau}|}\mathbf{e}_{j}^{\top}\sum_{\ell\in V_{ \tau}}B\mathbf{e}_{\ell}\right)^{2} =\left(\frac{1}{|V_{\tau}|}\sum_{\ell\in V_{\tau}}b_{ij}\right)^{2} \tag{99}\] \[=\frac{1}{|V_{\tau}|^{2}}\left(\sum_{\ell\in V_{\tau}}b_{ij} \right)^{2}\] (100) \[<\frac{1}{|V_{\tau}|}\sum_{\ell\in V_{\tau}}b_{ij}^{2} \tag{101}\]
+
+From the second line to third line, we use the following inequality;
+
+\[\left(\sum_{i=1}^{n}a_{i}\right)^{p}<n^{p-1}\sum_{i=1}^{n}a_{i}^{p}. \tag{102}\]
+
+From construction, we have the \(|V_{\tau}|\) identical elements for all \(i\in V_{\tau}\). Thus, we compute
+
+\[\|BY(Y^{\top}Y)^{-1}Y^{\top}-\bar{B}Y(Y^{\top}Y)^{-1}Y^{\top}\|_{ \text{Fro}} =\left(\sum_{ij}(BY(Y^{\top}Y)^{-1}Y^{\top}-\bar{B}Y(Y^{\top}Y)^{ -1}Y^{\top})_{ij}^{2}\right)^{1/2} \tag{103}\] \[=\left(\sum_{i\approx j}\left(\frac{1}{|V_{\tau}|}\mathbf{e}_{j} ^{\top}\sum_{\ell\in V_{\tau};i\in V_{\tau}}B\mathbf{e}_{\ell}\right)^{2} \right)^{1/2}\] (104) \[<\left(\sum_{i\approx j}\frac{1}{|V_{\tau}|}\sum_{\ell\in V_{\tau };i\in V_{\tau}}b_{\ell j}^{2}\right)^{1/2}\] (105) \[=\left(\sum_{i\approx j}b_{ij}^{2}\right)^{1/2}\] (106) \[=\epsilon. \tag{107}\]
+
+From the second line to third line we use Eq. (101). From the third line to fourth line we use the fact that we have the \(|V_{\tau}|\) identical elements for all \(i\in V_{\tau}\). From the fourth line to fifth line we use Eq.(97).
+
+### Proof for Corollary 15
+
+Similarly to Appendix J.3, from the condition, we can rewrite as
+
+\[\|(B-\bar{B})U^{\top}\|_{\text{Fro}}=\left(\sum_{i,j}(B-\bar{B})_{:i}U_{j}^{ \top}\right)^{1/2}<\epsilon^{\prime}. \tag{108}\]
+
+We define as
+
+\[b_{ij}^{\prime}=(B-\bar{B})_{:i}U_{j}^{\top}. \tag{109}\]
+
+We now compute
+
+\[((BY(Y^{\top}Y)^{-1}Y^{\top}-\bar{B}Y(Y^{\top}Y)^{-1}Y^{\top})U^{ \top})_{ij} =\frac{1}{|V_{\tau}|}\sum_{\ell\in V_{\tau}}(B-\bar{B})_{:\ell}U_ {j}^{\top} \tag{110}\] \[=\frac{1}{|V_{\tau}|}\sum_{\ell\in V_{\tau}}b_{\ell j}^{\prime}, \tag{111}\]
+
+where \(i\in V_{\tau}\). The rest of the proof is same as Appendix J.3.
+
+## Appendix K Societal Impact
+
+Lastly, we briefly remark on the societal impact. Since this is foundational work towards an alternative learning methods for graph with features and does not target any immediate application, we cannot foresee the shape of positive or negative societal impact which this work may have in future.

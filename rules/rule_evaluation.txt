@@ -1,0 +1,26 @@
+**Mistake Item UUID**: 849  
+**Mistake Name**: Unstructured Presentation of Experimental Findings  
+**Category**: EVALUATION  
+**Description**: The experimental findings are presented in a disorganized, unclear manner, lacking logical progression from one point to the next.  
+**How to Check**: 1. Verify that the experimental findings follow a structured and logical order, starting with parameter evaluation, proceeding to overall performance comparison, then individual contribution analysis, sensitivity and scalability studies, and any additional sections such as case studies or real-world applications. 2. Confirm the presence of clear titles and headings that signal different subsections, including case studies if applicable.  3. Check that each subsection is supported with relevant figures and tables.  4. Ensure the text clearly explains the figures and tables and establishes a clear link between them and the experimental findings.  5. Ensure that each section and subsection follows logically from the previous one, leading to a comprehensive and structured presentation.
+**How to Solve**:  1. Structure the experimental findings into well-defined subsections, including (at minimum) parameter evaluation, overall performance comparison, individual contribution analysis, sensitivity and scalability studies, and other key sections (such as case studies or application impact studies). 2. Use appropriate headings and subheadings for each subsection to ensure clarity.  
+3. Support each subsection with figures and tables, where relevant, and include explanations linking them to the experimental findings. 4. Ensure a logical flow from one subsection to the next using clear and coherent sentences, making sure not to omit important sections like case studies.  5. When reorganizing the section, reuse existing text as much as possible to maintain clarity and consistency. 
+
+
+
+**Mistake Item UUID**: 35
+**Mistake Name**: Unclear Experimental Setup
+**Category**: EVALUATION
+**Description**: Evaluate if the experimental setup (e.g., hardware/software configurations, parameter settings) is described comprehensively, allowing others to fully understand and reproduce the experimental conditions.
+**How to Check**: Verify if the paper provides all necessary information about the experimental setup. This includes, but is not limited to, hardware and software configurations, parameter settings, algorithms used, data preprocessing steps, experimental conditions, and methods for handling exceptions or unexpected results.
+**How to Solve**: Elucidate all aspects of the experimental setup in detail. Provide exact specifications for hardware/software configurations, document all parameter settings, and explain the rationale behind selecting these configurations and settings. Describe all experiment-related procedures comprehensively and methodically to ensure that someone else with the same resources could replicate the experiment exactly. Include any techniques, procedures, or strategies employed to manage contingencies during the experiment.
+
+
+
+
+**Mistake Item UUID**: 33
+**Mistake Name**: Insufficient Data
+**Category**: EVALUATION
+**Description**: Verify whether the evaluation uses an appropriately diverse, large, and representative dataset relevant to the study.
+**How to Check**: Check whether multiple representative datasets are used and discussed in accordance to the topic of study. Look for justification behind the selection of datasets and how they are relevant to the objectives of the study.
+**How to Solve**: If the dataset is found to be insufficient, the author should seek out additional or alternate datasets that are more representative of the various scenarios of the study. Additionally, providing a thorough rationale for the selected datasets can establish their relevance to the study. Finding an expert in the field or using statistical tools may be necessary to confirm the appropriateness of the dataset.

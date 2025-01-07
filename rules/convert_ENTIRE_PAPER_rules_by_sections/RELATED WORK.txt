@@ -1,0 +1,30 @@
+**Mistake Name**: Lack of Originality
+**Target Section**: RELATED WORK
+**Description**: The document does not adequately show how the research offers novel solutions or contributes new information to its field.
+**How to Check**: The ChatGPT can be set to examine if there are segments in the paper that directly mention the novelty or originality of the proposed research compared to the citations provided in the same text. It should also look for keywords such as 'innovation', 'novel', 'unique', 'first-time', 'unprecedented', etc.
+**How to Solve**: The tool should recommend that the author(s) provide a separate section to emphasize the innovative aspects of their work, its potential impact and how it specifically contributes to the existing literature in a way not yet achieved by previous research.
+
+**Mistake Name**: Missing Key Papers Discussion
+**Target Section**: RELATED WORK
+**Description**: Ensure that the paper includes references and discussions of key publications that are relevant and have significantly contributed to the field.
+**How to Check**: Has the paper referenced and analysed the most relevant and influential publications within the specific field?
+**How to Solve**: If missing, recommend conducting a more comprehensive literature review to find relevant key papers. The author should then revise their discussion to include an analysis of these papers, discussing their importance, findings, and how they relate to the present research.
+
+**Mistake Name**: Ignoring Alternative Approaches
+**Target Section**: RELATED WORK
+**Description**: A comprehensive review of alternative approaches or previous methods is not present or insufficient and the paper does not effectively place the study within the broader academic context. The rationale for choosing the adopted approach over alternatives may not be clearly explained or justified.
+**How to Check**: Use the AI to identify any mentions of alternative or previously employed methods within the paper. Check whether these are discussed critically, comparing their merits and drawbacks to those of the chosen approach. Evaluate if the paper properly situates the presented research method within the broader context of the field. The focus should be on the Background or Literature Review sections primarily.
+**How to Solve**: Guide the student to integrate an evaluation of different methods that have been used in the field, along with a clear justification for why the selected approach was chosen. Encourage critical comparison of the different approaches, even possibly suggesting some common alternatives if they're missing. Also prompt the student to better contextualize their research and method within the broader academic discussion.
+
+**Mistake Name**: Lack of Contextual Background
+**Target Section**: RELATED WORK
+**Description**: The introduction or literature review doesn't include enough references to existing work, or it doesn't clearly explain why the problem the paper addresses is significant in the context of the broader field.
+**How to Check**: The model can check for the presence of sentences that explicitly discuss relevance or significance of the problem, and the number of references to the existing works in the related field. It can also check if there is a clear transition from discussing the existing work to stating the problem that the paper addresses.
+**How to Solve**: Encourage the writer to explicitly mention the importance of the problem in the context of the wider field, discuss existing work and methods in more depth, and clearly connect them to the problem the paper addresses.
+
+**Mistake Name**: Lack of Integration of State-of-the-Art (SOTA) Review
+**Target Section**: RELATED WORK
+**Description**: The SOTA review is included without demonstrating a clear relationship with the problem definition or the suggested research proposal. This can lead to disjointedness between different sections of the paper, creating confusion and diluting the impact of the research.
+**How to Check**: Verify whether the SOTA review explicitly draws upon prevalent methodologies, theories, or findings to formulate the problem statement and the proposed research objective. This can be done by looking for explicit references or logical links between the SOTA review and these sections.
+**How to Solve**: Instruct the student to provide explicit references or coerent links demonstrating how the SOTA review contributes to the problem definition and proposed research. This can involve reworking the writing to provide detailed justifications for methodological or theoretical choices, or articulating how the chosen research question is a natural progression from the SOTA review.
+

@@ -1,0 +1,25 @@
+**Mistake Name**: Ambiguous or Weak Conclusion
+**Target Section**: ABSTRACT
+**Description**: The conclusion of the abstract is vague, weak, doesn't effectively summarize the research, or fails to highlight the technical advancement and its specific contribution.
+**How to Check**: The model should review not just the final sentences, but the entire conclusion of the paper. It should check if the conclusion explicitly states and summarises the steps undertaken in the research, the key outcomes, the significance of those outcomes, and the contribution to the field of computer science.
+**How to Solve**: The conclusion should be revised to include clear statements of the primary technical advancements and their specific contributions, focusing on the quantifiable or qualitative improvements brought about by the research. The revision should ensure that these details are easy to understand, and the language used is concise and unambiguous.
+
+**Mistake Name**: Lack of Motivation
+**Target Section**: ABSTRACT
+**Description**: Not accurately and explicitly expressing the motivation behind the research, resulting in ambiguity regarding the purpose of the work.
+**How to Check**: Verify the abstract introduces the purpose of the study. Look for expressions or statements that connect the research to a broader issue, concept, or problem in the field of Computer Science. Check if the abstract clearly answers the question "What problem does this research intend to solve?"
+**How to Solve**: Insert a concise yet comprehensive statement indicating the purpose of the research. Relate the research to a wider issue in the field of Computer Science or a specific problem unsolved thus far. One effective approach might be starting with a broad context, then narrowing it down to the specific issue the paper addresses.
+
+**Mistake Name**: Insufficient Explanation of Existing Solutions
+**Target Section**: ABSTRACT
+**Description**: The abstract lacks comprehensive details regarding why present solutions are inadequate, and doesn't emphasize the research gap sufficiently, making it hard for audiences to understand the novelty of the presented research.
+**How to Check**: Scrutinize the complete abstract, especially the background or problem statement parts, to check if it underlines the shortcomings of present solutions clearly, and whether it easily conveys the research gap to a reader of varied expertise.
+**How to Solve**: Revamp the abstract to elucidate why current solutions fall short, emphasizing the unique aspect of the proposed research in bridging this gap. The explanation should be understandable for a broad audience, ranging from experts to non-experts.
+
+
+**Mistake Name**: Insufficient Explanation of Proposed Solutions  
+**Target Section**: Abstract  
+**Description**: The abstract lacks comprehensive details regarding why the proposed solutions are adequate and how they sufficiently address the research gap, making it difficult for readers to understand the impact and novelty of the research.  
+**How to Check**:  - Verify if the abstract mentions the specific problem or research gap being addressed. - Check whether the proposed solution is briefly described, including key methods or approaches.  
+- Ensure that the abstract explains how the solution improves upon existing work or contributes to closing the identified research gap.   - Flag cases where the abstract focuses too much on background or general context without clearly highlighting the contributions or impact of the proposed solution.
+**How to Solve**:  - If the problem and solution are not clearly stated, advise the author to succinctly state the research gap in the first few sentences and explicitly describe the proposed solution.  - Encourage the author to summarize the key innovation or methodology of the solution, focusing on how it directly addresses the research gap.  - Ensure that the solution is presented as an important contribution, emphasizing its relevance to the audience or field.

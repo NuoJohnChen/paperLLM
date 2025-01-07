@@ -1,0 +1,17 @@
+[
+    {
+        "category": "Experimental Setup Clarity and Reproducibility",
+        "prompt": "Evaluate how clearly and thoroughly the experimental setup is described. Does the paper provide all necessary information on hardware/software configurations, parameter settings, data preprocessing steps, and any contingency procedures, such that others could replicate the experiments with the same resources?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Depth and Clarity of Figures and Tables Analysis",
+        "prompt": "Evaluate the thoroughness and clarity of the paper’s analysis of figures and tables. Are the data clearly explained and linked to the research objectives or hypotheses? Do the authors discuss trends, patterns, or anomalies, and interpret quantitative metrics in a way that highlights their significance? Is there a clear comparison to baselines or related work, demonstrating how the results fit into or advance the field? Do the authors emphasize key takeaways and practical or theoretical implications arising from the findings?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Experimental Support for Main Innovations",
+        "prompt": "Evaluate how thoroughly the paper’s main innovations or contributions are backed by experimental evidence. Does the paper provide direct tests or comparisons to validate each innovation? Are quantitative or qualitative results clearly linked to the claims made, with appropriate metrics and comparisons against baselines or existing methods? Are ablation studies or sensitivity analyses included to demonstrate the significance of each component? If certain claims are not experimentally supported, have the authors either provided additional experiments or adjusted their claims accordingly?",
+        "score_weightage": "100"
+    }
+]

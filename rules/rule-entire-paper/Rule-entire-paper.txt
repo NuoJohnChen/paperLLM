@@ -1,0 +1,79 @@
+**Mistake Item UUID**: 15
+**Mistake Name**: Common presentation errors
+**Category**: ENTIRE_PAPER
+**Description**: There are some common presentation errors. we need to check and correct them one by one.
+**How to Check**: 1) Look for sentences with more than two clauses or more than 20 words. 2) Search for patterns in the text where bracketed numbers are surrounded by words (e.g. "...describes [15]..."), especially at the start of sentences. 3) Is the same term explained in different ways in the paper? Does a certain acronym have multiple meanings, or is it used without any definition or explanation? Specify to identify and compare all usages of each major term or acronym, and to provide comparison of the ways they are defined or used. 4) Review the document's paragraphs. Detect if a paragraph appears excessively verbose (e.g., more than 200 words), lacks cohesion, or doesn't facilitate easy readability, especially in technical sections. 5) Figures or tables are presented without any discussion of the trends, patterns, or analysis of results. 
+**How to Solve**: 1) Break down complex sentences into shorter sentences with only one or two ideas each. Make sure each sentence is direct and clear. When applicable, replace passive voice with active voice for better clarity. Use bullet points or numbered lists to separate ideas where appropriate. 2) Flag these issues and suggest general replacements such as "The earlier study [15] describes" or "According to the previous research [15]". 3) Suggest the student to clearly define all terms or acronyms the first time they use them. Afterward, they should use these terms or acronyms consistently, keeping their meaning and usage the same throughout the entire paper. Ask for suggestions on how to define terms and acronyms more clearly, or ask for examples of how to use them more consistently. 4) Suggest to break down lengthy paragraph into smaller, more manageable chunks. 5) For each figure or table, ensure that it is properly discussed and analyzed in the text, for example, explain the trends, patterns, or results in the text.
+
+
+
+
+**Mistake Item UUID**: 318  
+**Mistake Name**: Common Writing Errors  
+**Category**: ENTIRE_PAPER  
+**Description**: The paper contains several common writing errors, including grammatical issues, awkward phrasing, or unclear sentence structure, which can reduce clarity and readability. These errors must be checked and corrected systematically.  
+**How to Check**:  1) Identify incorrect usage of articles (e.g., “a,” “an,” “the”) by scanning the paper for nouns without articles or with incorrect ones.  2) Review verb tenses in each section, especially in the methodology and results sections, to ensure past tense is used for completed actions and present tense for established facts.  3) Look for redundant expressions (e.g., “in order to”) and overly long phrases that could be simplified.  4) Check preposition usage in key phrases (e.g., “based on,” “applied to”) and flag any incorrect or missing prepositions.  5) Review sentences for direct translations from Chinese that result in awkward phrasing or unclear meaning, identifying areas where sentence structure or idiomatic expressions sound unnatural in English.
+**How to Solve**:  1) Suggest corrections by properly defining when to use “a,” “an,” and “the,” providing examples of correct and incorrect usage in context.  2) Recommend fixing tense inconsistencies by aligning verb tenses appropriately in each section (e.g., past tense for methods and experiments, present tense for general statements).  3) Advise simplifying redundant phrases, replacing wordy expressions with more concise alternatives.  4) Provide correct prepositions for commonly used phrases and give examples of proper usage.  5) Suggest rewriting awkward sentences with clearer, more natural English phrasing, offering examples of improved structure.
+
+
+**Mistake Item UUID**: 319  
+**Mistake Name**: Grammar and Sentence Structure Errors  
+**Category**: ENTIRE_PAPER  
+**Description**: The paper suffers from incorrect grammar, verb forms, and sentence structure issues, which detract from the flow and readability of the work.  
+**How to Check**:  1) Identify incorrect subject-verb agreement in sentences (e.g., “The algorithms works” should be “The algorithms work”).  2) Review word order, ensuring that adjectives and adverbs are placed correctly in relation to the nouns and verbs they modify.  3) Check for inconsistent terminology or switching between synonyms for the same concept, ensuring that key terms are used consistently throughout the paper.  4) Scan the paper for overuse of passive voice and flag sentences where passive construction reduces clarity.  5) Identify sentences that are overly long or contain more than two clauses, which may confuse readers.
+**How to Solve**:  1) Recommend adjusting verb forms to ensure subject-verb agreement and provide examples for clarity.  2) Suggest correcting word order by providing examples of properly structured sentences.  3) Advise choosing one term for each key concept and using it consistently throughout the paper.  4) Recommend using active voice instead of passive voice to make the text more direct and easier to read.  5) Suggest breaking long sentences into shorter, simpler sentences to improve readability and understanding.
+
+
+**Mistake Item UUID**: 320  
+**Mistake Name**: Complex Sentence Structure and Translations  
+**Category**: ENTIRE_PAPER  
+**Description**: Direct translations from Chinese result in overly complex sentence structures and unclear phrasing, making the paper difficult to follow.  
+**How to Check**:  1) Review sentences for incorrect or awkward word order that may have resulted from direct translation.  2) Check for inconsistent or missing explanations of pronouns, ensuring that every pronoun has a clear antecedent.  
+3) Look for improper or missing conjunctions that create run-on sentences or sentence fragments.  4) Ensure that pronouns (e.g., "it," "they") have clear references and are not ambiguous.   5) Flag comparative and superlative forms (e.g., “better,” “best”) used incorrectly or without proper comparison.
+**How to Solve**:  1) Suggest rewriting sentences to follow natural English word order, providing specific examples of improvements.  2) Recommend clarifying pronoun references or replacing unclear pronouns with explicit nouns.  3) Advise the student to revise conjunction usage to ensure proper sentence structure.  4) Suggest revising any ambiguous or unclear pronoun references to make them explicit.  5) Provide corrections for improper use of comparative and superlative forms and ensure that comparisons are clear and grammatically correct.
+
+
+**Mistake Item UUID**: 323  
+**Mistake Name**: Ambiguous Language and Vague Descriptions  
+**Category**: ENTIRE_PAPER  
+**Description**: Ambiguous or vague language makes it challenging for readers to understand the precise meaning or importance of the information presented.  
+**How to Check**:  1) Identify instances of vague terms such as “this,” “that,” or “it” where the referent is unclear or could refer to multiple subjects.  2) Look for overuse of broad terms like “many,” “some,” or “a lot,” and check if they could be replaced with specific quantities or more precise descriptors.  3) Review sentences with subjective language (e.g., “significant,” “highly effective”) to ensure the terms are supported by quantitative data or context.  4) Check for phrases that do not provide enough detail or specificity to convey the full meaning of the sentence, especially in describing results or methods.  5) Identify any adjectives or descriptors that lack a clear, contextual explanation (e.g., “complicated structure” without an example).  
+**How to Solve**:  1) Recommend replacing vague references with specific terms or rephrasing for clarity (e.g., “This algorithm” instead of “This”).  2) Suggest substituting broad terms with specific values or concrete descriptors.  3) Advise adding context or numerical evidence to support subjective terms, helping the reader understand the significance.  4) Recommend rewording to include more detail, particularly in key sections like methodology or results.  5) Encourage adding contextual explanations or examples to clarify adjectives and descriptors that may seem ambiguous without further detail.
+
+
+**Mistake Item UUID**: 322  
+**Mistake Name**: Lack of Transitions and Cohesion  
+**Category**: ENTIRE_PAPER  
+**Description**: The paper lacks clear transitions between sections or ideas, leading to disjointedness and making it harder for readers to follow the logic of the paper.  
+**How to Check**:  1) Review paragraphs to ensure they are connected by clear transition phrases or sentences.  2) Check if each section leads logically into the next, ensuring that transitions between sections are smooth.  3) Identify any abrupt shifts in topics or ideas without adequate transitions.  4) Look for missing or unclear introductions to figures, tables, or results, which could disrupt the flow of the paper.  5) Ensure that transitions between paragraphs and sections maintain a coherent narrative, guiding the reader through the paper.
+**How to Solve**:  1) Suggest adding transition phrases to connect paragraphs and ideas logically (e.g., “In addition,” “Furthermore,” “As a result”).  2) Advise revising sections to improve the flow between ideas, ensuring that each section builds upon the previous one.  3) Recommend rewording or restructuring paragraphs to avoid abrupt shifts in ideas.  4) Encourage adding proper introductions and explanations for all figures, tables, and key results to maintain a cohesive narrative.  5) Suggest that the student provide clear roadmaps or summaries at the end of major sections to guide the reader.
+
+
+**Mistake Item UUID**: 1  
+**Mistake Name**: Lack of Clarity and Specificity  
+**Category**: TITLE  
+**Description**: The title is too vague or ambiguous, failing to clearly convey the main contributions or focus of the paper. This can make it difficult for reviewers to immediately understand what the paper is about, leading to a negative first impression.  
+**How to Check**: Review if the title includes specific keywords related to the core contribution (e.g., methodology, application area, or key results). Ensure that someone unfamiliar with the work can understand the focus of the research from the title alone.  
+**How to Solve**: Add relevant details to the title that clearly indicate the main topic, method, or findings. For example, instead of "A New Approach to Neural Networks," specify the approach and application, such as "Efficient Sparse Neural Network for Real-Time Image Classification."
+
+
+
+**Mistake Item UUID**: 2  
+**Mistake Name**: Excessive Length and Complexity  
+**Category**: TITLE  
+**Description**: Titles that are overly long or complex may overwhelm readers and reviewers, making it difficult to grasp the essence of the paper. Titles longer than 15 words or containing multiple clauses can appear cumbersome.  
+**How to Check**: Count the number of words in the title and check if it contains unnecessary conjunctions or prepositional phrases. If the title exceeds 15 words, it might be too long.  
+**How to Solve**: Simplify the title by removing redundant words, focusing on concise language that conveys the key aspects of the research. For example, reduce "A Comprehensive Study on the Use of Deep Learning Techniques for Medical Image Segmentation" to "Deep Learning Techniques for Medical Image Segmentation."
+
+
+
+**Mistake Item UUID**: 3  
+**Mistake Name**: Misalignment with Paper Content  
+**Category**: TITLE  
+**Description**: The title does not accurately reflect the main content or findings of the paper, leading to confusion and misalignment with reviewer expectations.  
+**How to Check**: Compare the title with the abstract and main sections of the paper to ensure consistency. Check if the main contributions mentioned in the abstract are also clearly reflected in the title.  
+**How to Solve**: Adjust the title to better align with the core contributions and results of the paper. For example, if the paper focuses on practical applications, emphasize that aspect in the title instead of a theoretical focus.
+
+
+
+

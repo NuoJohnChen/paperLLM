@@ -1,0 +1,8 @@
+**Mistake Item UUID**: 817
+**Mistake Name**: Insufficient Discussion on Broader Impact
+**Category**: CONCLUSION
+**Description**: The paper does not adequately discuss the broader impact of the research and offers no or vague suggestions for future work.
+**How to Check**: Go over the conclusion or discussion sections carefully and check whether the broader impacts like societal, technological or academic implications are thoroughly discussed. Confirm if clear avenues for future research based on the current paper's findings are proposed.
+**How to Solve**: Enrich the conclusion with a more detailed discussion on the broader impact of the research considering various aspects like societal, technological, regulatory or academic implications. State explicitly how your work could be a foundation for future research and provide specific examples or potential research questions that can be explored further.
+
+

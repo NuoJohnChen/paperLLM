@@ -1,0 +1,12 @@
+**Mistake Name**: Proper Placement of Original Content
+**Target Section**: RELATED WORK
+**Description**: This refers to instances where the preliminary or background sections contain original content or ideas that should ideally be part of the main body of the paper, specifically in the methodology or results sections. This misalignment may lead to confusion about the source of the ideas and detracts from the paper's ability to build upon existing literature.
+**How to Check**: Utilize AI tooling such as ChatGPT 4o-mini to initially flag potential areas where there seems to be a discrepancy between the ideas discussed and existing literature references. Subsequently, human reviewers should analyze flagged areas to verify the source of the information and assess whether it constitutes original content or ideas.
+**How to Solve**: If identified as original contents, restructure and relocate these parts into the appropriate sections such as the methodology or results, ensuring that only previously established knowledge is covered in the preliminary or background sections.
+
+**Mistake Name**: Insufficient Emphasis on Research Novelty
+**Target Section**: RELATED WORK
+**Description**: This mistake involves neglecting to adequately emphasize the novelty of the research in both the related work and conclusions section. This may result in the reader having difficulty understanding what makes the work distinct from other studies in the field, diminishing the perceived originality and impact of the research.
+**How to Check**: Examine the related work and conclusions sections for explicit statements that describe the unique aspects of the research. Check whether these sections provide a clear contrast with prior work and articulate the new insights, methods, or results yielded by the current research. Investigate if the conclusions section re-emphasizes the novelty while discussing the broader implications of the research.
+**How to Solve**: Request that the student revise the related work and conclusions sections to emphasize the unique aspects of the research. This could be done by contrasting the current work with prior similar studies, explaining what the current work achieves that earlier research didn't, and highlighting unique methods, results, or insights. The conclusions section should revisit and underscore the novelty whilst discussing the broader implications of the findings.
+

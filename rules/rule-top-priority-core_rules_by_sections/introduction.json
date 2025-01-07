@@ -1,0 +1,32 @@
+[
+    {
+        "category": "Strength and Clarity of Motivation in the Introduction",
+        "prompt": "Evaluate whether the motivation in the Introduction is specific and convincing. Does the paper avoid over-generalization and clearly articulate the significance of the issue? Are concrete examples, statistics, or contextual details used to establish why the problem matters?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Review of Existing Approaches in Introduction",
+        "prompt": "Assess the thoroughness and clarity of the literature review within the introduction. Does the paper cite and critique relevant prior works, highlighting both their methodologies and limitations? Does the introduction establish how the proposed work builds upon or differentiates itself from existing research, and is there sufficient context provided to demonstrate the significance of the current study? Are any quantitative or qualitative comparisons made where appropriate?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Audience Alignment and Appropriateness",
+        "prompt": "Evaluate whether the introduction is effectively tailored to its target audience. Is the complexity, depth, and choice of terminology suitable for the presumed background knowledge of the readership? Does the introduction provide sufficient context without oversimplifying or overwhelming the intended audience?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Clarity and Visibility of Contributions",
+        "prompt": "Assess the clarity and visibility of the paper’s contributions. Are the core contributions explicitly stated in a dedicated paragraph or section toward the end of the introduction? Are they understandable to a broad scientific audience, presented succinctly, and positioned logically following the problem statement and background information?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Clarity and Specificity of Problem Definition",
+        "prompt": "Evaluate the paper’s problem definition in terms of four key elements: current situation, ideal situation, the gap between them, and how the research aims to address this gap. Are these components clearly stated, distinct, and directly tied to the research objectives? Does the definition provide sufficient clarity and focus for the research?",
+        "score_weightage": "100"
+    },
+    {
+        "category": "Integration of State-of-the-Art in Problem Framing",
+        "prompt": "Evaluate how effectively the introduction incorporates the State-of-the-Art (SOTA) to frame the research problem. Does it include explicit references to key works, methodologies, or findings that highlight relevant gaps or limitations in the field? Is there a clear logical link between the SOTA discussion and the stated research objectives, demonstrating how the proposed work builds upon or extends existing research?",
+        "score_weightage": "100"
+    }
+]

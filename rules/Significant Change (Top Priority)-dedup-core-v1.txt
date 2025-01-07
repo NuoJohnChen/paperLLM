@@ -1,0 +1,568 @@
+**Mistake Item UUID**: 3
+**Mistake Name**: Ignoring the Audience’s Perspective
+**Category**: ABSTRACT
+**Description**: The abstract is written from the author's perspective rather than considering what the audience, in this case the reviewers, needs to know. This can result in the use of excessive jargon, omission of necessary context, or inclusion of irrelevant details.
+**How to Check**: Determine whether the abstract uses excessive technical terminology that may not be easily understood by reviewers. Consider if the abstract provides necessary context to understand the research. Check if the abstract includes irrelevant details that do not contribute to understanding the purpose, methods, or results of the research.
+**How to Solve**: Rewrite the abstract with the following points in mind: 1) Minimize the use of technical jargon unless absolutely necessary, and provide clear definitions or explanations for any technical terminology that is used. 2) Ensure that the abstract provides all necessary context for understanding the purpose, methods, and results of the research. 3) Exclude any details that do not contribute to understanding the research from the reviewers' perspective.
+
+**Mistake Item UUID**: 8
+**Mistake Name**: Insufficient Context
+**Category**: BACKGROUND
+**Description**: This mistake happens when the paper's background section doesn't adequately set the stage for the reader about what the paper is about and why the explored problem is crucial.
+**How to Check**: Does the background briefly describe the broader field of computer science the research falls under? Does it then narrow down to define the specific problem? If it makes unfounded assumptions about the reader's pre-existing knowledge about the topic, it’s a signal of this mistake. Also, consider if the writing helps the reader to understand why the problem needs to be solved.
+**How to Solve**: The student should add a brief overview of the broader field and then a succinct explanation of the research problem their paper addresses. They should aim to build a logical flow that gradually narrows the focus from the larger field to the specific problem. It would be beneficial to draw a clear link between the studied problem and its significance or potential impact on the broader field, to solidify the context.
+
+**Mistake Item UUID**: 12
+**Mistake Name**: Lack of Structure
+**Category**: ENTIRE_PAPER
+**Description**: Disorganized Flow in Paper
+**How to Check**: The AI should scan for keyword and topic continuity between adjacent paragraphs and sections. It should inspect if there are abrupt topic changes or conclusions that do not seem logically connected to the preceding text. Also, the AI should look at the thematic development from introduction to conclusion.
+**How to Solve**: The AI should flag any abrupt topic changes, lack of logical coherence, unconnected conclusions or introductions. For fixing these issues, the AI could suggest adding transition sentences, providing more context, reordering paragraphs, or rephrasing awkward sentences to improve readability.
+
+
+**Mistake Item UUID**: 29
+**Mistake Name**: Overstating Contributions
+**Category**: ABSTRACT
+**Description**: Making claims in the abstract or results section that are too grandiose, unsupported by the studies conducted, or not fully linked with the evidence presented. Overstatements may come in the form of exaggerating the importance of the findings, claiming a larger scope than the study supports, or drawing conclusions not supported by the data. 1. Compare the statements in the abstract and results sections with the actual studies conducted and the data presented. 2. Look for hyperbolic language or overly broad statements. 3. Look for conclusions or implications that go beyond the scope of the study or the data.
+**How to Check**: **How to Solve**: 1. Rewrite the overstated sections with language that better matches the scope, importance, and context of the findings as reported in the body of the paper. 2. Align the claims about the contributions with the actual findings, ensuring to anchor them in the data presented. 3. Avoid making broad statements that cannot be supported by the data. Instead, stick to what the data can reasonably suggest, even if it's more limited in scope.
+**How to Solve**: 1. Rewrite the overstated sections with language that better matches the scope, importance, and context of the findings as reported in the body of the paper. 2. Align the claims about the contributions with the actual findings, ensuring to anchor them in the data presented. 3. Avoid making broad statements that cannot be supported by the data. Instead, stick to what the data can reasonably suggest, even if it's more limited in scope.
+
+**Mistake Item UUID**: 33
+**Mistake Name**: Insufficient Data
+**Category**: EVALUATION
+**Description**: Verify whether the evaluation uses an appropriately diverse, large, and representative dataset relevant to the study.
+**How to Check**: Check whether multiple representative datasets are used and discussed in accordance to the topic of study. Look for justification behind the selection of datasets and how they are relevant to the objectives of the study.
+**How to Solve**: If the dataset is found to be insufficient, the author should seek out additional or alternate datasets that are more representative of the various scenarios of the study. Additionally, providing a thorough rationale for the selected datasets can establish their relevance to the study. Finding an expert in the field or using statistical tools may be necessary to confirm the appropriateness of the dataset.
+
+**Mistake Item UUID**: 35
+**Mistake Name**: Unclear Experimental Setup
+**Category**: EVALUATION
+**Description**: Evaluate if the experimental setup (e.g., hardware/software configurations, parameter settings) is described comprehensively, allowing others to fully understand and reproduce the experimental conditions.
+**How to Check**: Verify if the paper provides all necessary information about the experimental setup. This includes, but is not limited to, hardware and software configurations, parameter settings, algorithms used, data preprocessing steps, experimental conditions, and methods for handling exceptions or unexpected results.
+**How to Solve**: Elucidate all aspects of the experimental setup in detail. Provide exact specifications for hardware/software configurations, document all parameter settings, and explain the rationale behind selecting these configurations and settings. Describe all experiment-related procedures comprehensively and methodically to ensure that someone else with the same resources could replicate the experiment exactly. Include any techniques, procedures, or strategies employed to manage contingencies during the experiment.
+
+**Mistake Item UUID**: 39
+**Mistake Name**: Inadequate Problem Definition
+**Category**: ENTIRE_PAPER
+**Description**: The problem definition might be too generalized, unclear, or poorly stated, obscuring the precise research focus. A good problem definition should incorporate the current state of affairs, the ideal situation, the gap between them, and how the research aims to bridge this distance.
+**How to Check**: Verify that the problem definition includes four key elements: current situation, ideal situation, the gap (unmet needs or challenges), and how the research intends to address it. If any of these components are unclear or missing, or if it's challenging to discern the problem being tackled, the definition may be too ambiguous.
+**How to Solve**: Request the student to hone the problem definition by pinpointing to distinct, quantifiable issues that tie directly to the research objectives. Encourage them to describe the current and ideal situations and specify the challenges and their proposed solutions. Consider providing them with template structures for problem definitions to guide their thinking and writing.
+
+**Mistake Item UUID**: 42
+**Mistake Name**: Lack of Emphasis on Methodological Rigor
+**Category**: ENTIRE_PAPER
+**Description**: The paper does not sufficiently highlight the rigorous nature of the methodology. This flaw can lead to concerns about the validity and reproducibility of the proposed research.
+**How to Check**: The AI should parse the methodology section for completeness, detail-orientedness, and comprehensiveness. The section should explicitly detail how the data will be collected, analyzed, and validated. The absence of this information indicates an area for improvement.
+**How to Solve**: Instruct the AI to suggest additional details for the methodology section, such as specifying the methods for data collection, the statistical techniques for analyzing data, validation mechanisms, and justifications for chosen methods. The AI should also advise on explaining how each step contributes to the overall rigor and reliability of the research.
+
+**Mistake Item UUID**: 51
+**Mistake Name**: Inconsistencies in Paper Abstract
+**Category**: ABSTRACT
+**Description**: The abstract contains different results, methods or conclusions than those presented in the body of the paper.
+**How to Check**: Compare the main points and results in the abstract with those in the paper's introduction, methods, results, and discussion sections. Pay special attention to differences in detail that could indicate a discrepancy.
+**How to Solve**: Update the abstract to mirror exactly the structure, content and results of the paper. Ensure that the methods, results and conclusions mentioned are those that are discussed in detail within the paper.
+
+**Mistake Item UUID**: 52
+**Mistake Name**: Lack of Originality
+**Category**: ENTIRE_PAPER
+**Description**: The document does not adequately show how the research offers novel solutions or contributes new information to its field.
+**How to Check**: The ChatGPT can be set to examine if there are segments in the paper that directly mention the novelty or originality of the proposed research compared to the citations provided in the same text. It should also look for keywords such as 'innovation', 'novel', 'unique', 'first-time', 'unprecedented', etc.
+**How to Solve**: The tool should recommend that the author(s) provide a separate section to emphasize the innovative aspects of their work, its potential impact and how it specifically contributes to the existing literature in a way not yet achieved by previous research.
+
+**Mistake Item UUID**: 58
+**Mistake Name**: Lack of Novelty
+**Category**: MOTIVATION
+**Description**: The paper does not contribute significant new knowledge to the field; it may only be a minor extension of existing work rather than a novel contribution.
+**How to Check**: The model can be used to help the user assess whether their work is following established patterns or methodologies too closely, and whether their assertions appear to be unique, based on the inputs provided to the model. The user can input chunks of text and ask the model to generate content that follows different assumptions or uses different approaches, serving as a sort of unconventional "plagiarism" checker.
+**How to Solve**: Encourage the user to emphasize what is novel in the approach or findings when discussing with model. The model can generate responses to help user frame their contributions and direct attention to the novel aspects. If the work is incremental, the model can be prompted to generate suggestions for discussing the broader impact and potential for future work.
+
+**Mistake Item UUID**: 67
+**Mistake Name**: Title Doesn’t Match Content
+**Category**: TITLE
+**Description**: Examine the title, abstract, and introduction to ensure they all allude to the same main topics, findings, or arguments presented within the paper. Identifying discrepancies in main themes or any off-topic detours from the main subject between these sections.
+**How to Check**: Parse the title, abstract, and introduction in terms of the significant terms and themes they include. Check for consistency across these elements. Use frequent keywords or phrases from the paper to draw conclusions about main themes and arguments.
+**How to Solve**: If the title does not reflect the main themes, findings, or arguments, adjust it to incorporate or encapsulate the primary keywords, terminology or concepts contained within the abstract and introduction. The title should provide a concise summary of the paper's focus.
+
+**Mistake Item UUID**: 68
+**Mistake Name**: Lack of motivation
+**Category**: Introduction/Motivation
+**Description**: The paper fails to adequately introduce and justify the importance of the topic being discussed. The motivation for the research is either missing or not compelling enough to convince the reader of its relevance and importance in the field of computer science.
+**How to Check**: Review the Introduction section of the paper. Look for a clear description of the research problem. The problem should be framed in a way that shows its significance to the field. Check if the author(s) provided a justification for why conducting this research will fill a gap in existing knowledge or is important due to practical implications.
+**How to Solve**: Clarify the problem being addressed and its relevance to the field of computer science. State clearly not only what the problem is, but why it's an important problem that warrants research. If applicable, provide examples of real-world situations where this problem would have implications. Base the problem's significance on previous literature, emphasizing the gaps in existing research that your paper is aiming to fill.
+
+**Mistake Item UUID**: 71
+**Mistake Name**: Weak Conclusion and Future Work Sections
+**Category**: ENTIRE_PAPER
+**Description**: The conclusion might not effectively summarize the research contributions, or the future work section may lack vision and specificity.
+**How to Check**: Evaluate whether the conclusion ties together all the research findings and whether the future work section provides clear and realistic directions for continued research. Check for specific techniques, methods or theories applied and how well they've been expanded upon in the conclusion. See if the future work section clearly foresees potential challenges and opportunities from the present research outcomes.
+**How to Solve**: Teach the student to write a compelling conclusion that synthesizes their contributions and salient points of their research, and to anticipate key questions that could be answered in subsequent studies. Advise using precise and explicit language when articulating future directions and the relevance of their research to their discipline.
+
+
+**Mistake Item UUID**: 84
+**Mistake Name**: Unclear Research Objectives
+**Category**: INTRODUCTION
+**Description**: The lack of clear, precise and measurable research objectives making it difficult for the reader to comprehend the aim of the study.
+**How to Check**: Check if the objectives stated are specific, measurable, achievable, relevant, and time-bound (SMART). The objectives should also correlate accurately with the research questions and the methodology proposed. If there's ambiguity in the interpretation of the objectives or if they seem overly generalized, they need fine-tuning.
+**How to Solve**: Instruct the student to refine the objectives by employing unambiguous, precise language. The objectives should address what the study aims to resolve or discover, when and where the study will take place, and the implications of the study's findings. Finally, ensure that each objective correlates with the proposed research question and method.
+
+**Mistake Item UUID**: 86
+**Mistake Name**: Lack of Clear Motivation
+**Category**: MOTIVATION
+**Description**: This guideline checks for instances where the paper does not clearly state the motivation behind the study being presented. This can cause confusion for readers and make it difficult to understand the significance of the research.
+**How to Check**: Check the introduction or background sections of the paper. Look for a clear statement or section detailing the reasons behind the research, its significance, and its intended contribution to the field.
+**How to Solve**: Clearly state the motivation for the research being presented. This could involve detailing a problem or gap in the current knowledge that the research is aiming to address, explaining the benefits that solving this problem or filling this gap could have, or detailing the novel approaches the research is using and why they are significant.
+
+
+**Mistake Item UUID**: 92
+**Mistake Name**: Lack of Logical Coherence & Structured Argument
+**Category**: LOGIC
+**Description**: Paper lacks a structured argument or points made do not logically follow each other.
+**How to Check**: Check if each argument presented in the paper logically follows the previous one and contributes to the overall thesis of the paper.
+**How to Solve**: Provide suggestions for logical connections between arguments or explain how to create a structured line of reasoning. For each point that does not contribute to the overall thesis, suggest alternatives or improvements.
+
+
+**Mistake Item UUID**: 110
+**Mistake Name**: Unaddressed Limitations
+**Category**: MOTIVATION
+**Description**: The paper presents results without fully elaborating on the potential limitations, weaknesses, or areas for future exploration. The paper doesn't explicitly state the conditions under which the results may not hold.
+**How to Check**: Evaluate if the paper includes discussion on limitations, possible shortcomings, or areas open for subsequent research. Confirm that uncertainties or risks associated with the methodologies or outcomes are identified and extensively discussed.
+**How to Solve**: Encourage authors to wisely present the shortcomings or limitations from both, the reviewers' and the pre-existing studies' viewpoint. Urge inclusion of a 'Limitations and Future Works' section that articulates the possible limitations, presumptions, or conditions that might affect the results. Authors should also indicate how these limitations could pave the way for future research.
+
+**Mistake Item UUID**: 114
+**Mistake Name**: Ambiguous or Weak Conclusion
+**Category**: ABSTRACT
+**Description**: The conclusion of the abstract is vague, weak, doesn't effectively summarize the research, or fails to highlight the technical advancement and its specific contribution.
+**How to Check**: The model should review not just the final sentences, but the entire conclusion of the paper. It should check if the conclusion explicitly states and summarises the steps undertaken in the research, the key outcomes, the significance of those outcomes, and the contribution to the field of computer science.
+**How to Solve**: The conclusion should be revised to include clear statements of the primary technical advancements and their specific contributions, focusing on the quantifiable or qualitative improvements brought about by the research. The revision should ensure that these details are easy to understand, and the language used is concise and unambiguous.
+
+**Mistake Item UUID**: 118
+**Mistake Name**: Absence of High-Level Paper Outline
+**Category**: ENTIRE_PAPER
+**Description**: Ensure the introduction includes a high-level paper outline, framing the structure and main points to be discussed in the rest of the paper.
+**How to Check**: Look for a paragraph in the introduction that summarizes the structure of the rest of the paper. It should include phrases like, "The remainder of this paper", "The following sections", "This paper will further discuss", etc. This paragraph often comes near the end of the introduction.
+**How to Solve**: If missing, draft a succinct paragraph describing the structure and main points of the remaining sections of the paper. For instance, "The remainder of the paper is organized as follows: Section 2 will discuss X, followed by a deeper analysis of Y in Section 3. Section 4 explores possible implications of Z, and the conclusion summarizes the main findings and suggests areas for further research."
+
+**Mistake Item UUID**: 144
+**Mistake Name**: Poorly Defined Objectives
+**Category**: ABSTRACT
+**Description**: The research objectives are not clearly defined, are too broad, or they lack focus on the main aspects of the research. They might not state what the study aims to achieve, don't align with the research problem, or are not specific enough to guide the readers.
+**How to Check**: Look for a clear and specific statement of the research objectives within the abstract. These should be brief but comprehensive, should address the research problem and should indicate the research methods as well as the expected results. It is essential to make sure that the objectives align with the research question and are not too broad or vague that they fail to convey the main goals of the research.
+**How to Solve**: Refine the objectives to be concise, specific, and measurable. Make sure they directly link to the research problem and they showcase the main aim of the research. Each objective should represent a step towards solving the research problem, make it explicit what the study does and does not aim to achieve and make it clear how the objectives contribute to new understandings or advancements in the field.
+
+**Mistake Item UUID**: 147
+**Mistake Name**: Lack of Motivation
+**Category**: ABSTRACT
+**Description**: Not accurately and explicitly expressing the motivation behind the research, resulting in ambiguity regarding the purpose of the work.
+**How to Check**: Verify the abstract introduces the purpose of the study. Look for expressions or statements that connect the research to a broader issue, concept, or problem in the field of Computer Science. Check if the abstract clearly answers the question "What problem does this research intend to solve?"
+**How to Solve**: Insert a concise yet comprehensive statement indicating the purpose of the research. Relate the research to a wider issue in the field of Computer Science or a specific problem unsolved thus far. One effective approach might be starting with a broad context, then narrowing it down to the specific issue the paper addresses.
+
+**Mistake Item UUID**: 153
+**Mistake Name**: Inadequate Summary of Observations
+**Category**: ENTIRE_PAPER
+**Description**: The motivation section fails to effectively summarize the key observations or lacks a clear link between the identified problems and the proposed solution. This weakens the argument for the necessity of proposed research.
+**How to Check**: Verify if the observations are merely listed without detailed explanation. Check for the presence of a summarizing statement that encompasses the main points and links the issues to the motivation for new research. Finally, look for explicit statements highlighting the importance of the proposed solution in context of the identified issues.
+**How to Solve**: After enumerating the observations, they should be neatly wrapped up with a summary that is attached to a broader narrative or research question. Make sure to clearly associate the identified problems with the requirement for a new approach, thereby setting a robust ground for your proposed solution.
+
+**Mistake Item UUID**: 163
+**Mistake Name**: Insufficient Explanation of Existing Solutions
+**Category**: ABSTRACT
+**Description**: The abstract lacks comprehensive details regarding why present solutions are inadequate, and doesn't emphasize the research gap sufficiently, making it hard for audiences to understand the novelty of the presented research.
+**How to Check**: Scrutinize the complete abstract, especially the background or problem statement parts, to check if it underlines the shortcomings of present solutions clearly, and whether it easily conveys the research gap to a reader of varied expertise.
+**How to Solve**: Revamp the abstract to elucidate why current solutions fall short, emphasizing the unique aspect of the proposed research in bridging this gap. The explanation should be understandable for a broad audience, ranging from experts to non-experts.
+
+**Mistake Item UUID**: 171
+**Mistake Name**: Lack of Consistency with Previous Studies
+**Category**: TECHNICAL_SECTION
+**Description**: The paper does not align its evaluation with previous studies, missing the opportunity to benchmark against well-established datasets or methods. Furthermore, the rationales provided for the choice of datasets and methods used in the study may not be adequate or clear.
+**How to Check**: Check if the paper references datasets and methods commonly used in top conference papers and includes them in the evaluation. Also assess whether the rationale behind the choice of these datasets and methods is clearly and adequately explained.
+**How to Solve**: Review recent top conference papers to identify commonly used datasets and methods. Integrate these into your evaluation to ensure consistency and relevance. Clearly explain why each dataset and method was chosen. If the choice deviates from the norm, give a detailed, robust justification.
+
+**Mistake Item UUID**: 175
+**Mistake Name**: Missing Key Papers Discussion
+**Category**: ENTIRE_PAPER
+**Description**: Ensure that the paper includes references and discussions of key publications that are relevant and have significantly contributed to the field.
+**How to Check**: Has the paper referenced and analysed the most relevant and influential publications within the specific field?
+**How to Solve**: If missing, recommend conducting a more comprehensive literature review to find relevant key papers. The author should then revise their discussion to include an analysis of these papers, discussing their importance, findings, and how they relate to the present research.
+
+**Mistake Item UUID**: 177
+**Mistake Name**: Proper Placement of Original Content
+**Category**: RELATED_WORK
+**Description**: This refers to instances where the preliminary or background sections contain original content or ideas that should ideally be part of the main body of the paper, specifically in the methodology or results sections. This misalignment may lead to confusion about the source of the ideas and detracts from the paper's ability to build upon existing literature.
+**How to Check**: Utilize AI tooling such as ChatGPT 4o-mini to initially flag potential areas where there seems to be a discrepancy between the ideas discussed and existing literature references. Subsequently, human reviewers should analyze flagged areas to verify the source of the information and assess whether it constitutes original content or ideas.
+**How to Solve**: If identified as original contents, restructure and relocate these parts into the appropriate sections such as the methodology or results, ensuring that only previously established knowledge is covered in the preliminary or background sections.
+
+**Mistake Item UUID**: 185
+**Mistake Name**: Unbalanced Focus
+**Category**: ABSTRACT
+**Description**: Overemphasizing certain parts of the work (e.g., too much on the problem statement, not enough on results). Can also include underemphasizing or completely overlooking critical parts of the paper.
+**How to Check**: The AI should parse and split the abstract into its different sections: problem, methods, results, and implications. The tool should then analyse the word count, keyword concentration, and context in each section. The distribution of these aspects should be proportionate; no section should drastically outweigh the others unless intentionally warranted by the nature of the paper.
+**How to Solve**: Should the tool find unbalanced distribution, it should suggest edits to the author. These could include removing superfluous detail from overemphasized sections, adding more detail to underemphasized parts, or potentially shifting content between sections to better balance the abstract.
+
+**Mistake Item UUID**: 189
+**Mistake Name**: Inadequate Methodology
+**Category**: METHODOLOGY
+**Description**: The research methodology might be poorly designed, lacking in detail, or not aligned with the research questions. Pay attention to coherence, relevance, and completeness of the methodological section.
+**How to Check**: Evaluate the methodology section to see if it precisely outlines the research design, participant selection, data collection methods, data analysis techniques, and utilized software and equipment. If it’s vague, lacks detail, or doesn't align with the research aims and objectives, there’s a problem.
+**How to Solve**: Guide the student to refine the methodology by suggesting inclusion of specific elements such as clear description of research design, carefully defined sampling methods, detailed explanation of data collection and analysis methods, and precise naming of equipment and software used.
+
+**Mistake Item UUID**: 196
+**Mistake Name**: Weak Title-Abstract Link
+**Category**: ABSTRACT
+**Description**: An abstract that doesn’t align well with the paper’s title, leading to a disconnect between the two.
+**How to Check**: The model assesses whether key concepts, methods, or objectives in the title are present in the abstract, marking it as a potential issue if they are not.
+**How to Solve**: Suggests the user to rework either the abstract or title for cohesion and correlation between them by keeping key concepts consistent, ensuring the abstract sheds light on the title's context.
+
+**Mistake Item UUID**: 222
+**Mistake Name**: Missing or Incorrectly Labeled Sections
+**Category**: STRUCTURE
+**Description**: Missing sections/subsections or incorrectly labeled segments according to the paper's guidelines.
+**How to Check**: Verify that all required sections and subsections according to the paper format are present. Check the labels and numbering for accuracy.
+**How to Solve**: Add missing sections or correct the headings as required. Ensure all sections are in correct order with proper headings and subheadings.
+
+
+**Mistake Item UUID**: 255
+**Mistake Name**: Ignoring Alternative Approaches
+**Category**: ENTIRE_PAPER
+**Description**: A comprehensive review of alternative approaches or previous methods is not present or insufficient and the paper does not effectively place the study within the broader academic context. The rationale for choosing the adopted approach over alternatives may not be clearly explained or justified.
+**How to Check**: Use the AI to identify any mentions of alternative or previously employed methods within the paper. Check whether these are discussed critically, comparing their merits and drawbacks to those of the chosen approach. Evaluate if the paper properly situates the presented research method within the broader context of the field. The focus should be on the Background or Literature Review sections primarily.
+**How to Solve**: Guide the student to integrate an evaluation of different methods that have been used in the field, along with a clear justification for why the selected approach was chosen. Encourage critical comparison of the different approaches, even possibly suggesting some common alternatives if they're missing. Also prompt the student to better contextualize their research and method within the broader academic discussion.
+
+**Mistake Item UUID**: 268
+**Mistake Name**: Ignoring Negative Results
+**Category**: ENTIRE_PAPER
+**Description**: The paper only reports positive results, thereby neglecting the inclusion of experiments that did not yield expected outcomes or performed below par.
+**How to Check**: Probe for the presence of a section or statement specifying unexpected or unfavorable outcomes. The paper should encompass both the favorable and unfavorable aspects of the experiment to furnish a balanced viewpoint.
+**How to Solve**: If a deficit of discussion regarding negative results is found, the writer should be encouraged to incorporate a discussion concerning the negative results or experiments that underperformed. It is important for the writer to expand on why these results transpired and what implications can be drawn from them.
+
+**Mistake Item UUID**: 270
+**Mistake Name**: Lack of Detailed Comparative Analysis
+**Category**: ENTIRE_PAPER
+**Description**: The paper does not adequately compare the proposed method to existing methods. It focuses solely on raw performance metrics without considering other important factors such as efficiency, resource utilization, scalability, robustness, etc.
+**How to Check**: Verify whether the paper includes a thorough comparative analysis that not only compares the raw performance metrics but also provides a discussion on how the proposed method performs in aspects like efficiency, resource utilization, scalability, and robustness against existing methods.
+**How to Solve**: Introduce a comprehensive comparative analysis section. Include quantitative metrics that showcase the performance comparison and a qualitative exposition discussing how the proposed method stacks up against existing methods in other crucial areas like efficiency, resource utilization, scalability, etc.
+
+**Mistake Item UUID**: 271
+**Mistake Name**: Lack of Reproducibility Details
+**Category**: TECHNICAL_SECTION
+**Description**: The paper does not provide crucial details that facilitate reproducibility of the experiments by others.
+**How to Check**: The AI should look for specific sections in the paper where code availability, data sources, specific parameter settings, or any other details that are integral to reproducing the experiments are mentioned. It should cross check these details in line with known proper practices in computer science documentation and research paper writing.
+**How to Solve**: Suggest adding a complete appendix or section detailing instructions about reproducing the experiments. Recommend that the authors provide links to code repositories or datasets, highlight missing details critical to reproducing the work, and cite examples of well-detailed research papers or experiment descriptions.
+
+**Mistake Item UUID**: 276
+**Mistake Name**: Inconsistent or Missing Baselines
+**Category**: TECHNICAL_SECTION
+**Description**: This mistake arises when the proposed method is not compared against appropriate baselines or compared with outdated or irrelevant ones.
+**How to Check**: For the AI to accurately check this, the guideline should be more concrete. The AI could check for sentences that should typically include comparisons e.g. "Our method outperforms...", "Compared to previous methods..", this would depend on the identified baselines being explicitly called out and mentioned in the paper.
+**How to Solve**: A practical solution to this problem is to update the technical section of the paper to include comparisons with more current or applicable baselines. Be explicit about the fact that the same evaluation metrics and conditions have been used for the baseline comparisons to ensure fairness. If a certain baseline was omitted, provide a clear and easily understandable reason for its omission.
+
+**Mistake Item UUID**: 282
+**Mistake Name**: Failure to Justify Experiment Design
+**Category**: ENTIRE_PAPER
+**Description**: The design of experiments is either lacking in clear reasoning or is not justified in terms of the choice of datasets, parameters, or baselines. This makes the evaluation appear arbitrary and can reduce the overall quality and credibility of the paper.
+**How to Check**: Ensure the paper includes details about why specific datasets, parameters, or baselines were adopted in the experiment design. Check for clear explanations on how these aspects align with the research goals and the logic behind these choices.
+**How to Solve**: Improve sections where the justifications for the experiment design are weak. Questions to consider include: Why were specific datasets or parameters selected? How do these choices align with the research goals? How were baselines chosen? By addressing these queries, the researcher can offer a systematic account of their experiment design and its correlation with their research objectives.
+
+**Mistake Item UUID**: 284
+**Mistake Name**: Failure to Address Data Imbalance
+**Category**: ENTIRE_PAPER
+**Description**: The paper does not adequately address the challenges, implications, and strategies for handling imbalanced datasets, leading to possibly biased results and unreliable model performance. Assess whether the paper thoroughly discusses data imbalance in the context of the proposed model or theory, its potential impact on the model's performance and conclusions drawn, as well as the appropriate mitigation techniques incorporated.
+**How to Check**: Scan through the paper for mentions of data imbalance in the Methodology, Experiment and Results sections. Look for explicit mention of how data imbalance was handled, if the models were tested on balanced/unbalanced datasets and the process used to balance the datasets, if applicable. Check whether the paper has considered the impact of data imbalance while proposing its methodology or discussing its results.
+**How to Solve**: If data imbalance is found to be an overlooked issue, the paper should be revised to incorporate effective techniques to mitigate it. This can include discussions and implementations of under-sampling, over-sampling, or synthetic minority over-sampling techniques. Specialized models that handle imbalanced data should be considered, or certain evaluation metrics like Precision, Recall, F1-score, or area under ROC, which are less susceptible to imbalanced datasets, could be used. Further, the paper should discuss the implications of these techniques and their effectiveness in achieving balanced data, and how this significantly impacts the model's performance and generalizability.
+
+
+
+**Mistake Item UUID**: 303
+**Mistake Name**: Redundancy
+**Category**: TITLE
+**Description**: The title of a paper should be concise and clear, rendering unnecessary repetition of ideas or words. Redundancy in the title could lead to a lack of clarity and diminish the concision and impact of the title.
+**How to Check**: Identify words or phrases that are used more than once in the title which can be removed without losing the main idea. Also, look for synonyms or rephrased concepts that basically say the same thing.
+**How to Solve**: Replace repeated words with alternative vocabulary if necessary to retain the meaning of the sentence or simply eliminate the redundant words or ideas. Ensure that the adjusted title still communicates the main theme or aim of the paper accurately.
+
+
+
+**Mistake Item UUID**: 331
+**Mistake Name**: Title, Abstract Inaccuracy, and Inappropriate Keywords
+**Category**: ENTIRE_PAPER
+**Description**: The title and abstract may not accurately reflect the paper's content or findings. Keywords might be missing, irrelevant, or vagely tied to the paper's subject matter.
+**How to Check**: AI could evaluate if the title and abstract includes relevant terminology and touch upon the major themes of the paper. AI could also check if keywords are present and if they align with the predominant themes in the paper.
+**How to Solve**: Based on the AI's recommendations, revise the title and abstract for accuracy and clarity. Consult latest published papers in the field for refining keywords. Give some example revisions.
+
+**Mistake Item UUID**: 344
+**Mistake Name**: Weak or Vague Motivation
+**Category**: INTRODUCTION
+**Description**: The motivation for solving the problem should not be too general or vague. It should clearly identify the issue and why it's significant.
+**How to Check**: The AI can identify if generic, non-specific terms or phrases are used within the problem statement or if there's a lack of explanation as to why the problem matters in its context. Too many generalities without specifics are a sign of vague motivation.
+**How to Solve**: The AI can suggest replacing non-specific terms with more concrete terms. It can also suggest adding explanations regarding the importance of the problem, drawing from the information in the paper itself. If concrete examples or statistics are mentioned in other areas of the paper, the AI could suggest incorporating them into the motivation to provide a clearer picture.
+
+**Mistake Item UUID**: 353
+**Mistake Name**: Inconsistent Result Numbers Across Sections
+**Category**: FORMAT
+**Description**: Misalignments in reported numbers (e.g., percentage improvements) between the abstract, introduction, experiments, and conclusion sections can confuse the reader and reduce the paper's credibility. The A.I. can highlight potential discrepancies but may not precisely highlight the correct section as it could lack the specific contextual knowledge.
+**How to Check**: Use the AI to cross-reference all sections where results are mentioned to detect any possible inconsistencies in the reported numbers. However, manual checking might be necessary for precise detection and verification of the discrepancies, particularly in context-heavy sections.
+**How to Solve**: Any identified inconsistencies should be corrected by the author. The author should ensure that the same numbers are reported consistently across all sections and further validate the calculations. While the AI can provide a general indication of errors, exact corrections and updates should be carried out manually to maintain the paper's integrity.
+
+**Mistake Item UUID**: 358
+**Mistake Name**: Overly Ambitious Claims
+**Category**: ENTIRE_PAPER
+**Description**: The introduction, or any part of the document, contains claims about the research findings that overstep its boundaries. These claims could be about its impact, practicality, or novelty, which further extends the implications of the research.
+**How to Check**: Look for statements that make bold proclamations about the research's importance and potential broad applicability. Keep an eye out for phrases such as "groundbreaking," "revolutionising," "unprecedented," without providing enough evidence through experimental data or exact findings to back up these terminologies.
+**How to Solve**: Remove or modify any excessive, overly optimistic language and replace it with more neutral, balanced statements that accurately reflect the paper's contributions. For instance, instead of claiming that the paper will 'revolutionise' a field, indicate how the results provide a novel approach or perspective on a particular problem within the field. The impact statements should always align with the data presented in the paper.
+
+**Mistake Item UUID**: 370
+**Mistake Name**: Inconsistent Terminology
+**Category**: ENTIRE_PAPER
+**Description**: The paper uses inconsistent or undefined terminology, which can confuse the reader. This not only applies to the introduction but throughout the paper.
+**How to Check**: Use Named Entity Recognition (NER) to identify key terms within the paper. Then, use Coreference Resolution to spot any inconsistencies in their usage. Also, cross-verify if all the key terms are defined at their first usage.
+**How to Solve**: Establish a consistent terminology within the paper. Make sure that all key entities introduced are explicitly defined at first usage and ensure the same naming convention is used throughout the paper. If different terminology is required to be used for the same concept, make a clear explanation to avoid confusion.
+
+**Mistake Item UUID**: 377
+**Mistake Name**: Lack of Contextual Background
+**Category**: ENTIRE PAPER
+**Description**: The introduction or literature review doesn't include enough references to existing work, or it doesn't clearly explain why the problem the paper addresses is significant in the context of the broader field.
+**How to Check**: The model can check for the presence of sentences that explicitly discuss relevance or significance of the problem, and the number of references to the existing works in the related field. It can also check if there is a clear transition from discussing the existing work to stating the problem that the paper addresses.
+**How to Solve**: Encourage the writer to explicitly mention the importance of the problem in the context of the wider field, discuss existing work and methods in more depth, and clearly connect them to the problem the paper addresses.
+
+**Mistake Item UUID**: 382
+**Mistake Name**: Inconsistent or Contradictory Statements
+**Category**: ENTIRE_PAPER
+**Description**: The paper contains inconsistent or contradictory statements that could be within sections (e.g., Introduction, Methodology, Result, Discussion, Conclusion) or across these sections, affecting the clarity and validity of the work. This includes contradiction in the problem statement, hypotheses, methodological approach, results, and conclusions drawn.
+**How to Check**: Scrutinize each section for inconsistent statements or figures. Assess the link between the problem statement, research methodology, results, and conclusions. The research goals stated in the introduction should align with the methodology and findings. Additionally, the results should support the conclusions drawn.
+**How to Solve**: Ensure every segment of the paper aligns with others. The problem statement or research question dictates the methodology, which in turn affects the results and the conclusion. Any change in one domain must reflect accurately across others. Redraft any contradictory or inconsistent statements for clarity and coherence. Consult relevant literature if necessary, to ensure the academic integrity of the revised content.
+
+**Mistake Item UUID**: 387
+**Mistake Name**: Assumptions Without Justification
+**Category**: ENTIRE_PAPER
+**Description**: Any part of the paper, not just the motivation section, may include assumptions about the problem, proposed solution, hypotheses, or the field which are not clearly justified or supported by evidence. These unjustified assumptions could appear as implicit or explicit claims.
+**How to Check**: Check for any statements serving as the basis for arguments, hypotheses or conclusions that aren't justified. These can be identified as claims not followed or prefaced by supportive data, logical argumentation, or citation of relevant literature.
+**How to Solve**: Ensure that all assumptions, hypotheses or foundational claims are supported by logical explanations, experimental data, or referenced research findings from credible sources. If an assumption arises from common knowledge in the field, briefly acknowledge this consensus for clarity. Refer to authoritative and credible sources wherever possible to solidify these justifications.
+
+**Mistake Item UUID**: 410
+**Mistake Name**: Tables Not Explicitly Referenced in the Text
+**Category**: TABLE
+**Description**: Ensure that every table within the manuscript is explicitly referenced in the preceding text.
+**How to Check**: Sequentially review the manuscript's text looking for explicit mention of each table. Make a note of any tables not referenced.
+**How to Solve**: For any tables not mentioned in the text, add a reference at an appropriate point in the relevant discussion or analysis in the text. Ensure that it is inserted in a contextually appropriate manner that supplements and clarifies the text.
+
+**Mistake Item UUID**: 416
+**Mistake Name**: Redundant or Overlapping Information
+**Category**: TABLE
+**Description**: Look for instances where a table repeats information already presented in previous sections of the paper, in the text paragraphs directly associated with the table, or in other tables. Pay special attention to repeated data, statistics and terminologies. This can reduce clarity and may mislead readers.
+**How to Check**: Compare the information in each table with that in the rest of the paper. Use context and understanding of the subject to identify whether the same information has been represented more than once in different places.
+**How to Solve**: Remove or consolidate redundant information. If two tables contain overlapping information, consider merging them. If a table and text provide the same data, decide on the most effective way to present it and eliminate the redundancy.
+
+**Mistake Item UUID**: 430
+**Mistake Name**: Incorrect Structure and Language Usage
+**Category**: LANGUAGE_AND_STRUCTURE
+**Description**: Incorrect structure and language usage can decrease the readability and understanding of the paper. It may include long and confusing sentences, incorrect usage of scientific terminology, and lack of logical flow between sections.
+**How to Check**: Examine the paper to ensure correct usage of computer science terminology. Check whether there is logical flow between paragraphs and sections. Sentences should be clear and precise.
+**How to Solve**: Simplify complex sentences, use standard computer science terminology appropriately and ensure a logical progression of thoughts and arguments throughout the paper.
+
+**Mistake Item UUID**: 437
+**Mistake Name**: Include Introductions for Each Technical Chapter
+**Category**: ENTIRE_PAPER
+**Description**: Each technical chapter in your paper or thesis (typically starting from Chapter Three) should include an introduction that sets the stage for the reader. These introductions can be adapted from your original research or ideas, but they should be revised to ensure they fit seamlessly into the broader narrative.
+**How to Check**: Examine the beginning of each technical chapter and look for an introduction. Determine whether the introduction adequately introduces the topic of the chapter and fits into the broader narrative of the paper or thesis.
+**How to Solve**: If the introduction is taken from another source (such as an original paper), revise the introduction to remove references specific to the original source (e.g., “In this paper”) and replace them with language that fits the context of the paper or thesis (e.g., “In this chapter”). Ensure each introduction ties back to the main theme or problem statement of the paper.
+
+**Mistake Item UUID**: 439
+**Mistake Name**: Tables that Do Not Support the Argument
+**Category**: ENTIRE_PAPER
+**Description**: Ensure that every table in the paper directly supports the argument or analysis being presented. Tables should add value and help clarify or elaborate your argument.
+**How to Check**: Check each table's content and its relation to the argument in the text. Tables should enhance understanding of the text and its arguments.
+**How to Solve**: Tables that do not directly contribute to the paper’s argument must be reassessed. Consider removing these tables or revise them so that they directly contribute to the argument. If certain information from the table remains useful, consider incorporating it into the text.
+
+**Mistake Item UUID**: 450
+**Mistake Name**: Missing Abstract Components
+**Category**: ABSTRACT
+**Description**: Failing to include or inadequately addressing one or more of the following components in the abstract: research problem, methods, results, and conclusion, affecting the overall comprehension and appeal of the paper.
+**How to Check**: Ensure that the abstract includes a concise definition of the research problem, a brief description of the methods employed and why they were suitable, a succinct summary of the key results, and a focused conclusion or implications.
+**How to Solve**: Add any missing components or expand on any underspecified details. Ensure they are stated clearly and concisely, enabling readers to understand the essence of the full text. Consider important keywords, relevance to the field, innovation of methods, or prominence of results when improving these components. Ensure there is logical and coherent flow in the order of the components.
+
+**Mistake Item UUID**: 457
+**Mistake Name**: Review of Existing Approaches
+**Category**: INTRODUCTION
+**Description**: Verify if the introduction includes a review of current literature and research in the topic area of the paper.
+**How to Check**: Evaluate if the introduction contains references to previous works, a brief explanation of their concepts and methodologies, and a critique of their limitations.
+**How to Solve**: If such analysis is missing or incomplete, recommend the author to conduct a comprehensive literature review and incorporate the discussions into the introduction. Provide examples of how to comment on the methodologies and limitations of previous works. Encourage the inclusion of a quantitative comparison where applicable.
+
+**Mistake Item UUID**: 459
+**Mistake Name**: Insufficient Detail in Algorithms
+**Category**: TECHNICAL_SECTION
+**Description**: This error occurs when algorithms are not sufficiently detailed, making replication difficult. Important steps or edge cases might be missing, or assumptions are not clearly stated.
+**How to Check**: Use the AI to highlight areas in the document where algorithms are discussed. Check if the text provides enough detail for a third-party reader to recreate the algorithm without any extra resources. Check for missing steps, edge cases, initialization details, or unstated assumptions.
+**How to Solve**: Use the AI to suggest missing information based on the context of the document and common patterns in algorithm description. If incomplete, authors should be encouraged to provide detailed pseudocode or flowcharts and indicate all steps, including edge cases and initialization details. Comments or explanations should be added for non-obvious steps. In case of unstated assumptions, authors should be encouraged to clearly state all assumptions before the algorithm presentation.
+
+**Mistake Item UUID**: 463
+**Mistake Name**: Missing Theoretical Justification
+**Category**: ENTIRE_PAPER
+**Description**: The paper primarily emphasizes empirical results without providing clear theoretical foundation, justification or explanation for the approaches and methods chosen.
+**How to Check**: The tool should scan for theoretical arguments that support the proposed approach. These might include representations of lemmas, theorems, or propositions that explain why the chosen method is expected to succeed.
+**How to Solve**: Encourage the author to present a theoretical groundwork for their proposed methodology. This could include propounding and proving relevant theorems or providing a theoretical analysis that complements and gives credence to their empirical findings. Additionally, precise references from existing literature can substantiate the theoretical framework further.
+
+**Mistake Item UUID**: 466
+**Mistake Name**: Justification of Methodology/System Design
+**Category**: ENTIRE PAPER
+**Description**: Check if the methodology/system design is justified. This includes justifying the use of certain algorithm, the choice of an architecture, etc.
+**How to Check**: Look for clear and supported statements about why the selected methodology or system design is suitable for the specific problem. Patterns to identify include assertions about the methodology or design without clear explanations or support.
+**How to Solve**: Highlight the general area where justification is needed. Suggest that the author provide a paragraph justifying the methodology, explain why a certain algorithm was chosen (efficiency, accuracy, etc), or clarify why the chosen architecture is ideal or sufficient for the problem at hand. Keep in mind that due to lack of domain knowledge, ChatGPT 4o-mini might not reliably generate the justifying paragraph itself.
+
+**Mistake Item UUID**: 468
+**Mistake Name**: Motivation Explanation
+**Category**: ENTIRE_PAPER
+**Description**: Check if the paper adequately outlines the motivation for solving the problem in the introduction.
+**How to Check**: Make the tool evaluate if the introduction provides a clear explanation for the motivation behind the paper's research. The motivation should underline the importance and relevance of the problem being tackled.
+**How to Solve**: If motivation is missing or inadequate, the tool can suggest the paper author to provide more depth, stressing the implications if the problem remains unsolved. However, providing specific real-world examples and conducting a quantitative analysis, tailored to the paper's topic, will still require human intervention. As a workaround, the tool can frame open ended questions prompting the authors to think in these lines. For example: "What are potential real-world implications of your research?" or "What are the numerical measures that underscore the urgency of your problem?".
+
+**Mistake Item UUID**: 471
+**Mistake Name**: Over-Reliance on Heuristics
+**Category**: ENTIRE_PAPER
+**Description**: The proposed methodology is heavily dependent on heuristics without supplying adequate rationalization for their effectiveness or analyzing the influence of these heuristics on the final outcome.
+**How to Check**: Detect the segments of the paper where heuristics are employed. Look for the following type of justifications: empirical evidence, theoretical analysis, references to previous works, and logical explanations. Establish if the impact of the heuristic on the findings is mentioned.
+**How to Solve**: Provide either empirical evidence, theoretical analysis, references to the literature, or logical explanations to rationalize the use of the heuristics. Again, the impact of the heuristic on the outputs should be explained or discussed. Ideally, include a sensitivity analysis to showcase how changes in heuristic can affect the results.
+
+**Mistake Item UUID**: 501
+**Mistake Name**: Lack of Coherence and Logical Flow
+**Category**: CONTENT
+**Description**: Lack of coherence and logical flow in the text can make it difficult to comprehend and derail the audience from the main argument or contribution of the paper.
+**How to Check**: Review all sections and subsections to ensure they follow a coherent order and that each argument, evidence, or concept logically proceeds from one to the other.
+**How to Solve**: Reorganize sections or paragraphs to improve the logical progression of arguments, and ensure that transition phrases are used effectively to guide the reader from one idea to the next. Ensure that every argument or piece of evidence is properly introduced and linked to the broader context or argument of the paper.
+
+**Mistake Item UUID**: 504
+**Mistake Name**: Overemphasis on Numerical Results
+**Category**: TECHNICAL_SECTION
+**Description**: The paper focuses excessively on quantitative data or numerical results, overlooking the qualitative aspects or the implications of these results in real-world scenarios. This may lead to an imbalance in the interpretative depth of the research.
+**How to Check**: Determine if the paper provides in-depth interpretations or discussions of the numerical results. Consider if these discussions reflect a solid understanding of the results in the broader context of the field. Verify if the paper explains the method and the relevance of the results in practical scenarios.
+**How to Solve**: Balance the presentation of quantitative results with their qualitative interpretations and implications. Include a section that discusses the practical and real-world implications, potential limitations, and scenarios where the presented method may not perform as expected.
+
+
+**Mistake Item UUID**: 606
+**Mistake Name**: Lack of Theoretical Foundations
+**Category**: MOTIVATION
+**Description**: The proposed method is not substantiated by solid theoretical foundations, making it difficult to validate its credibility.
+**How to Check**: Have the AI parse the content for key term definitions, hypothesized relationships, and any discussions regarding the theoretical perspectives adopted. The model should then compare these findings with a database of known theories in computer science to assess how well the method aligns with established perspectives. Check if the assumptions and foundations of the method are explained in a way that is easy to follow and logically sound.
+**How to Solve**: If the theoretical grounding appears weak, the AI should suggest to elaborate more on key term definitions or theoretical constructs, and to make proper citations to cornerstone theoretical works in the field. It could suggest strengthening the argument by clearly drawing connections between the proposed method and these theories. It should also remind authors to thoroughly interpret their results in light of the theoretical frameworks they've claimed to adopt.
+
+**Mistake Item UUID**: 617
+**Mistake Name**: Section Relevance
+**Category**: ENTIRE_PAPER
+**Description**: Check if each section of the paper contributes to advancing the main narrative.
+**How to Check**: Identify the role of the section in the overall storyline. Ask: Does the content of each section add new information or ideas relevant to the main narrative?
+**How to Solve**: Suggest a reorganization of content such that each section contributes significantly to the narrative. If a section is irrelevant, suggest its removal or replacement with a more relevant section.
+
+**Mistake Item UUID**: 617
+**Mistake Name**: Introduction Relevance
+**Category**: INTRODUCTION
+**Description**: Evaluate if the introduction section aligns with and introduces the paper’s main narrative effectively.
+**How to Check**: Identify the paper's main narrative in the introduction. Ask: Does the introduction effectively set up the direction for the rest of the paper?
+**How to Solve**: If the introduction is not aligned, suggest revisions to better articulate the paper's main narrative within the introduction.
+
+**Mistake Item UUID**: 624
+**Mistake Name**: Weak Rationale and Problem-Solving Approach
+**Category**: Entire Paper
+**Description**: The rationale behind the proposed solution isn't fully outlined, or leaves ambiguity regarding how it addresses the stated problems. The linkage between the proposed solution and the problem it aims to solve is not clearly presented.
+**How to Check**: Ensure the paper includes a comprehensive motivation section in which the problems are stated clearly, with sufficient context and specifics. Check if the paper discusses the thought process behind the proposed solution, in a way that logically and clearly connects it to the problem statements. Determine whether the techniques developed and their anticipated outcomes are solidly grounded in the problems identified.
+**How to Solve**: Include a dedicated section that redefines the stated problems with specificity, giving readers a clear roadmap of what the paper is addressing. Follow this with an explanation of the proposed solution and the driving forces behind its development. Clearly draw ties between the problems and solution, illustrating how the latter addresses the former. Consider using examples or case scenarios to demonstrate your arguments, as well as concise yet powerful language for clarity. The solution's relevance to the problems should be clear at first glance.
+
+**Mistake Item UUID**: 656
+**Mistake Name**: Overly Broad or Narrow Scope
+**Category**: INTRODUCTION
+**Description**: The introduction either covers excessive topics beyond the focus research area or concentrates extremely closely on a small piece of the research question, thereby taking away the chance to provide a comprehensive overview of the subject.
+**How to Check**: Determine if multiple topics or research areas are mentioned that should fall outside the scope of this paper. Also, check if the introduction is overly detailed on a specific aspect, thus neglecting the rest of the topic. If an introduction begins with a global context then narrows down to the research question, it's usually well-structured.
+**How to Solve**: The introduction should begin with a broad, general context then progressively narrow down to the research question. Remove additional topics that are not necessary for understanding the context of the research. If the introduction is too specific, broaden the context by providing additional background information or linking the research to a larger area of study.
+
+**Mistake Item UUID**: 673
+**Mistake Name**: Misalignment Between the Introduction and Conclusion
+**Category**: INTRODUCTION
+**Description**: The introduction sets up specific expectations or statements that are not addressed or completed in the conclusion, leading to a gap between the beginning and ending narratives.
+**How to Check**: Systematically identify key promises or statements in the introduction. Proceed to systematically analyze the conclusion for these statements, confirming their presence or identifying their absence.
+**How to Solve**: Suggest multiple solutions for each identified issue. For instance, revising certain lines in the introduction to be more reflective of the paper's actual content, or adding lines to the conclusion to satisfy the initial promises of the introduction. Additionally, for each solution, provide a sentence or section level rewrite with the proposed changes.
+
+**Mistake Item UUID**: 675
+**Mistake Name**: Overview of Entire System Missing
+**Category**: ENTIRE_PAPER
+**Description**: Check if the paper includes a comprehensive overview of the entire system. The overview should describe the problem the system addresses, the purpose of the system, its key components, and how these components interact.
+**How to Check**: Look for a section or paragraph in the paper that provides a summary of the system. This summary should clearly define what the system does, its key features, and how these features work together to fulfill the system's intended purpose.
+**How to Solve**: If such section is missing, suggest the author to include an introductory paragraph describing the system as a whole. The paragraph should start with defining the problem and end with clearly introducing the proposed system’s components and their interaction for problem-solving.
+
+**Mistake Item UUID**: 686
+**Mistake Name**: Ignoring the Target Audience
+**Category**: INTRODUCTION
+**Description**: The introduction is not tailored to the paper’s target audience, resulting in a mismatch in content complexity, depth and relevance.
+**How to Check**: Utilize the AI to compare the introduction with a corpus of introductions aimed at similar target audience to ascertain the level of complexity and depth. Analyze for presence of too many complex terms, oversimplification or lack of contextual explanations.
+**How to Solve**: If the AI finds a mismatch between the paper and the reference corpus, adjust the introduction by either simplifying complex terms or adding depth as required. Use AI to suggest synonyms, add explanations or to rewrite sentences altogether for better understanding.
+
+**Mistake Item UUID**: 718
+**Mistake Name**: Misalignment Between Problem Definition and Proposed Research
+**Category**: INTRODUCTION
+**Description**: There is a disconnect between the proposed research and the problem defined in the introduction. This discrepancy may mislead or confuse the reader about the goals of the research.
+**How to Check**: Evaluate whether the proposed research methods directly address the problem identified in the introduction. Check if the steps proposed will help in solving the problem or answering the research question.
+**How to Solve**: Guide the student to refine the problem definition or the research methods so they are in-line with each other. Encourage the student to rephrase research questions or modify their approach to problem solving. If needed, introduce more suitable methods that directly address the problem. Provide examples of research where the methods clearly align with the problem for better understanding.
+
+**Mistake Item UUID**: 724
+**Mistake Name**: Ignoring Real-World Constraints
+**Category**: MOTIVATION
+**Description**: The experiments do not consider real-world constraints, such as time, cost, or scalability, making the results less applicable in practice. The guideline should clearly define what is meant by "real-world constraints" so the model can check more effectively.
+**How to Check**: Check for explicit mentions of real-world constraints like time, cost, scalability in the evaluation section. Look at the methods used and determine if the author has considered these while designing their experiment based on the context.
+**How to Solve**: Guide authors to incorporate real-world constraints into their experiment design and discuss these in the results and discussion sections. If the constraints are not considered, the model should suggest ways they can be addressed or incorporated in future work.
+
+**Mistake Item UUID**: 729
+**Mistake Name**: Unclear or Hidden Contribution Statement
+**Category**: INTRODUCTION
+**Description**: The contributions of the paper are not clearly stated, buried deep in the introduction, or obscured in overly technical language making it difficult for readers to understand the core contributions.
+**How to Check**: Look for a clear, succinct list or paragraph that outlines the main contributions of the paper. It should follow the problem statement and background information and be written in language that is easy to understand for a broad scientific audience.
+**How to Solve**: Clearly articulate the contributions of the paper in a dedicated paragraph, preferably towards the end of the introduction. Avoid jargon when explaining the contributions. If possible, use bullet points or subheadings to delineate each contribution, making them easily distinguishable and readily comprehendible.
+
+
+**Mistake Item UUID**: 739
+**Mistake Name**: Lack of Integration of State-of-the-Art (SOTA) Review
+**Category**: ENTIRE_PAPER
+**Description**: The SOTA review is included without demonstrating a clear relationship with the problem definition or the suggested research proposal. This can lead to disjointedness between different sections of the paper, creating confusion and diluting the impact of the research.
+**How to Check**: Verify whether the SOTA review explicitly draws upon prevalent methodologies, theories, or findings to formulate the problem statement and the proposed research objective. This can be done by looking for explicit references or logical links between the SOTA review and these sections.
+**How to Solve**: Instruct the student to provide explicit references or coerent links demonstrating how the SOTA review contributes to the problem definition and proposed research. This can involve reworking the writing to provide detailed justifications for methodological or theoretical choices, or articulating how the chosen research question is a natural progression from the SOTA review.
+
+
+**Mistake Item UUID**: 817
+**Mistake Name**: Insufficient Discussion on Broader Impact
+**Category**: CONCLUSION
+**Description**: The paper does not adequately discuss the broader impact of the research and offers no or vague suggestions for future work.
+**How to Check**: Go over the conclusion or discussion sections carefully and check whether the broader impacts like societal, technological or academic implications are thoroughly discussed. Confirm if clear avenues for future research based on the current paper's findings are proposed.
+**How to Solve**: Enrich the conclusion with a more detailed discussion on the broader impact of the research considering various aspects like societal, technological, regulatory or academic implications. State explicitly how your work could be a foundation for future research and provide specific examples or potential research questions that can be explored further.
+
+**Mistake Item UUID**: 822
+**Mistake Name**: Align with Conference Scope
+**Category**: MOTIVATION
+**Description**: Alignment with the conference's specified themes, topics, and scope is crucial in paper presentation.
+**How to Check**: Analyze if the paper's themes and objectives explicitly align with those of the target conference. The relevance of the work should evident in terms of the conference's key areas of focus. To do this, identify the key themes and subject matter the conference focuses on, and map these topics explicitly to sections within the paper.
+**How to Solve**: Should there be a weak alignment, the paper should be restructured or reframed to emphasis how it aligns with the themes of the conference. For instance, if the conference theme is Artificial Intelligence (AI), the paper should highlight how the methods, solutions or results are anchored on or contribute to AI, even if the method is a generic algorithm applicable in various fields. Subtly rephrase arguments, results, and focus of the paper to link it more directly with the core conference themes.
+
+
+**Mistake Item UUID**: 831
+**Mistake Name**: Analyze the Technical Challenges
+**Category**: TECHNICAL_SECTION
+**Description**: Analyze the technical challenges and provide sufficient detail and insight into their complexity and importance in the context of the research.
+**How to Check**: Review the paper to see if the technical challenges: 1) Are clearly defined and articulated 2) Demonstrate complexity and relevance 3) Are impactful in the context of the research 4) Include an explanation of why these challenges have not been adequately addressed in the literature 5) Justify why they require further study or research.
+**How to Solve**: If the challenges appear minor, expand on their complexity and importance, making clear why they are key hurdles to be solved in the field of study. The severity and potential impact of the challenges should be emphasized. For instance, instead of just stating "One challenge is X", provide more detail and context. For example, "A key challenge in the domain of X is the critical balance between performance and scalability, particularly considering the increasing demands of real-world applications. This challenge has remained largely unaddressed, with solutions often compromising one for the other, thus rendering them sub-optimal for wider adoption.
+
+**Mistake Item UUID**: 849  
+**Mistake Name**: Unstructured Presentation of Experimental Findings  
+**Category**: EVALUATION  
+**Description**: The experimental findings are presented in a disorganized, unclear manner, lacking logical progression from one point to the next.  
+**How to Check**: 1. Verify that the experimental findings follow a structured and logical order, starting with parameter evaluation, proceeding to overall performance comparison, then individual contribution analysis, sensitivity and scalability studies, and any additional sections such as case studies or real-world applications. 2. Confirm the presence of clear titles and headings that signal different subsections, including case studies if applicable.  3. Check that each subsection is supported with relevant figures and tables.  4. Ensure the text clearly explains the figures and tables and establishes a clear link between them and the experimental findings.  5. Ensure that each section and subsection follows logically from the previous one, leading to a comprehensive and structured presentation.
+**How to Solve**:  1. Structure the experimental findings into well-defined subsections, including (at minimum) parameter evaluation, overall performance comparison, individual contribution analysis, sensitivity and scalability studies, and other key sections (such as case studies or application impact studies). 2. Use appropriate headings and subheadings for each subsection to ensure clarity.  
+3. Support each subsection with figures and tables, where relevant, and include explanations linking them to the experimental findings. 4. Ensure a logical flow from one subsection to the next using clear and coherent sentences, making sure not to omit important sections like case studies.  5. When reorganizing the section, reuse existing text as much as possible to maintain clarity and consistency. 
+
+**Mistake Item UUID**: 1001
+**Mistake Name**: Insufficient Emphasis on Research Novelty
+**Category**: Related Work
+**Description**: This mistake involves neglecting to adequately emphasize the novelty of the research in both the related work and conclusions section. This may result in the reader having difficulty understanding what makes the work distinct from other studies in the field, diminishing the perceived originality and impact of the research.
+**How to Check**: Examine the related work and conclusions sections for explicit statements that describe the unique aspects of the research. Check whether these sections provide a clear contrast with prior work and articulate the new insights, methods, or results yielded by the current research. Investigate if the conclusions section re-emphasizes the novelty while discussing the broader implications of the research.
+**How to Solve**: Request that the student revise the related work and conclusions sections to emphasize the unique aspects of the research. This could be done by contrasting the current work with prior similar studies, explaining what the current work achieves that earlier research didn't, and highlighting unique methods, results, or insights. The conclusions section should revisit and underscore the novelty whilst discussing the broader implications of the findings.
+
+
+**Mistake Item UUID**: 4  
+**Mistake Name**: Inadequate Coverage of Key Preliminary Concepts  
+**Category**: Background  
+**Description**: The preliminary section does not adequately cover the core concepts, definitions, or methods that are critical for understanding the technical contributions of the paper. This leads to confusion later in the paper when these concepts are used without sufficient explanation.  
+**How to Check**:  - Identify all key terms, algorithms, theorems, or methodologies used in the main technical sections (such as methodology, experiments, or results). Cross-reference these elements with the preliminary section.  - Check whether these key terms are clearly defined, and methods or algorithms are explained with enough detail for readers unfamiliar with the topic to follow.  - Flag any concept or term used in the later sections that is not defined in the preliminary section or not introduced adequately before its first usage.  
+**How to Solve**:  - If concepts or methods are missing, instruct the student to add concise but complete definitions and descriptions. Ensure that these are placed in a logical order and tailored to readers who may not be experts in the field. - If existing explanations are unclear, suggest rewording or providing additional context or visual aids (e.g., diagrams or examples) to make the explanation more accessible.  - Advise using standard terminology where possible to avoid ambiguity, and make sure that all symbols or abbreviations introduced are explained immediately when they appear.
+

@@ -1,0 +1,6 @@
+**Mistake Item UUID**: 39
+**Mistake Name**: Inadequate Problem Definition
+**Category**: ENTIRE_PAPER
+**Description**: The problem definition might be too generalized, unclear, or poorly stated, obscuring the precise research focus. A good problem definition should incorporate the current state of affairs, the ideal situation, the gap between them, and how the research aims to bridge this distance.
+**How to Check**: Verify that the problem definition includes four key elements: current situation, ideal situation, the gap (unmet needs or challenges), and how the research intends to address it. If any of these components are unclear or missing, or if it's challenging to discern the problem being tackled, the definition may be too ambiguous.
+**How to Solve**: Request the student to hone the problem definition by pinpointing to distinct, quantifiable issues that tie directly to the research objectives. Encourage them to describe the current and ideal situations and specify the challenges and their proposed solutions. Consider providing them with template structures for problem definitions to guide their thinking and writing.

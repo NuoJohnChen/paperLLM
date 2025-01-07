@@ -1,0 +1,12 @@
+**Mistake Name**: Title Doesn’t Match Content
+**Target Section**: TITLE
+**Description**: Examine the title, abstract, and introduction to ensure they all allude to the same main topics, findings, or arguments presented within the paper. Identifying discrepancies in main themes or any off-topic detours from the main subject between these sections.
+**How to Check**: Parse the title, abstract, and introduction in terms of the significant terms and themes they include. Check for consistency across these elements. Use frequent keywords or phrases from the paper to draw conclusions about main themes and arguments.
+**How to Solve**: If the title does not reflect the main themes, findings, or arguments, adjust it to incorporate or encapsulate the primary keywords, terminology or concepts contained within the abstract and introduction. The title should provide a concise summary of the paper's focus.
+
+**Mistake Name**: Redundancy
+**Target Section**: TITLE
+**Description**: The title of a paper should be concise and clear, rendering unnecessary repetition of ideas or words. Redundancy in the title could lead to a lack of clarity and diminish the concision and impact of the title.
+**How to Check**: Identify words or phrases that are used more than once in the title which can be removed without losing the main idea. Also, look for synonyms or rephrased concepts that basically say the same thing.
+**How to Solve**: Replace repeated words with alternative vocabulary if necessary to retain the meaning of the sentence or simply eliminate the redundant words or ideas. Ensure that the adjusted title still communicates the main theme or aim of the paper accurately.
+

@@ -1,0 +1,40 @@
+**Mistake Name**: Weak or Vague Motivation
+**Target Section**: INTRODUCTION
+**Description**: The motivation for solving the problem should not be too general or vague. It should clearly identify the issue and why it's significant.
+**How to Check**: The AI can identify if generic, non-specific terms or phrases are used within the problem statement or if there's a lack of explanation as to why the problem matters in its context. Too many generalities without specifics are a sign of vague motivation.
+**How to Solve**: The AI can suggest replacing non-specific terms with more concrete terms. It can also suggest adding explanations regarding the importance of the problem, drawing from the information in the paper itself. If concrete examples or statistics are mentioned in other areas of the paper, the AI could suggest incorporating them into the motivation to provide a clearer picture.
+
+**Mistake Name**: Review of Existing Approaches
+**Target Section**: INTRODUCTION
+**Description**: Verify if the introduction includes a review of current literature and research in the topic area of the paper.
+**How to Check**: Evaluate if the introduction contains references to previous works, a brief explanation of their concepts and methodologies, and a critique of their limitations.
+**How to Solve**: If such analysis is missing or incomplete, recommend the author to conduct a comprehensive literature review and incorporate the discussions into the introduction. Provide examples of how to comment on the methodologies and limitations of previous works. Encourage the inclusion of a quantitative comparison where applicable.
+
+
+**Mistake Name**: Ignoring the Target Audience
+**Target Section**: INTRODUCTION
+**Description**: The introduction is not tailored to the paper’s target audience, resulting in a mismatch in content complexity, depth and relevance.
+**How to Check**: Utilize the AI to compare the introduction with a corpus of introductions aimed at similar target audience to ascertain the level of complexity and depth. Analyze for presence of too many complex terms, oversimplification or lack of contextual explanations.
+**How to Solve**: If the AI finds a mismatch between the paper and the reference corpus, adjust the introduction by either simplifying complex terms or adding depth as required. Use AI to suggest synonyms, add explanations or to rewrite sentences altogether for better understanding.
+
+**Mistake Name**: Unclear or Hidden Contribution Statement
+**Target Section**: INTRODUCTION
+**Description**: The contributions of the paper are not clearly stated, buried deep in the introduction, or obscured in overly technical language making it difficult for readers to understand the core contributions.
+**How to Check**: Look for a clear, succinct list or paragraph that outlines the main contributions of the paper. It should follow the problem statement and background information and be written in language that is easy to understand for a broad scientific audience.
+**How to Solve**: Clearly articulate the contributions of the paper in a dedicated paragraph, preferably towards the end of the introduction. Avoid jargon when explaining the contributions. If possible, use bullet points or subheadings to delineate each contribution, making them easily distinguishable and readily comprehendible.
+
+
+**Mistake Name**: Inadequate Problem Definition
+**Target Section**: INTRODUCTION
+**Description**: The problem definition might be too generalized, unclear, or poorly stated, obscuring the precise research focus. A good problem definition should incorporate the current state of affairs, the ideal situation, the gap between them, and how the research aims to bridge this distance.
+**How to Check**: Verify that the problem definition includes four key elements: current situation, ideal situation, the gap (unmet needs or challenges), and how the research intends to address it. If any of these components are unclear or missing, or if it's challenging to discern the problem being tackled, the definition may be too ambiguous.
+**How to Solve**: Request the student to hone the problem definition by pinpointing to distinct, quantifiable issues that tie directly to the research objectives. Encourage them to describe the current and ideal situations and specify the challenges and their proposed solutions. Consider providing them with template structures for problem definitions to guide their thinking and writing.
+
+**Mistake Name**: Lack of Integration of State-of-the-Art (SOTA) Review in Problem Framing
+**Target Section**: INTRODUCTION
+**Description**: The introduction does not adequately integrate the State-of-the-Art (SOTA) review to frame the problem or motivate the proposed research. This leads to a weak connection between the current research landscape and the problem being addressed, making it difficult for the reader to understand the significance and context of the work.
+**How to Check**: - Check if the introduction provides a clear link between the SOTA review and the problem statement. Look for explicit references to key works, methodologies, or findings from the SOTA that directly highlight the gaps or limitations the research aims to address. - Verify that the SOTA is not just mentioned in passing but is used to build a logical argument that justifies the need for the proposed research.  - Ensure that the research objectives or questions naturally flow from the SOTA review, showing how the paper builds upon or extends existing work.  - Cross-reference the introduction with the later sections (such as Related Work and Methodology) to ensure that the SOTA review introduced in the introduction is consistently connected to the research proposal.
+**How to Solve**: - Advise the author to revise the introduction to explicitly state how the SOTA review informs the problem definition. Encourage them to include clear references to key works that highlight gaps, unresolved challenges, or limitations in the field.  - Recommend linking specific methodologies or findings from the SOTA to the research objectives, explaining how the proposed work builds upon or differs from these previous efforts.  - Suggest reworking the introduction to provide a clear justification for the proposed research, using the SOTA as a foundation for the argument. This may involve restructuring the introduction to first outline the current state of research, then identify gaps or limitations, and finally introduce the proposed solution as a logical next step.  - Ensure that the SOTA review is integrated into the overall narrative of the introduction to create a cohesive and compelling argument.
+
+
+

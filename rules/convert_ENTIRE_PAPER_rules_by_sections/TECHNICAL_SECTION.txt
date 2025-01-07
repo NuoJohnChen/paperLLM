@@ -1,0 +1,42 @@
+**Mistake Name**: Lack of Emphasis on Methodological Rigor
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper does not sufficiently highlight the rigorous nature of the methodology. This flaw can lead to concerns about the validity and reproducibility of the proposed research.
+**How to Check**: The AI should parse the methodology section for completeness, detail-orientedness, and comprehensiveness. The section should explicitly detail how the data will be collected, analyzed, and validated. The absence of this information indicates an area for improvement.
+**How to Solve**: Instruct the AI to suggest additional details for the methodology section, such as specifying the methods for data collection, the statistical techniques for analyzing data, validation mechanisms, and justifications for chosen methods. The AI should also advise on explaining how each step contributes to the overall rigor and reliability of the research.
+
+**Mistake Name**: Inconsistent Terminology
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper uses inconsistent or undefined terminology, which can confuse the reader. This not only applies to the introduction but throughout the paper.
+**How to Check**: Use Named Entity Recognition (NER) to identify key terms within the paper. Then, use Coreference Resolution to spot any inconsistencies in their usage. Also, cross-verify if all the key terms are defined at their first usage.
+**How to Solve**: Establish a consistent terminology within the paper. Make sure that all key entities introduced are explicitly defined at first usage and ensure the same naming convention is used throughout the paper. If different terminology is required to be used for the same concept, make a clear explanation to avoid confusion.
+
+**Mistake Name**: Inconsistent or Contradictory Statements
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper contains inconsistent or contradictory statements that could be within sections (e.g., Introduction, Methodology, Result, Discussion, Conclusion) or across these sections, affecting the clarity and validity of the work. This includes contradiction in the problem statement, hypotheses, methodological approach, results, and conclusions drawn.
+**How to Check**: Scrutinize each section for inconsistent statements or figures. Assess the link between the problem statement, research methodology, results, and conclusions. The research goals stated in the introduction should align with the methodology and findings. Additionally, the results should support the conclusions drawn.
+**How to Solve**: Ensure every segment of the paper aligns with others. The problem statement or research question dictates the methodology, which in turn affects the results and the conclusion. Any change in one domain must reflect accurately across others. Redraft any contradictory or inconsistent statements for clarity and coherence. Consult relevant literature if necessary, to ensure the academic integrity of the revised content.
+
+**Mistake Name**: Assumptions Without Justification
+**Target Section**: TECHNICAL_SECTION
+**Description**: Any part of the paper, not just the motivation section, may include assumptions about the problem, proposed solution, hypotheses, or the field which are not clearly justified or supported by evidence. These unjustified assumptions could appear as implicit or explicit claims.
+**How to Check**: Check for any statements serving as the basis for arguments, hypotheses or conclusions that aren't justified. These can be identified as claims not followed or prefaced by supportive data, logical argumentation, or citation of relevant literature.
+**How to Solve**: Ensure that all assumptions, hypotheses or foundational claims are supported by logical explanations, experimental data, or referenced research findings from credible sources. If an assumption arises from common knowledge in the field, briefly acknowledge this consensus for clarity. Refer to authoritative and credible sources wherever possible to solidify these justifications.
+
+**Mistake Name**: Justification of Methodology/System Design
+**Target Section**: TECHNICAL_SECTION
+**Description**: Check if the methodology/system design is justified. This includes justifying the use of certain algorithm, the choice of an architecture, etc.
+**How to Check**: Look for clear and supported statements about why the selected methodology or system design is suitable for the specific problem. Patterns to identify include assertions about the methodology or design without clear explanations or support.
+**How to Solve**: Highlight the general area where justification is needed. Suggest that the author provide a paragraph justifying the methodology, explain why a certain algorithm was chosen (efficiency, accuracy, etc), or clarify why the chosen architecture is ideal or sufficient for the problem at hand. Keep in mind that due to lack of domain knowledge, ChatGPT 4o-mini might not reliably generate the justifying paragraph itself.
+
+**Mistake Name**: Weak Rationale and Problem-Solving Approach
+**Target Section**: TECHNICAL_SECTION
+**Description**: The rationale behind the proposed solution isn't fully outlined, or leaves ambiguity regarding how it addresses the stated problems. The linkage between the proposed solution and the problem it aims to solve is not clearly presented.
+**How to Check**: Ensure the paper includes a comprehensive motivation section in which the problems are stated clearly, with sufficient context and specifics. Check if the paper discusses the thought process behind the proposed solution, in a way that logically and clearly connects it to the problem statements. Determine whether the techniques developed and their anticipated outcomes are solidly grounded in the problems identified.
+**How to Solve**: Include a dedicated section that redefines the stated problems with specificity, giving readers a clear roadmap of what the paper is addressing. Follow this with an explanation of the proposed solution and the driving forces behind its development. Clearly draw ties between the problems and solution, illustrating how the latter addresses the former. Consider using examples or case scenarios to demonstrate your arguments, as well as concise yet powerful language for clarity. The solution's relevance to the problems should be clear at first glance.
+
+**Mistake Name**: Overview of Entire System Missing
+**Target Section**: TECHNICAL_SECTION
+**Description**: Check if the paper includes a comprehensive overview of the entire system. The overview should describe the problem the system addresses, the purpose of the system, its key components, and how these components interact.
+**How to Check**: Look for a section or paragraph in the paper that provides a summary of the system. This summary should clearly define what the system does, its key features, and how these features work together to fulfill the system's intended purpose.
+**How to Solve**: If such section is missing, suggest the author to include an introductory paragraph describing the system as a whole. The paragraph should start with defining the problem and end with clearly introducing the proposed system’s components and their interaction for problem-solving.
+

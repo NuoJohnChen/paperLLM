@@ -1,0 +1,30 @@
+**Mistake Name**: Lack of Consistency with Previous Studies
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper does not align its evaluation with previous studies, missing the opportunity to benchmark against well-established datasets or methods. Furthermore, the rationales provided for the choice of datasets and methods used in the study may not be adequate or clear.
+**How to Check**: Check if the paper references datasets and methods commonly used in top conference papers and includes them in the evaluation. Also assess whether the rationale behind the choice of these datasets and methods is clearly and adequately explained.
+**How to Solve**: Review recent top conference papers to identify commonly used datasets and methods. Integrate these into your evaluation to ensure consistency and relevance. Clearly explain why each dataset and method was chosen. If the choice deviates from the norm, give a detailed, robust justification.
+
+**Mistake Name**: Inconsistent or Missing Baselines
+**Target Section**: TECHNICAL_SECTION
+**Description**: This mistake arises when the proposed method is not compared against appropriate baselines or compared with outdated or irrelevant ones.
+**How to Check**: For the AI to accurately check this, the guideline should be more concrete. The AI could check for sentences that should typically include comparisons e.g. "Our method outperforms...", "Compared to previous methods..", this would depend on the identified baselines being explicitly called out and mentioned in the paper.
+**How to Solve**: A practical solution to this problem is to update the technical section of the paper to include comparisons with more current or applicable baselines. Be explicit about the fact that the same evaluation metrics and conditions have been used for the baseline comparisons to ensure fairness. If a certain baseline was omitted, provide a clear and easily understandable reason for its omission.
+
+**Mistake Name**: Insufficient Detail in Algorithms
+**Target Section**: TECHNICAL_SECTION
+**Description**: This error occurs when algorithms are not sufficiently detailed, making replication difficult. Important steps or edge cases might be missing, or assumptions are not clearly stated.
+**How to Check**: Use the AI to highlight areas in the document where algorithms are discussed. Check if the text provides enough detail for a third-party reader to recreate the algorithm without any extra resources. Check for missing steps, edge cases, initialization details, or unstated assumptions.
+**How to Solve**: Use the AI to suggest missing information based on the context of the document and common patterns in algorithm description. If incomplete, authors should be encouraged to provide detailed pseudocode or flowcharts and indicate all steps, including edge cases and initialization details. Comments or explanations should be added for non-obvious steps. In case of unstated assumptions, authors should be encouraged to clearly state all assumptions before the algorithm presentation.
+
+**Mistake Name**: Overemphasis on Numerical Results
+**Target Section**: TECHNICAL_SECTION
+**Description**: The paper focuses excessively on quantitative data or numerical results, overlooking the qualitative aspects or the implications of these results in real-world scenarios. This may lead to an imbalance in the interpretative depth of the research.
+**How to Check**: Determine if the paper provides in-depth interpretations or discussions of the numerical results. Consider if these discussions reflect a solid understanding of the results in the broader context of the field. Verify if the paper explains the method and the relevance of the results in practical scenarios.
+**How to Solve**: Balance the presentation of quantitative results with their qualitative interpretations and implications. Include a section that discusses the practical and real-world implications, potential limitations, and scenarios where the presented method may not perform as expected.
+
+**Mistake Name**: Analyze the Technical Challenges
+**Target Section**: TECHNICAL_SECTION
+**Description**: Analyze the technical challenges and provide sufficient detail and insight into their complexity and importance in the context of the research.
+**How to Check**: Review the paper to see if the technical challenges: 1) Are clearly defined and articulated 2) Demonstrate complexity and relevance 3) Are impactful in the context of the research 4) Include an explanation of why these challenges have not been adequately addressed in the literature 5) Justify why they require further study or research.
+**How to Solve**: If the challenges appear minor, expand on their complexity and importance, making clear why they are key hurdles to be solved in the field of study. The severity and potential impact of the challenges should be emphasized. For instance, instead of just stating "One challenge is X", provide more detail and context. For example, "A key challenge in the domain of X is the critical balance between performance and scalability, particularly considering the increasing demands of real-world applications. This challenge has remained largely unaddressed, with solutions often compromising one for the other, thus rendering them sub-optimal for wider adoption.
+

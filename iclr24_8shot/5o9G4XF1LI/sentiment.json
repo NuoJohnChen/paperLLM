@@ -1,0 +1,89 @@
+{
+  "5o9G4XF1LI": {
+    "decision": "Accept (poster)",
+    "metareview": {
+      "content": "This paper contributes a new analysis of the reward misspecification problem in terms of goodheart's law. All the reviewers found it to be interesting and no major issues emerged in the discussion.",
+      "sentiment": {
+        "positive": 0.9111,
+        "neutral": 0.0831,
+        "negative": 0.0058
+      }
+    },
+    "justification_for_why_not_higher_score": "None of the reviewers really championed this paper as being super important.",
+    "justification_for_why_not_lower_score": "None of the reviewers argued there was anything major wrong with it.",
+    "reviews": [
+      {
+        "summary": {
+          "content": "This paper presents an analysis of Goodhart\u2019s law in reinforcement learning. The paper starts with a formalization of the Goodhart problem in terms of misalignment of reward functions on finite MDPs: one proxy reward that the policy optimizes when we really wish to optimize the other. The paper justifies that the problem occurs in small scale experiments demonstrating that increasing the optimization pressure on the proxy eventually leads to a decrease in the true reward. A theoretical analysis is given with some examples about why this occurs in finite MDPs. Finally an early-stopping algorithm is proposed to mitigate this issue along with some preliminary experiments on the algorithm.",
+          "sentiment": {
+            "neutral": 0.8695,
+            "negative": 0.0726,
+            "positive": 0.058
+          }
+        },
+        "soundness": "3 good",
+        "presentation": "3 good",
+        "contribution": "2 fair",
+        "strengths": "The problem is clearly very important and a better understanding of proxy rewards, overoptimization, and Goodhart\u2019s law are definitely needed in the community.\n\nThe paper is presented fairly clearly, except in some areas which I point out later.\n\nThe paper provides insights from multiple frontiers to help shape this understanding (empirical, theoretical, and conceptual).\n\nThe theoretical findings are useful, but not entirely surprising given what is known already in the literature (see below). However, I do believe it\u2019s useful to have this formalized and characterized when specifically talking about Goodhart\u2019s law.",
+        "weaknesses": "My primary complaint is that, although this is a solid analysis, I do not believe it strikes the heart of the Goodhart problem. The position of the paper is that misalignment can be characterized by the worst-case angle between reward functions. This is a fairly well-understood setting (e.g. see \u2018simulation lemma\u2019 by Kearns & Singh or any number of classical RL papers). However, it\u2019s unclear how this maps into problems that (1) are beyond the finite case, or (2) are classical examples of Goodhart\u2019s law like the snake bounty. While one could model (2) in the framework studied here, I am not sure this would be an informative model in those settings as the \u2018theta\u2019 is just so large.\n\nThe above is more of a conceptual disagreement about the premise. For the rest of the review, I give the benefit of the doubt and simply accept the premise is true.\n\nUnfortunately most of the important empirical results have been relegated to the appendix, leaving the main paper with vague / difficult-to-verify statement such as \u2018a Goodhart drop occurs for x% of all experiments. Without figures or tables, it\u2019s difficult to understand what this means, such as what the criteria of a \u2018Goodhart drop\u2019 is (any non-zero drop, some negligible drop, etc). It would be helpful to make room in the main paper for results that present a more comprehensive picture of the findings.\n\nThe early stopping proposal is natural, but also seems very conservative. This appears to be consistent with the empirical findings. Furthermore it requires knowledge of $\\theta$, which is just assumed to be known. While it\u2019s hard to imagine anything can be down without some knowledge of the true reward or structure, this seems quite coarse.\n\nFigure 5 is difficult to appreciate in absolute terms as one cannot tell if, for example, 0.4 is a large value relative to the reward achievable. I think this plot would be better replaced with a typical plot showing how the true and proxy rewards change as the policy is optimized and when the algorithm decides to stop, as well as the counterfactual of what would happen if it does not stop.",
+        "questions": "How do you think the theoretical results generalize to the setting where the reward function is considerably more sophisticated than simple finite MDPs? For example, high dimensional, continuous state-action, long-horizon problems?",
+        "rating": "5: marginally below the acceptance threshold",
+        "confidence": "3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked."
+      },
+      {
+        "summary": {
+          "content": "This paper studies the problem of reward misspecification. The authors point out that over-optimizing an incorrect reward function can lead to the wrong behaviour for the true (\"test\") reward function, and dub this phenomenon Goodharting. The authors propose a quantitative way to evaluate this phenomenon (cf. Definition 5), and perform an experimental case study on some simple MDPs to establish that Goodharting is a common phenomenon in RL. The authors then provide an intuitive geometric explanation for this phenomenon and propose an early stopping method to avoid overfitting. Further experimental evaluations are performed on the early stopping method to",
+          "sentiment": {
+            "neutral": 0.6823,
+            "negative": 0.2982,
+            "positive": 0.0196
+          }
+        },
+        "soundness": "3 good",
+        "presentation": "3 good",
+        "contribution": "3 good",
+        "strengths": "The paper investigates an interesting, albeit not entirely surprising phenomenon, and investigates it thoroughly and carefully. The problem of reward misspecification is quite relevant for practical considerings of RL, so gaining some understanding of this problem is appreciated. The paper is well-written and the messages are conveyed clearly. The theoretical contributions, while not exactly practical, are a nice step towards preventing this problem from affecting performance.",
+        "weaknesses": "While I am overall positive about the paper, I have a few comments and suggestions for possible improvement. \n\n- The definition of optimization pressure is a bit strange. Why should we not define it as simply the distance from the optimal policy? For instance, we can say that the optimization pressure is epsilon if we obtain a policy $\\hat{\\pi}$ such that $J_R(\\pi^\\star) - J_R(\\hat{\\pi}) \\leq \\varepsilon$. I feel that tying the optimization pressure to a certain regularization scheme detracts from the fundamental aspect of the problem, and furthermore that regularization is only used here as a proxy for \"how close to optimal are we\", which can be defined more directly as above.\n- The environments that have been used to establish that Goodharting is pervasive (Section 3) are somewhat simple. I understand that it is difficult to measure the NDH metric in environments where we cannot solve for the optimal policy, but it would have been nice to understand how pervasive this is in \"real\" problems, or at least in popular RL benchmark environments. As a side note, the fact that the NDH metric is inherently difficult to measure can be considered as a drawback of the proposed methodology -- can the authors comment?\n- It would also have been interesting to more systematically study which properties of environments imply that Goodharting is more likely to take place, do the dynamics of the MDP (e.g. a bottleneck structure) have any role?\n- The proposed optimal stopping algorithm is very pessimistic since it tries to avoid overfitting to any possible reward function in a certain set (is this pessimism unavoidable?), and as the authors point out it is computationally infeasible. In addition, if I understand correctly, it requires knowing the transition dynamics and knowing the distance between the proxy reward and the true reward function, which is fairly unpractical.\n\n- Incorrect/unclear sentences: \n1. \"We observe that NDH is non-zero if and only if, over increasing optimisation pressure, the proxy and true rewards are initially correlated, and then become anti-correlated\". I believe the authors meant the NDH is non-negative, not non-zero.\n2. \"Note that this scheme is valid because for any environment, reward sampling scheme and fixed parameters, the sample space of rewards is convex. In high dimensions, two random vectors are approximately orthogonal with high probability, so the sequence R_t spans a range of distances.\". It is not clear what point the first sentence is attempting to communicate (what does \"valid\" mean?), and the second sentence is incorrect as stated (what distribution is one sampling from? I can imagine many distributions where this is untrue, say a deterministic one.)",
+        "questions": "See weaknesses section above.",
+        "rating": "6: marginally above the acceptance threshold",
+        "confidence": "3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked."
+      },
+      {
+        "summary": {
+          "content": "Most reinforcement learning algorithms are designed for accurate reward feedback. However, in practice, accurate reward feedback may not be available. In the presence of inaccurate reward feedback, it is possible to observe a phenomenon that the performance of the training policy first increases and then decreases after passing a threshold point. This paper addresses this interesting phenomenon and names it \u201cGoodhart\u2019s Law in RL\u201d. To solve this problem, this paper quantifies the magnitude of this effect and how it exists in a wide range of environments and reward functions. It provides a geometric explanation and an optimal early stopping method with theoretical regret bounds. They then empirically showed the performance of their early stopping method.",
+          "sentiment": {
+            "neutral": 0.667,
+            "negative": 0.2964,
+            "positive": 0.0366
+          }
+        },
+        "soundness": "4 excellent",
+        "presentation": "4 excellent",
+        "contribution": "3 good",
+        "strengths": "1. This paper is quite novel because it raises an interesting and important observation \u2013 the performance of a policy increases first and then decreases. Such observation is caused by inaccurate reward feedback, which indeed exists in real RL applications.\n\n2. This paper quantifies the magnitude of such phenomena and provides a clear geometric explanation.\n\n3. With these insights, this paper proposes an optimal early stopping method with theoretical regret bound analysis.\n\n4. The experimental results supported the authors' claim.\n\n5. This paper is well-written. Concepts are conveyed efficiently. The analysis is detailed while keeping a clear line of high-level logic.",
+        "weaknesses": "1. The optimal early stopping rule relies on the knowledge of the occupancy measure and the upper bound $\\theta$ of the angle between the true reward and the proxy reward. Methods to approximate the occupancy measure are well-researched. My concern is on the approximation of $\\theta$, which is a relatively new concept and requires some knowledge of the true reward feedback or true reward samples. When such estimation is not accurate, the stopping method could exhibit negative performance. It would be better if the author could show empirical results with approximated $\\theta$.\n\n2. This paper is preliminary because it only considers finite state and action space. The empirical results are also only on small grid world environments. It is not clear whether such a phenomenon exists in more broad continuous settings and what would be the practical way to solve it in these settings.",
+        "questions": "N/A",
+        "rating": "6: marginally above the acceptance threshold",
+        "confidence": "3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked."
+      },
+      {
+        "summary": {
+          "content": "This paper studies the interplay between reward misspecification and optimisation in RL as an instance of Goodhart's law. The authors provice geometric explanations of how optimisation of a misspecified reward function can lead to worse performance beyond some threshold, and show in experiments that several environments and reward functions are prone to Goodhart's law and optimisation of a reward proxy eventually leads to worse performance. The authors also propose an early stopping algorithm to address this problem.",
+          "sentiment": {
+            "neutral": 0.6528,
+            "negative": 0.3272,
+            "positive": 0.02
+          }
+        },
+        "soundness": "3 good",
+        "presentation": "3 good",
+        "contribution": "3 good",
+        "strengths": "- First of all, the studied topic is, in my opinion, important and could be of interest to many in the ICLR community. \n- The paper is a good attempt at extending prior work on reward misspecification and reward gaming (e.g., Skalse et al. 2022) to the question of what role optimisation plays and whether we can characterize reward misspecification from a policy optimisation standpoint as well. I am not very well acquainted with the related work, but the contributions and many of the ideas in this paper seem novel to me.\n- The results are very interesting and provide some nice intuition about the interplay of reward distance, optimisation and MDP model. While I don't think that one should overinterpret the results as they are either based on empirical studies of a some specific set of environments or on theoretical insights with idealised assumptions, I think that the findings of this paper are overall very interesting.",
+        "weaknesses": "- The evidence on the \"Goodharting\" effect are only circumstantial. Experiments on some specific set of environments such as grid worlds do not necessarily allow us to extrapolate. After all, the Goodharting effect can only be \"explained\" but not characterised. Nevertheless, these experiments and the geometric explanations provide good intuition which I think is very interesting and could inspire future lines of work. \n- A minor weakness is that the proposed early stopping algorithm might not perform well due to large reward losses from stopping early, which is somewhat expected due to its pessimistic nature. The algorithm is also fairly impractical bcause it assumes prior knowledge of $\\theta$.",
+        "questions": "- Your work seems to be tailored to the specific choice of difference metric between two reward functions (their angle). I guess that the main reason for choosing this distance metric is that it is a STARC metric. \n\t- However, can you provide further justification for why the \"angle\" is a good choice or even the *right* choice? \n\t- What could another reasonable metric be?  \n\t- And, how would choosing a different metric impact your results?",
+        "rating": "8: accept, good paper",
+        "confidence": "2: You are willing to defend your assessment, but it is quite likely that you did not understand the central parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked."
+      }
+    ]
+  }
+}
