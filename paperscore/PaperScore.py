@@ -275,104 +275,129 @@ Score: [The score you assign based on the criteria]
 
     return score, explanation
 
-
+# 不要有ADJACENT PARAGRAPH,用户在训练时并不会特地给出，是需要模型意识的
 def provide_improvements_on_paper(client, paper_latex, paper_type, criteria, section, model='gpt-4o-mini'):
-   
-#     prompt = f"""
-# You are an advanced language model designed to assist users in improving their articles. Users will provide an article in Markdown format and select a specific paper content to ask improvement-related questions.
-# Your task is to provide constructive suggestions that align with given standards, helping users make targeted modifications to enhance the quality of the article. Avoid general assessments or excessive praise, and focus on actionable feedback specific to the selected excerpt.
-# First, assume your charcteristic is the author of this paper and provide the selected paper content along with improvement questions based on the standards, but not questions about this paper. Then, assume the role of an expert model for improving articles and generate the corresponding revised version of the text.
-# The revised answer should take into account the context of the entire article, referencing relevant sections where necessary, and include an explanation of the changes made in relation to the overall context.
+    # 定义角色和指令
+    roles = [
+        {
+            "role": f"We have a paper improvement task with a specific criteria '{criteria['prompt']}'. Now play a role as an author of the provided paper content. Select a specific content from the section '{section}' (or equivalent), and ask a chatbot assistant to help you improve that selected content",
+            "instr": [
+                f"The selected paper content must be a worth-improving paragraph(s) that might not achieve the standards of the criteria '{criteria['prompt']}', and that content should come from the section '{section}' (or equivalent). The selected content will be labeled as **BEFORE IMPROVEMENT**.",
+                # "The paragraphs before and after the selected content to provide more context information to the assistant. They are labeled as **ADJACENT PARAGRAPH**.",
+                "Provide a concise, conversational improvement-related question labeled as **QUESTIONS**. These questions should not explicitly tell what rules or standards to follow or what the specific goal should be. Instead, offer a high-level instruction that may hint at the criteria without stating them directly. The aim is to allow for creativity and subtle alignment with the criteria.",
+                "Keep the question short and conversational."
+            ],
+            "outputs": [
+#                 """
+# --- ADJACENT PARAGRAPH (BEFORE) STARTS  
+# <The adjacent paragraph before the selected content. Output NONE if the selected content is the first paragraph of the section.>
+# --- ADJACENT PARAGRAPH (BEFORE) ENDS  
+#                 """,
+                """
+--- BEFORE IMPROVEMENT STARTS  
+<Selected content>
+--- BEFORE IMPROVEMENT ENDS  
+                """,
+#                 """
+# --- ADJACENT PARAGRAPH (AFTER) STARTS  
+# <The adjacent paragraph after the selected content. Output NONE if the selected content is at the end of the section.>
+# --- ADJACENT PARAGRAPH (AFTER) ENDS  
+#                 """,
+                f"""
+--- QUESTIONS START  
+<Concise, improvement-related question based on the criteria '{criteria['prompt']}'>
+--- QUESTIONS END  
+                """
+            ]
+        },
+        {
+            "role": "Act as an expert model for improving articles.",
+            "instr": [
+                "The revised version of the selected content should be labeled as AFTER IMPROVEMENT and specifically address the QUESTIONS on BEFORE IMPROVEMENT above. Avoid adding unnecessary length, unrelated details, overclaims, or vague statements. Focus on clear, concise, and evidence-based improvements that align with the overall context of the paper.",
+                "Provide a detailed explanation of the changes made, labeled as EXPLANATION, with clear references to the paper's content. Ensure the explanation demonstrates how the revisions align with the context and criteria of the paper."
+            ],
+            "outputs": [
+                """
+--- AFTER IMPROVEMENT STARTS  
+<Revised version of the selected content to answer the **Questions** above>
+--- AFTER IMPROVEMENT ENDS  
+                """,
+                """
+--- EXPLANATION STARTS  
+<An explanation of the changes made, showing how they align with the context of the article and address the criteria. Include references from the paper context where relevant.>
+--- EXPLANATION ENDS  
+                """
+            ]
+        }
+    ]
 
-# --- the session starts
-# {session}
-# --- the sesttion ends
-
-# --- the criteria starts
-# {criteria['prompt']}
-# --- the criteria ends
-
-# --- the paper content starts
-# {paper_latex}
-# --- the paper content ends
-
-
-# Please provide your response in the following format:
-
-# --- Before Improvement starts
-# [Selected excerpt]
-# --- Before Improvement ends
-
-# --- Questions start
-# [Selected excerpt with one improvement-related question based on the standards]
-# --- Questions end
-
-# --- After Improvement starts
-# [Revised version of the excerpt]
-# --- After Improvement ends
-
-# --- Explanation starts
-# [An explanation of the changes made, showing how they align with the context of the article and address the standards]
-# --- Explanation ends
-# """
-    prompt = f"""
+    # 构建完整的 prompt
+    system_prompt = """
 You are an advanced language model designed to assist users in improving their articles. Users will provide an article in LaTeX or Markdown format and specify a **section** along with **criteria** for improvement. Your task is to identify a specific selected content from the provided section, align it with the given criteria, and offer actionable feedback to improve the content.
-
-### Instructions:
-1. **First Role**: Assume the role of the paper's author. Users will provide you with a simple, conversational instruction. Based on that instruction, select a specific selected content from the provided section, labeled as **Before Improvement**.
-   - The selected paper content based on the criteria '**{criteria['prompt']}**' should come from the section **{section}**, and will be labeled as **Before Improvement**.  
-   - Provide a concise, conversational improvement-related question labeled as **Questions**. These questions should not explicitly tell the AI (you) what rules or standards to follow or what the specific goal should be. Instead, offer a high-level instruction that may hint at the criteria without stating them directly. The aim is to allow for creativity and subtle alignment with the criteria.
-2. **Second Role**: Act as an expert model for improving articles. Provide:  
-   - The improved version of the selected content labeled as **After Improvement**, designed to answer the **Questions** on **Before Improvement** above.  
-   - A detailed explanation of the changes made, using **references from the paper context** to help answer the question and demonstrate alignment with the context and the criteria, labeled as **Explanation**.
-
---- the paper content starts  
-{paper_latex}  
---- the paper content ends  
-
-### Response Format (must be strictly followed):
-
---- Before Improvement starts  
-[Selected content]  
---- Before Improvement ends  
-
---- Questions start  
-[Concise, improvement-related question based on the criteria {criteria['prompt']}]  
---- Questions end  
-
---- After Improvement starts  
-[Revised version of the selected content to answer the **Questions** above]  
---- After Improvement ends  
-
---- Explanation starts  
-[An explanation of the changes made, showing how they align with the context of the article and address the criteria. Include references from the paper context where relevant.]  
---- Explanation ends  
 """
 
+    # 构建指令部分
+    instructions_prompt = "### Instructions:\n"
+    for idx, r in enumerate(roles):
+        role, instrs, outputs = r['role'], r['instr'], r['outputs']
+        instructions_prompt += f"{idx+1}. **Role {idx+1}**: {role}\n"
+        for instr in instrs:
+            instructions_prompt += f"   - {instr}\n"
+
+    # print(f"paper_latex[:100]: {paper_latex[:100]}")
+    # 构建论文内容部分
+    paper_prompt = f"""
+--- PAPER CONTEXT STARTS
+{paper_latex}
+--- PAPER CONTEXT ENDS
+"""
+
+    # 构建输出格式部分
+    format_prompt = "### Response Format (must be strictly followed):\n"
+    all_outputs = []
+    for idx, r in enumerate(roles):
+        all_outputs += r['outputs']
+    format_prompt += "\n".join(all_outputs)
+
+    # 组合所有部分
+    combined_prompt = f"{system_prompt}\n{instructions_prompt}\n{paper_prompt}\n{format_prompt}"
+
+    # 调用 Agent
     agent = Agent("evaluate_and_suggest_improvements", tags=["PaperScore"], model=model)
-    print("model: ", model)
+    # print("model: ", model)
     if 'o1' in model:
         result = agent.run(
             prompt=[
-                # {"role": "system", "content": "You are an expert academic paper reviewer and editor."},
-                {"role": "user", "content": prompt},
+                {"role": "user", "content": combined_prompt},
             ]
         )
     else:
         result = agent.run(
             prompt=[
-                {"role": "system", "content": "You are an expert academic paper reviewer and editor."},
-                {"role": "user", "content": prompt},
+                {"role": "system", "content": "You are a professional academic researcher"},
+                {"role": "user", "content": combined_prompt},
             ]
         )
-
-    # Extract the revised sections and explanation
-    print("model: ", model)
-    print("###",result.split("--- Before Improvement starts")[1])
-    before_improvement = result.split("--- Before Improvement starts")[1].split("--- Before Improvement ends")[0].strip()
-    questions = result.split("--- Questions start")[1].split("--- Questions end")[0].strip()
-    after_improvement = result.split("--- After Improvement starts")[1].split("--- After Improvement ends")[0].strip()
-    explanation = result.split("--- Explanation starts")[1].split("--- Explanation ends")[0].strip()
+    print(f"result: {result}")
+    # 提取改进内容
+    # print("model: ", model)
+    # # 提取相邻段落（之前）
+    # adjacent_before = result.split("--- ADJACENT PARAGRAPH (BEFORE) STARTS")[1].split("--- ADJACENT PARAGRAPH (BEFORE) ENDS")[0].strip()
+    
+    # 提取需要改进的内容
+    before_improvement = result.split("--- BEFORE IMPROVEMENT STARTS")[1].split("--- BEFORE IMPROVEMENT ENDS")[0].strip()
+    
+    # # 提取相邻段落（之后）
+    # adjacent_after = result.split("--- ADJACENT PARAGRAPH (AFTER) STARTS")[1].split("--- ADJACENT PARAGRAPH (AFTER) ENDS")[0].strip()
+    
+    # 提取问题
+    questions = result.split("--- QUESTIONS START")[1].split("--- QUESTIONS END")[0].strip()
+    
+    # 提取改进后的内容
+    after_improvement = result.split("--- AFTER IMPROVEMENT STARTS")[1].split("--- AFTER IMPROVEMENT ENDS")[0].strip()
+    
+    # 提取解释
+    explanation = result.split("--- EXPLANATION STARTS")[1].split("--- EXPLANATION ENDS")[0].strip()
 
     return before_improvement, questions, after_improvement, explanation
 
@@ -471,7 +496,7 @@ def evaluate_and_suggest_improvement(client, paper_content, paper_type, criteria
     else:
         before_improvement, questions, after_improvement, explanation = provide_improvements_on_paper(client, paper_content, paper_type, criteria, section, model=model)
         with open(cache_file, "w") as f:
-            json.dump({"before_improvement": before_improvement, "questions": questions, "after_improvement": after_improvement, "explanation": explanation}, f, indent=4)
+            json.dump({ "before_improvement": before_improvement, "questions": questions, "after_improvement": after_improvement, "explanation": explanation}, f, indent=4)
 
     return before_improvement, questions, after_improvement, explanation
 
