@@ -1,0 +1,340 @@
+import os
+import json
+import glob
+from pathlib import Path
+from collections import defaultdict
+
+def find_paper_scores_dirs(paper: str):
+    """Find all paper_scores directories and their relevant subdirectories"""
+    target_subdirs = ['abstract', 'background', 'conclusion', 
+                      'evaluation', 'introduction', 'title']
+    results = defaultdict(dict)
+    
+    for root, dirs, files in os.walk(f'./{paper}'):
+        if 'paper_scores' in root:
+            for subdir in target_subdirs:
+                if subdir in root:
+                    base_dir = os.path.dirname(root)
+                    results[base_dir][subdir] = root
+    return results
+
+def find_paper_revise_dirs(paper: str):
+    """Find all paper_revision directories and their relevant subdirectories"""
+    target_subdirs = ['abstract', 'background', 'conclusion', 
+                      'evaluation', 'introduction', 'title']
+    results = defaultdict(dict)
+    
+    for root, dirs, files in os.walk(f'./{paper}'):
+        print(root)
+        if 'paper_revision' in root:
+            
+            for subdir in target_subdirs:
+                if subdir in root:
+                    
+                    base_dir = os.path.dirname(root)
+                    results[base_dir][subdir] = root
+    print(results)
+    return results
+
+def find_paper_revise_dir_gpt4o(paper: str):
+    """Find all paper_revision directories and their relevant subdirectories"""
+    target_subdirs = ['abstract', 'background', 'conclusion', 
+                      'evaluation', 'introduction', 'title']
+    results = defaultdict(dict)
+    
+    for root, dirs, files in os.walk(f'./{paper}'):
+        if 'paper_revision_4o' in root:
+            for subdir in target_subdirs:
+                if subdir in root:
+                    if 'paper_revision_old_prompt' not in root:
+                        base_dir = os.path.dirname(root)
+                        results[base_dir][subdir] = root
+    print(results)
+    return results
+
+def extract_scores(directories):
+    """Extract scores and explanations from cache files"""
+    all_scores = defaultdict(dict)
+    
+    for paper_dir, subdirs in directories.items():
+        paper_name = os.path.basename(paper_dir)
+        all_scores[paper_name] = {}
+        
+        for section, path in subdirs.items():
+            section_scores = {}
+            json_files = glob.glob(os.path.join(path, "cache.paper_score_evaluate_criteria_*.json"))
+            
+            for json_file in json_files:
+                criteria = json_file.split("criteria_")[-1].replace(".json", "")
+                with open(json_file, 'r') as f:
+                    data = json.load(f)
+                    # print(data.get('score', ''))
+                    section_scores[criteria] = {
+                        'score': data.get('score', ''),
+                    }
+            all_scores[paper_name][section] = section_scores
+            # print("###",list(all_scores.values())[0].keys())
+    return all_scores
+
+def extract_revise(directories):
+    """Extract scores and explanations from cache files"""
+    all_scores = defaultdict(dict)
+    
+    for paper_dir, subdirs in directories.items():
+        paper_name = os.path.basename(paper_dir)
+        all_scores[paper_name] = {}
+        
+        for section, path in subdirs.items():
+            section_scores = {}
+            json_files = glob.glob(os.path.join(path, "cache.paper_score_evaluate_criteria_*.json"))
+            
+            for json_file in json_files:
+                criteria = json_file.split("criteria_")[-1].replace(".json", "")
+                with open(json_file, 'r') as f:
+                    data = json.load(f)
+                    # print(data.get('score', ''))
+                    section_scores[criteria] = {
+                        'before_improvement': data.get('before_improvement', ''),
+                        'questions': data.get('questions', ''),
+                        'after_improvement': data.get('after_improvement', ''),
+                        'explanation': data.get('explanation', '')
+                    }
+            all_scores[paper_name][section] = section_scores
+            # print("###",list(all_scores.values())[0].keys())
+    return all_scores
+def get_score_class(score):
+    """Return CSS class based on score value"""
+    try:
+        score = float(score)
+        if score >= 350:
+            return 'score-very-excellent'
+        if score >= 300:
+            return 'score-excellent'
+        elif score >= 250:
+            return 'score-good'
+        elif score >= 200:
+            return 'score-fair'
+        else:
+            return 'score-poor'
+    except:
+        return ''
+
+def generate_html(revise):
+
+    """生成带有颜色编码分数和详细信息的 HTML 报告"""
+    html = """
+    <html>
+    <head>
+        <script src="http://incaseofstairs.com/jsdiff/diff.js"></script>
+        <style>
+            table { 
+                border-collapse: collapse; 
+                width: 100%; 
+                table-layout: fixed;
+            }
+            th, td { 
+                border: 1px solid black; 
+                padding: 8px; 
+                text-align: left; 
+                vertical-align: top;
+            }
+            th { background-color: #f2f2f2; }
+            .section { 
+                background-color: #e6f3ff;
+                width: 100px;
+            }
+            .criteria-col { 
+                width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .toggle-col {
+                width: 120px;
+                text-align: center;
+            }
+            .before_improvement-col,
+            .questions-col,
+            .after_improvement-col,
+            .explanation-col {
+                width: 300px;
+            }
+            .score-col {
+                width: 160px;
+                text-align: center;
+            }
+            details { cursor: pointer; }
+            summary { padding: 4px; font-weight: bold; }
+            .details-row p { 
+                margin: 4px 0; 
+                padding: 8px; 
+                background-color: #f9f9f9;
+                white-space: pre-wrap;
+            }
+            .score-very-excellent { background-color: #08A291; }
+            .score-excellent { background-color: #90EE90; }
+            .score-good { background-color: #FFFF99; }
+            .score-fair { background-color: #FFB366; }
+            .score-poor { background-color: #FF9999; }
+            del {
+                text-decoration: none;
+                color: #18191C;
+                background: #F3A6A6;
+                margin-left: 2px;
+                margin-right: 2px;
+                padding: 1px;
+                border-radius: 4px;
+            }
+            ins {
+                background: #9FE3C7;
+                color: black;
+                text-decoration: none;
+                margin-left: 2px;
+                margin-right: 2px;
+                padding: 1px;
+                border-radius: 4px;
+            }
+        </style>
+        <script>
+            function toggleDetails(id) {
+                var details = document.querySelectorAll('.details-row-' + id);
+                details.forEach(function(detail) {
+                    if (detail.open) {
+                        detail.open = false;
+                    } else {
+                        detail.open = true;
+                    }
+                });
+            }
+            function showDiff(elementId, oldText, newText) {
+                const diff = Diff.diffWords(oldText, newText);
+                const display = document.getElementById(elementId);
+                const fragment = document.createDocumentFragment();
+                
+                diff.forEach((part) => {
+                    const color = part.added ? 'ins' : part.removed ? 'del' : 'span';
+                    const span = document.createElement(color);
+                    span.textContent = part.value;
+                    fragment.appendChild(span);
+                });
+                
+                display.innerHTML = '';
+                display.appendChild(fragment);
+            }
+        </script>
+    </head>
+    <body>
+    <div id="diff-display"></div>
+    """
+    
+    for paper, sections in revise.items():
+        # print(paper)
+        # print(sections)
+        html += f"<h2>Paper: {paper}</h2>"
+        html += "<table>"
+        html += """
+        <tr>
+            <th style="width:100px">Section</th>
+            <th style="width:500px">Criteria</th>
+            <th style="width:120px">Toggle Details</th>
+            <th style="width:300px">Context to Revise (gpt-4o)</th>
+            <th style="width:300px">Questions (gpt-4o)</th>
+            <th style="width:300px">After Improvement (gpt-4o)</th>
+            <th style="width:300px">Explanation (gpt-4o)</th>
+            <th style="width:500px">TextDiff</th>
+        </tr>
+        """
+        
+        row_id = 0
+        for section, criteria_scores in sections.items():
+            
+            for criteria, details in criteria_scores.items():
+                
+                row_id += 1
+
+                # score_value = details.get('score', '')
+                
+                # print(score_value)
+                # print(score_value)
+                # score_class = get_score_class(score_value)
+                # print(details['before_improvement'])
+                # print(paper)
+                rev=list(revise.values())[0][section][criteria]
+                # print(gpt4o_revise)
+                # gpt4o_rev=list(gpt4o_revise.values())[0][section][criteria]
+                # 提前处理每个字段的换行符
+                before_improvement = rev['before_improvement'].replace('\n', '<\br>')
+                questions = rev['questions'].replace('\n', '<\br>')
+                after_improvement = rev['after_improvement'].replace('\n', '<\br>')
+                explanation = rev['explanation'].replace('\n', '<\br>')
+                # gpt4o_before_improvement = gpt4o_rev['before_improvement'].replace('\n', '<\br>')
+                # gpt4o_questions = gpt4o_rev['questions'].replace('\n', '<\br>')
+                # gpt4o_after_improvement = gpt4o_rev['after_improvement'].replace('\n', '<\br>')
+                # gpt4o_explanation = gpt4o_rev['explanation'].replace('\n', '<\br>')
+
+                html += f"""
+                <tr>
+                    <td class='section'>{section}</td>
+                    <td class='criteria-col'>{criteria}</td>
+                    <td class='toggle-col'>
+                        <button onclick="toggleDetails({row_id})">Click to expand</button>
+                    </td>
+                    
+                    <td class='before_improvement-col'>
+                        <details class='details-row-{row_id}'>
+                            <summary></summary>
+                            <p>{before_improvement}</p>
+                        </details>
+                    </td>
+
+                    <td class='questions-col'>
+                        <details class='details-row-{row_id}'>
+                            <summary></summary>
+                            <p>{questions}</p>
+                        </details>
+                    </td>
+
+                    <td class='after_improvement-col'>
+                        <details class='details-row-{row_id}'>
+                            <summary></summary>
+                            <p>{after_improvement}</p>
+                        </details>
+                    </td>
+
+                    <td class='explanation-col'>
+                        <details class='details-row-{row_id}'>
+                            <summary></summary>
+                            <p>{explanation}</p>
+                        </details>
+                    </td>
+
+                    <td class='diff-col' style="line-height: 1.25; font-family: sans-serif;">
+                        <details class='details-row-{row_id}'  onclick="showDiff('diff-{row_id}','{before_improvement}', '{after_improvement}')">
+                            <div id='diff-{row_id}'></div>
+                        </details>
+                        <div id='diff-display'></div>
+                    </td>
+                </tr>
+                """
+        html += "</table><br>"
+    
+    html += "</body></html>"
+    return html
+
+def main(paper: str):
+   #scores_directories = find_paper_scores_dirs(paper)
+    print(paper)
+    directories = find_paper_revise_dirs(paper)
+    # gpt4o_directories = find_paper_revise_dir_gpt4o(paper)
+    # scores = extract_scores(scores_directories)
+    revise = extract_revise(directories)
+    # gpt4o_revise = extract_revise(gpt4o_directories)
+    html_report = generate_html(revise)
+    
+    with open(f'{paper}/paper_scores_report.html', 'w') as f:
+        f.write(html_report)
+    print("Report generated as paper_scores_report.html")
+
+if __name__ == "__main__":
+    main("4fH5ELoWFu")
+    
